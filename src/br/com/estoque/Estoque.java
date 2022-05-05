@@ -1,9 +1,11 @@
 package br.com.estoque;
 
 import br.com.estoque.util.Data;
+import br.com.estoque.util.Ferramentas;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -31,7 +33,6 @@ public class Estoque extends javax.swing.JFrame {
 			});
 		} catch (Exception e) {
 		}
-
 		this.setTitle("Controle de Estoque 1.0");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -45,6 +46,27 @@ public class Estoque extends javax.swing.JFrame {
 				break;
 			}
 		}
+	}
+
+	private void reorganizarComponentes() {
+		Data data = new Data();
+		JTextField[] jtfNew, jtfOld = {
+			campoTextoCadastroProdutosDescricao, campoTextoCadastroProdutosUnidade,
+			campoTextoCadastroProdutosObs, campoTextoCadastroUsuariosLogin,
+			campoTextoMovimentoEstoquePesquisa, campoTextoMovimentoEstoqueUnid
+		};
+
+		jtfOld = Ferramentas.limparComponentes(jtfOld);
+
+		this.campoTextoFormatadoMovimentoEstoqueValorUnitario.setText("0,00");
+		this.campoSenhaCadastroUsuariosNovaSenha.setText("123456");
+		this.campoSenhaCadastroUsuariosRepetirSenha.setText("123456");
+		this.botaoRadioMovimentoOpcoesEstoqueEntrada.setSelected(true);
+		this.campoTextoFormatadoMovimentoEstoqueValorUnitario.setText("0,00");
+		this.campoTextoMovimentoEstoqueQuantidade.setText("0");
+		this.botaoRadioEstiloOpcaoMetal.setSelected(true);
+		this.botaoRadioBackupBackup.setSelected(true);
+		this.rotuloBackupDestino.setText(String.format("C:\\Backup\\BackupEstoque%s%s%s.db", data.ano, data.mes, data.dia));
 	}
 
 	/**
@@ -1216,6 +1238,18 @@ public class Estoque extends javax.swing.JFrame {
         janelaProcurarArquivoBackup.setCurrentDirectory(new java.io.File("C:\\Backup"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         barraFerramentasJanelaPrincipal.setFloatable(false);
         barraFerramentasJanelaPrincipal.setRollover(true);
@@ -1475,6 +1509,17 @@ public class Estoque extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+		this.rotuloBarraStatusNomeAtividade.setText("Janela Principal");
+		this.reorganizarComponentes();
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+		if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+			popupMenuJanelaPrincipal.show(this, evt.getX(), evt.getY());
+		}
+    }//GEN-LAST:event_formMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;

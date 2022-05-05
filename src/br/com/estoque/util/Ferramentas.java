@@ -33,21 +33,21 @@ public class Ferramentas {
 		jDialog.setVisible(true);
 	}
 
-	public JPasswordField[] limparComponentes(JPasswordField[] jpf) {
+	public static JPasswordField[] limparComponentes(JPasswordField[] jpf) {
 		for (JPasswordField jpf1 : jpf) {
 			jpf1.setText("");
 		}
 		return jpf;
 	}
 
-	public JTextField[] limparComponentes(JTextField[] jtf) {
+	public static JTextField[] limparComponentes(JTextField[] jtf) {
 		for (JTextField jtf1 : jtf) {
 			jtf1.setText("");
 		}
 		return jtf;
 	}
 
-	public JComboBox[] limparComponentes(JComboBox[] jcb) {
+	public static JComboBox[] limparComponentes(JComboBox[] jcb) {
 		for (JComboBox jcb1 : jcb) {
 			jcb1.setSelectedIndex(0);
 		}
