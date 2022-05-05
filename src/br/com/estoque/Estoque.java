@@ -1,6 +1,11 @@
 package br.com.estoque;
 
+import br.com.estoque.util.Data;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 
 /**
@@ -9,14 +14,21 @@ import javax.swing.UIManager;
  */
 public class Estoque extends javax.swing.JFrame {
 
-	/**
-	 * Creates new form Estoque
-	 */
+	private Timer tempo;
+
 	public Estoque() {
 		initComponents();
-
 		try {
 			setLookAndFeel("Windows");
+			EventQueue.invokeLater(() -> {
+				ActionListener actionListener = (ActionEvent e) -> {
+					Data data = new Data();
+					rotuloBarraStatusDataSistema.setText(" " + data.dataEspecial);
+					rotuloBarraStatusHoraSistema.setText(" " + data.hora24);
+				};
+				tempo = new Timer(1000, actionListener);
+				tempo.start();
+			});
 		} catch (Exception e) {
 		}
 
@@ -643,8 +655,6 @@ public class Estoque extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        janelaMovimentoOpcoesEstoque.setPreferredSize(new java.awt.Dimension(200, 180));
-
         painelMovimentoOpcoesEstoqueEstoque.setBorder(javax.swing.BorderFactory.createTitledBorder("Estoque"));
         painelMovimentoOpcoesEstoqueEstoque.setToolTipText("Opções para movimento de estoque");
 
@@ -949,8 +959,6 @@ public class Estoque extends javax.swing.JFrame {
                 .addComponent(botaoMovimentoEstoqueSelecionaProdutoConfirmar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        janelaRelatorioEstoque.setPreferredSize(new java.awt.Dimension(550, 350));
 
         tabelaRelatorioEstoque.setBorder(new javax.swing.border.MatteBorder(null));
         tabelaRelatorioEstoque.setModel(new javax.swing.table.DefaultTableModel(

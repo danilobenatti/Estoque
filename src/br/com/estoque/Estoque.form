@@ -764,11 +764,6 @@
     <Component class="javax.swing.ButtonGroup" name="grupoBotaoCadastroUsuario">
     </Component>
     <Container class="javax.swing.JDialog" name="janelaMovimentoOpcoesEstoque">
-      <Properties>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[200, 180]"/>
-        </Property>
-      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -1260,11 +1255,6 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="janelaRelatorioEstoque">
-      <Properties>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[550, 350]"/>
-        </Property>
-      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
