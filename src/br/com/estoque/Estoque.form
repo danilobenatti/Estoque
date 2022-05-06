@@ -2,76 +2,6 @@
 
 <Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Container class="javax.swing.JPopupMenu" name="popupMenuJanelaPrincipal">
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-      <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="popupMenuProdutos">
-          <Properties>
-            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-              <KeyStroke key="Ctrl+P"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/com/estoque/images/cadastroProduto.png"/>
-            </Property>
-            <Property name="mnemonic" type="int" value="80"/>
-            <Property name="text" type="java.lang.String" value="Produtos"/>
-            <Property name="toolTipText" type="java.lang.String" value="Cadastro de Produtos"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="popupMenuUsuarios">
-          <Properties>
-            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-              <KeyStroke key="Ctrl+U"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/com/estoque/images/cadastroUser.png"/>
-            </Property>
-            <Property name="mnemonic" type="int" value="117"/>
-            <Property name="text" type="java.lang.String" value="Usu&#xe1;rios"/>
-            <Property name="toolTipText" type="java.lang.String" value="Cadastro de Usu&#xe1;rios"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="popupMenuMovimentoEstoque">
-          <Properties>
-            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-              <KeyStroke key="Ctrl+M"/>
-            </Property>
-            <Property name="mnemonic" type="int" value="109"/>
-            <Property name="text" type="java.lang.String" value="Movimento Estoque"/>
-            <Property name="toolTipText" type="java.lang.String" value="Op&#xe7;&#xf5;es para movimento em estoque"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="popupMenuRelatorio">
-          <Properties>
-            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-              <KeyStroke key="Shift+Ctrl+R"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/com/estoque/images/movimentoRelatorio.png"/>
-            </Property>
-            <Property name="mnemonic" type="int" value="108"/>
-            <Property name="text" type="java.lang.String" value="Relat&#xf3;rio"/>
-            <Property name="toolTipText" type="java.lang.String" value="Relat&#xf3;rio de estoque"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="popupMenuSair">
-          <Properties>
-            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-              <KeyStroke key="Alt+F4"/>
-            </Property>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/br/com/estoque/images/ajudaSaida.png"/>
-            </Property>
-            <Property name="mnemonic" type="int" value="114"/>
-            <Property name="text" type="java.lang.String" value="Sair"/>
-            <Property name="toolTipText" type="java.lang.String" value="Finalizar a aplica&#xe7;&#xe3;o"/>
-          </Properties>
-        </MenuItem>
-      </SubComponents>
-    </Container>
     <Container class="javax.swing.JDialog" name="janelaLogin">
       <Properties>
         <Property name="defaultCloseOperation" type="int" value="0"/>
@@ -1131,15 +1061,16 @@
         </Component>
         <Component class="javax.swing.JButton" name="botaoMovimentaEstoqueOk">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Confirmar Entrada"/>
+            <Property name="text" type="java.lang.String" value="Confirmar Entrada/Retirada"/>
             <Property name="toolTipText" type="java.lang.String" value="Confirmar movimenta&#xe7;&#xe3;o de produto"/>
+            <Property name="actionCommand" type="java.lang.String" value="Confirmar Entrada/Retirada"/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.ButtonGroup" name="grupoBotaoMovimentoEstoquePesquisarPor">
     </Component>
-    <Container class="javax.swing.JDialog" name="janelaMovimentoEstoqueSelecionaTabela">
+    <Container class="javax.swing.JDialog" name="janelaMovimentoEstoqueSelecionaProdutoTabela">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -1687,6 +1618,98 @@
         </Property>
       </Properties>
     </Component>
+    <Container class="javax.swing.JPopupMenu" name="popupMenuJanelaPrincipal">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <MenuItem class="javax.swing.JMenuItem" name="popupMenuProdutos">
+          <Properties>
+            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+              <KeyStroke key="Ctrl+P"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/estoque/images/cadastroProduto.png"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="80"/>
+            <Property name="text" type="java.lang.String" value="Produtos"/>
+            <Property name="toolTipText" type="java.lang.String" value="Cadastro de Produtos"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popupMenuProdutosActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="popupMenuUsuarios">
+          <Properties>
+            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+              <KeyStroke key="Ctrl+U"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/estoque/images/cadastroUser.png"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="117"/>
+            <Property name="text" type="java.lang.String" value="Usu&#xe1;rios"/>
+            <Property name="toolTipText" type="java.lang.String" value="Cadastro de Usu&#xe1;rios"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popupMenuUsuariosActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator6">
+        </Component>
+        <MenuItem class="javax.swing.JMenuItem" name="popupMenuMovimentoEstoque">
+          <Properties>
+            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+              <KeyStroke key="Ctrl+M"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/estoque/images/movimentoEstoque.png"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="109"/>
+            <Property name="text" type="java.lang.String" value="Movimento em Estoque"/>
+            <Property name="toolTipText" type="java.lang.String" value="Op&#xe7;&#xf5;es para movimento em estoque"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popupMenuMovimentoEstoqueActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="popupMenuRelatorios">
+          <Properties>
+            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+              <KeyStroke key="Shift+Ctrl+R"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/estoque/images/movimentoRelatorio.png"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="108"/>
+            <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de Estoque"/>
+            <Property name="toolTipText" type="java.lang.String" value="Relat&#xf3;rio de Estoque"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popupMenuRelatoriosActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator7">
+        </Component>
+        <MenuItem class="javax.swing.JMenuItem" name="popupMenuSair">
+          <Properties>
+            <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+              <KeyStroke key="Alt+F4"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/br/com/estoque/images/ajudaSaida.png"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="114"/>
+            <Property name="text" type="java.lang.String" value="Sair"/>
+            <Property name="toolTipText" type="java.lang.String" value="Finalizar a Aplica&#xe7;&#xe3;o"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popupMenuSairActionPerformed"/>
+          </Events>
+        </MenuItem>
+      </SubComponents>
+    </Container>
     <Menu class="javax.swing.JMenuBar" name="barraMenuJanelaPrincipal">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -1711,6 +1734,9 @@
                 <Property name="text" type="java.lang.String" value="Produtos"/>
                 <Property name="toolTipText" type="java.lang.String" value="Cadastro de Produtos"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuCadastroProdutosActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemMenuCadastroUsuarios">
               <Properties>
@@ -1724,6 +1750,9 @@
                 <Property name="text" type="java.lang.String" value="Usu&#xe1;rios"/>
                 <Property name="toolTipText" type="java.lang.String" value="Cadastro de Usu&#xe1;rios"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuCadastroUsuariosActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -1746,6 +1775,9 @@
                 <Property name="text" type="java.lang.String" value="Entradas"/>
                 <Property name="toolTipText" type="java.lang.String" value="Entrada de produtos em estoque"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuMovimentoEntradasActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemMenuMovimentoRetiradas">
               <Properties>
@@ -1759,6 +1791,9 @@
                 <Property name="text" type="java.lang.String" value="Retiradas"/>
                 <Property name="toolTipText" type="java.lang.String" value="Sa&#xed;da de produtos em estoque"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuMovimentoRetiradasActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
@@ -1774,6 +1809,9 @@
                 <Property name="text" type="java.lang.String" value="Relat&#xf3;rios"/>
                 <Property name="toolTipText" type="java.lang.String" value="Relat&#xf3;rio de estoque"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuMovimentoRelatorioActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -1796,6 +1834,9 @@
                 <Property name="text" type="java.lang.String" value="Sobre"/>
                 <Property name="toolTipText" type="java.lang.String" value="Informa&#xe7;&#xf5;es sobre o sistema"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuAjudaSobreActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemMenuAjudaEstilo">
               <Properties>
@@ -1809,6 +1850,9 @@
                 <Property name="text" type="java.lang.String" value="Estilo"/>
                 <Property name="toolTipText" type="java.lang.String" value="Op&#xe7;&#xf5;es para estilo das janelas do sistema"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuAjudaEstiloActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
             </MenuItem>
@@ -1824,6 +1868,9 @@
                 <Property name="text" type="java.lang.String" value="Backup"/>
                 <Property name="toolTipText" type="java.lang.String" value="Efetuar ou restaurar backup da base de dados do sistema"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuAjudaBackupActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
             </MenuItem>
@@ -1839,6 +1886,9 @@
                 <Property name="text" type="java.lang.String" value="Sair"/>
                 <Property name="toolTipText" type="java.lang.String" value="Finalizar a aplica&#xe7;&#xe3;o"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMenuAjudaSairActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -1913,6 +1963,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoBarraFerramentasProdutosActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoBarraFerramentasUsuarios">
           <Properties>
@@ -1924,6 +1977,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoBarraFerramentasUsuariosActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToolBar$Separator" name="jSeparator4">
         </Component>
@@ -1937,6 +1993,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoBarraFerramentasMovimentoEstoqueActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoBarraFerramentasRelatorioEstoque">
           <Properties>
@@ -1948,6 +2007,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoBarraFerramentasRelatorioEstoqueActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToolBar$Separator" name="jSeparator5">
         </Component>
@@ -1961,6 +2023,9 @@
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoBarraFerramentasSairActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -2135,6 +2200,9 @@
           <Image iconType="3" name="/br/com/estoque/images/logo.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="rotuloJanelaPrincipalLogoMouseClicked"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

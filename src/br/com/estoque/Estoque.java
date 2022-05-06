@@ -17,8 +17,10 @@ import javax.swing.UIManager;
 public class Estoque extends javax.swing.JFrame {
 
 	private Timer tempo;
+	private Ferramentas tools;
 
 	public Estoque() {
+		tools = new Ferramentas();
 		initComponents();
 		try {
 			setLookAndFeel("Windows");
@@ -56,7 +58,7 @@ public class Estoque extends javax.swing.JFrame {
 			campoTextoMovimentoEstoquePesquisa, campoTextoMovimentoEstoqueUnid
 		};
 
-		jtfOld = Ferramentas.limparComponentes(jtfOld);
+		jtfOld = tools.limparComponentes(jtfOld);
 
 		this.campoTextoFormatadoMovimentoEstoqueValorUnitario.setText("0,00");
 		this.campoSenhaCadastroUsuariosNovaSenha.setText("123456");
@@ -69,6 +71,14 @@ public class Estoque extends javax.swing.JFrame {
 		this.rotuloBackupDestino.setText(String.format("C:\\Backup\\BackupEstoque%s%s%s.db", data.ano, data.mes, data.dia));
 	}
 
+	private void ajustarJanelaMovimentoEstoque(String botaoConfirma, String titulo) {
+		this.rotuloBarraStatusNomeAtividade.setText(titulo);
+		this.botaoRadioMovimentoEstoqueCodigo.setSelected(true);
+		this.botaoMovimentaEstoqueOk.setText(botaoConfirma);
+		tools.criarJanelaDialogo(titulo, this.janelaMovimentoEstoque, this.getSize(), this.getLocation());
+		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
+	}
+
 	/**
 	 * This method is called from within the constructor to initialize the form.
 	 * WARNING: Do NOT modify this code. The content of this method is always
@@ -78,12 +88,6 @@ public class Estoque extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popupMenuJanelaPrincipal = new javax.swing.JPopupMenu();
-        popupMenuProdutos = new javax.swing.JMenuItem();
-        popupMenuUsuarios = new javax.swing.JMenuItem();
-        popupMenuMovimentoEstoque = new javax.swing.JMenuItem();
-        popupMenuRelatorio = new javax.swing.JMenuItem();
-        popupMenuSair = new javax.swing.JMenuItem();
         janelaLogin = new javax.swing.JDialog();
         rotuloLoginLogo = new javax.swing.JLabel();
         painelLoginLogOn = new javax.swing.JPanel();
@@ -158,7 +162,7 @@ public class Estoque extends javax.swing.JFrame {
         campoTextoMovimentoEstoqueQuantidade = new javax.swing.JTextField();
         botaoMovimentaEstoqueOk = new javax.swing.JButton();
         grupoBotaoMovimentoEstoquePesquisarPor = new javax.swing.ButtonGroup();
-        janelaMovimentoEstoqueSelecionaTabela = new javax.swing.JDialog();
+        janelaMovimentoEstoqueSelecionaProdutoTabela = new javax.swing.JDialog();
         painelMovimentoEstoqueSelecionaProdutoTabela = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaMovimentaEstoqueSelecionaProduto = new javax.swing.JTable();
@@ -190,6 +194,14 @@ public class Estoque extends javax.swing.JFrame {
         botaoBackupConfirmar = new javax.swing.JButton();
         grupoBotaoBackup = new javax.swing.ButtonGroup();
         janelaProcurarArquivoBackup = new javax.swing.JFileChooser();
+        popupMenuJanelaPrincipal = new javax.swing.JPopupMenu();
+        popupMenuProdutos = new javax.swing.JMenuItem();
+        popupMenuUsuarios = new javax.swing.JMenuItem();
+        jSeparator6 = new javax.swing.JPopupMenu.Separator();
+        popupMenuMovimentoEstoque = new javax.swing.JMenuItem();
+        popupMenuRelatorios = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+        popupMenuSair = new javax.swing.JMenuItem();
         barraFerramentasJanelaPrincipal = new javax.swing.JToolBar();
         botaoBarraFerramentasProdutos = new javax.swing.JButton();
         botaoBarraFerramentasUsuarios = new javax.swing.JButton();
@@ -226,40 +238,6 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuAjudaBackup = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         itemMenuAjudaSair = new javax.swing.JMenuItem();
-
-        popupMenuProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        popupMenuProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroProduto.png"))); // NOI18N
-        popupMenuProdutos.setMnemonic('P');
-        popupMenuProdutos.setText("Produtos");
-        popupMenuProdutos.setToolTipText("Cadastro de Produtos");
-        popupMenuJanelaPrincipal.add(popupMenuProdutos);
-
-        popupMenuUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        popupMenuUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroUser.png"))); // NOI18N
-        popupMenuUsuarios.setMnemonic('u');
-        popupMenuUsuarios.setText("Usuários");
-        popupMenuUsuarios.setToolTipText("Cadastro de Usuários");
-        popupMenuJanelaPrincipal.add(popupMenuUsuarios);
-
-        popupMenuMovimentoEstoque.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        popupMenuMovimentoEstoque.setMnemonic('m');
-        popupMenuMovimentoEstoque.setText("Movimento Estoque");
-        popupMenuMovimentoEstoque.setToolTipText("Opções para movimento em estoque");
-        popupMenuJanelaPrincipal.add(popupMenuMovimentoEstoque);
-
-        popupMenuRelatorio.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        popupMenuRelatorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/movimentoRelatorio.png"))); // NOI18N
-        popupMenuRelatorio.setMnemonic('l');
-        popupMenuRelatorio.setText("Relatório");
-        popupMenuRelatorio.setToolTipText("Relatório de estoque");
-        popupMenuJanelaPrincipal.add(popupMenuRelatorio);
-
-        popupMenuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        popupMenuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/ajudaSaida.png"))); // NOI18N
-        popupMenuSair.setMnemonic('r');
-        popupMenuSair.setText("Sair");
-        popupMenuSair.setToolTipText("Finalizar a aplicação");
-        popupMenuJanelaPrincipal.add(popupMenuSair);
 
         janelaLogin.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         janelaLogin.setUndecorated(true);
@@ -845,8 +823,9 @@ public class Estoque extends javax.swing.JFrame {
         campoTextoMovimentoEstoqueQuantidade.setText("0");
         campoTextoMovimentoEstoqueQuantidade.setToolTipText("Quantidade de produtos para movimento");
 
-        botaoMovimentaEstoqueOk.setText("Confirmar Entrada");
+        botaoMovimentaEstoqueOk.setText("Confirmar Entrada/Retirada");
         botaoMovimentaEstoqueOk.setToolTipText("Confirmar movimentação de produto");
+        botaoMovimentaEstoqueOk.setActionCommand("Confirmar Entrada/Retirada");
 
         javax.swing.GroupLayout janelaMovimentoEstoqueLayout = new javax.swing.GroupLayout(janelaMovimentoEstoque.getContentPane());
         janelaMovimentoEstoque.getContentPane().setLayout(janelaMovimentoEstoqueLayout);
@@ -961,20 +940,20 @@ public class Estoque extends javax.swing.JFrame {
         botaoMovimentoEstoqueSelecionaProdutoConfirmar.setText("Confirmar Seleção");
         botaoMovimentoEstoqueSelecionaProdutoConfirmar.setToolTipText("Confirmar selção de produto");
 
-        javax.swing.GroupLayout janelaMovimentoEstoqueSelecionaTabelaLayout = new javax.swing.GroupLayout(janelaMovimentoEstoqueSelecionaTabela.getContentPane());
-        janelaMovimentoEstoqueSelecionaTabela.getContentPane().setLayout(janelaMovimentoEstoqueSelecionaTabelaLayout);
-        janelaMovimentoEstoqueSelecionaTabelaLayout.setHorizontalGroup(
-            janelaMovimentoEstoqueSelecionaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(janelaMovimentoEstoqueSelecionaTabelaLayout.createSequentialGroup()
+        javax.swing.GroupLayout janelaMovimentoEstoqueSelecionaProdutoTabelaLayout = new javax.swing.GroupLayout(janelaMovimentoEstoqueSelecionaProdutoTabela.getContentPane());
+        janelaMovimentoEstoqueSelecionaProdutoTabela.getContentPane().setLayout(janelaMovimentoEstoqueSelecionaProdutoTabelaLayout);
+        janelaMovimentoEstoqueSelecionaProdutoTabelaLayout.setHorizontalGroup(
+            janelaMovimentoEstoqueSelecionaProdutoTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(janelaMovimentoEstoqueSelecionaProdutoTabelaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(janelaMovimentoEstoqueSelecionaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(janelaMovimentoEstoqueSelecionaProdutoTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(painelMovimentoEstoqueSelecionaProdutoTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(botaoMovimentoEstoqueSelecionaProdutoConfirmar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        janelaMovimentoEstoqueSelecionaTabelaLayout.setVerticalGroup(
-            janelaMovimentoEstoqueSelecionaTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(janelaMovimentoEstoqueSelecionaTabelaLayout.createSequentialGroup()
+        janelaMovimentoEstoqueSelecionaProdutoTabelaLayout.setVerticalGroup(
+            janelaMovimentoEstoqueSelecionaProdutoTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(janelaMovimentoEstoqueSelecionaProdutoTabelaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(painelMovimentoEstoqueSelecionaProdutoTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
@@ -1237,6 +1216,68 @@ public class Estoque extends javax.swing.JFrame {
 
         janelaProcurarArquivoBackup.setCurrentDirectory(new java.io.File("C:\\Backup"));
 
+        popupMenuProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        popupMenuProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroProduto.png"))); // NOI18N
+        popupMenuProdutos.setMnemonic('P');
+        popupMenuProdutos.setText("Produtos");
+        popupMenuProdutos.setToolTipText("Cadastro de Produtos");
+        popupMenuProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popupMenuProdutosActionPerformed(evt);
+            }
+        });
+        popupMenuJanelaPrincipal.add(popupMenuProdutos);
+
+        popupMenuUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        popupMenuUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroUser.png"))); // NOI18N
+        popupMenuUsuarios.setMnemonic('u');
+        popupMenuUsuarios.setText("Usuários");
+        popupMenuUsuarios.setToolTipText("Cadastro de Usuários");
+        popupMenuUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popupMenuUsuariosActionPerformed(evt);
+            }
+        });
+        popupMenuJanelaPrincipal.add(popupMenuUsuarios);
+        popupMenuJanelaPrincipal.add(jSeparator6);
+
+        popupMenuMovimentoEstoque.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        popupMenuMovimentoEstoque.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/movimentoEstoque.png"))); // NOI18N
+        popupMenuMovimentoEstoque.setMnemonic('m');
+        popupMenuMovimentoEstoque.setText("Movimento em Estoque");
+        popupMenuMovimentoEstoque.setToolTipText("Opções para movimento em estoque");
+        popupMenuMovimentoEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popupMenuMovimentoEstoqueActionPerformed(evt);
+            }
+        });
+        popupMenuJanelaPrincipal.add(popupMenuMovimentoEstoque);
+
+        popupMenuRelatorios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        popupMenuRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/movimentoRelatorio.png"))); // NOI18N
+        popupMenuRelatorios.setMnemonic('l');
+        popupMenuRelatorios.setText("Relatório de Estoque");
+        popupMenuRelatorios.setToolTipText("Relatório de Estoque");
+        popupMenuRelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popupMenuRelatoriosActionPerformed(evt);
+            }
+        });
+        popupMenuJanelaPrincipal.add(popupMenuRelatorios);
+        popupMenuJanelaPrincipal.add(jSeparator7);
+
+        popupMenuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        popupMenuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/ajudaSaida.png"))); // NOI18N
+        popupMenuSair.setMnemonic('r');
+        popupMenuSair.setText("Sair");
+        popupMenuSair.setToolTipText("Finalizar a Aplicação");
+        popupMenuSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popupMenuSairActionPerformed(evt);
+            }
+        });
+        popupMenuJanelaPrincipal.add(popupMenuSair);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1260,6 +1301,11 @@ public class Estoque extends javax.swing.JFrame {
         botaoBarraFerramentasProdutos.setFocusable(false);
         botaoBarraFerramentasProdutos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoBarraFerramentasProdutos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botaoBarraFerramentasProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoBarraFerramentasProdutosActionPerformed(evt);
+            }
+        });
         barraFerramentasJanelaPrincipal.add(botaoBarraFerramentasProdutos);
 
         botaoBarraFerramentasUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroUser.png"))); // NOI18N
@@ -1267,6 +1313,11 @@ public class Estoque extends javax.swing.JFrame {
         botaoBarraFerramentasUsuarios.setFocusable(false);
         botaoBarraFerramentasUsuarios.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoBarraFerramentasUsuarios.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botaoBarraFerramentasUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoBarraFerramentasUsuariosActionPerformed(evt);
+            }
+        });
         barraFerramentasJanelaPrincipal.add(botaoBarraFerramentasUsuarios);
         barraFerramentasJanelaPrincipal.add(jSeparator4);
 
@@ -1275,6 +1326,11 @@ public class Estoque extends javax.swing.JFrame {
         botaoBarraFerramentasMovimentoEstoque.setFocusable(false);
         botaoBarraFerramentasMovimentoEstoque.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoBarraFerramentasMovimentoEstoque.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botaoBarraFerramentasMovimentoEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoBarraFerramentasMovimentoEstoqueActionPerformed(evt);
+            }
+        });
         barraFerramentasJanelaPrincipal.add(botaoBarraFerramentasMovimentoEstoque);
 
         botaoBarraFerramentasRelatorioEstoque.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/movimentoRelatorio.png"))); // NOI18N
@@ -1282,6 +1338,11 @@ public class Estoque extends javax.swing.JFrame {
         botaoBarraFerramentasRelatorioEstoque.setFocusable(false);
         botaoBarraFerramentasRelatorioEstoque.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoBarraFerramentasRelatorioEstoque.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botaoBarraFerramentasRelatorioEstoque.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoBarraFerramentasRelatorioEstoqueActionPerformed(evt);
+            }
+        });
         barraFerramentasJanelaPrincipal.add(botaoBarraFerramentasRelatorioEstoque);
         barraFerramentasJanelaPrincipal.add(jSeparator5);
 
@@ -1290,6 +1351,11 @@ public class Estoque extends javax.swing.JFrame {
         botaoBarraFerramentasSair.setFocusable(false);
         botaoBarraFerramentasSair.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botaoBarraFerramentasSair.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botaoBarraFerramentasSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoBarraFerramentasSairActionPerformed(evt);
+            }
+        });
         barraFerramentasJanelaPrincipal.add(botaoBarraFerramentasSair);
 
         painelBarraStatusJanelaPrincipal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -1397,6 +1463,11 @@ public class Estoque extends javax.swing.JFrame {
         );
 
         rotuloJanelaPrincipalLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/logo.png"))); // NOI18N
+        rotuloJanelaPrincipalLogo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rotuloJanelaPrincipalLogoMouseClicked(evt);
+            }
+        });
 
         barraMenuJanelaPrincipal.setToolTipText("");
 
@@ -1409,6 +1480,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuCadastroProdutos.setMnemonic('P');
         itemMenuCadastroProdutos.setText("Produtos");
         itemMenuCadastroProdutos.setToolTipText("Cadastro de Produtos");
+        itemMenuCadastroProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuCadastroProdutosActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalCadastro.add(itemMenuCadastroProdutos);
 
         itemMenuCadastroUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -1416,6 +1492,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuCadastroUsuarios.setMnemonic('u');
         itemMenuCadastroUsuarios.setText("Usuários");
         itemMenuCadastroUsuarios.setToolTipText("Cadastro de Usuários");
+        itemMenuCadastroUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuCadastroUsuariosActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalCadastro.add(itemMenuCadastroUsuarios);
 
         barraMenuJanelaPrincipal.add(menuJanelaPrincipalCadastro);
@@ -1429,6 +1510,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuMovimentoEntradas.setMnemonic('e');
         itemMenuMovimentoEntradas.setText("Entradas");
         itemMenuMovimentoEntradas.setToolTipText("Entrada de produtos em estoque");
+        itemMenuMovimentoEntradas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuMovimentoEntradasActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalMovimento.add(itemMenuMovimentoEntradas);
 
         itemMenuMovimentoRetiradas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -1436,6 +1522,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuMovimentoRetiradas.setMnemonic('r');
         itemMenuMovimentoRetiradas.setText("Retiradas");
         itemMenuMovimentoRetiradas.setToolTipText("Saída de produtos em estoque");
+        itemMenuMovimentoRetiradas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuMovimentoRetiradasActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalMovimento.add(itemMenuMovimentoRetiradas);
         menuJanelaPrincipalMovimento.add(jSeparator1);
 
@@ -1444,6 +1535,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuMovimentoRelatorio.setMnemonic('l');
         itemMenuMovimentoRelatorio.setText("Relatórios");
         itemMenuMovimentoRelatorio.setToolTipText("Relatório de estoque");
+        itemMenuMovimentoRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuMovimentoRelatorioActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalMovimento.add(itemMenuMovimentoRelatorio);
 
         barraMenuJanelaPrincipal.add(menuJanelaPrincipalMovimento);
@@ -1457,6 +1553,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuAjudaSobre.setMnemonic('s');
         itemMenuAjudaSobre.setText("Sobre");
         itemMenuAjudaSobre.setToolTipText("Informações sobre o sistema");
+        itemMenuAjudaSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuAjudaSobreActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalAjuda.add(itemMenuAjudaSobre);
 
         itemMenuAjudaEstilo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -1464,6 +1565,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuAjudaEstilo.setMnemonic('e');
         itemMenuAjudaEstilo.setText("Estilo");
         itemMenuAjudaEstilo.setToolTipText("Opções para estilo das janelas do sistema");
+        itemMenuAjudaEstilo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuAjudaEstiloActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalAjuda.add(itemMenuAjudaEstilo);
         menuJanelaPrincipalAjuda.add(jSeparator2);
 
@@ -1472,6 +1578,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuAjudaBackup.setMnemonic('b');
         itemMenuAjudaBackup.setText("Backup");
         itemMenuAjudaBackup.setToolTipText("Efetuar ou restaurar backup da base de dados do sistema");
+        itemMenuAjudaBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuAjudaBackupActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalAjuda.add(itemMenuAjudaBackup);
         menuJanelaPrincipalAjuda.add(jSeparator3);
 
@@ -1480,6 +1591,11 @@ public class Estoque extends javax.swing.JFrame {
         itemMenuAjudaSair.setMnemonic('r');
         itemMenuAjudaSair.setText("Sair");
         itemMenuAjudaSair.setToolTipText("Finalizar a aplicação");
+        itemMenuAjudaSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuAjudaSairActionPerformed(evt);
+            }
+        });
         menuJanelaPrincipalAjuda.add(itemMenuAjudaSair);
 
         barraMenuJanelaPrincipal.add(menuJanelaPrincipalAjuda);
@@ -1515,11 +1631,93 @@ public class Estoque extends javax.swing.JFrame {
 		this.reorganizarComponentes();
     }//GEN-LAST:event_formWindowGainedFocus
 
+    private void itemMenuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuCadastroProdutosActionPerformed
+		tools.criarJanelaDialogo("Cadastro de Produtos", janelaCadastroProdutos, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_itemMenuCadastroProdutosActionPerformed
+
+    private void itemMenuCadastroUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuCadastroUsuariosActionPerformed
+		tools.criarJanelaDialogo("Cadastro de Usuários", janelaCadastroUsuarios, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_itemMenuCadastroUsuariosActionPerformed
+
+    private void itemMenuMovimentoEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuMovimentoEntradasActionPerformed
+		ajustarJanelaMovimentoEstoque("Confirmar Entrada", "Entrada de produtos no estoque");
+    }//GEN-LAST:event_itemMenuMovimentoEntradasActionPerformed
+
+    private void itemMenuMovimentoRetiradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuMovimentoRetiradasActionPerformed
+		ajustarJanelaMovimentoEstoque("Confirmar Retirada", "Retirada de produtos do estoque");
+    }//GEN-LAST:event_itemMenuMovimentoRetiradasActionPerformed
+
+    private void itemMenuMovimentoRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuMovimentoRelatorioActionPerformed
+		tools.criarJanelaDialogo("Relatório de Estoque", janelaRelatorioEstoque, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_itemMenuMovimentoRelatorioActionPerformed
+
+    private void itemMenuAjudaSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuAjudaSobreActionPerformed
+		tools.criarJanelaDialogo("Sobre", janelaSobre, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_itemMenuAjudaSobreActionPerformed
+
+    private void itemMenuAjudaEstiloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuAjudaEstiloActionPerformed
+		tools.criarJanelaDialogo("Estilo", janelaEstilo, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_itemMenuAjudaEstiloActionPerformed
+
+    private void itemMenuAjudaBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuAjudaBackupActionPerformed
+		tools.criarJanelaDialogo("Opções de Backup", janelaBackup, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_itemMenuAjudaBackupActionPerformed
+
+    private void itemMenuAjudaSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuAjudaSairActionPerformed
+		System.exit(0);
+    }//GEN-LAST:event_itemMenuAjudaSairActionPerformed
+
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
 		if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
 			popupMenuJanelaPrincipal.show(this, evt.getX(), evt.getY());
 		}
     }//GEN-LAST:event_formMouseClicked
+
+    private void popupMenuProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupMenuProdutosActionPerformed
+		tools.criarJanelaDialogo("Cadastro de Produtos", janelaCadastroProdutos, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_popupMenuProdutosActionPerformed
+
+    private void popupMenuUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupMenuUsuariosActionPerformed
+		tools.criarJanelaDialogo("Cadastro de Usuários", janelaCadastroUsuarios, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_popupMenuUsuariosActionPerformed
+
+    private void popupMenuMovimentoEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupMenuMovimentoEstoqueActionPerformed
+		tools.criarJanelaDialogo("Estoque Opções", janelaMovimentoOpcoesEstoque, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_popupMenuMovimentoEstoqueActionPerformed
+
+    private void popupMenuRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupMenuRelatoriosActionPerformed
+		tools.criarJanelaDialogo("Relatório de Estque", janelaRelatorioEstoque, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_popupMenuRelatoriosActionPerformed
+
+    private void popupMenuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupMenuSairActionPerformed
+		System.exit(0);
+    }//GEN-LAST:event_popupMenuSairActionPerformed
+
+    private void botaoBarraFerramentasProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBarraFerramentasProdutosActionPerformed
+		tools.criarJanelaDialogo("Cadastro de Produtos", janelaCadastroProdutos, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_botaoBarraFerramentasProdutosActionPerformed
+
+    private void botaoBarraFerramentasUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBarraFerramentasUsuariosActionPerformed
+		tools.criarJanelaDialogo("Cadastro de Usuários", janelaCadastroUsuarios, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_botaoBarraFerramentasUsuariosActionPerformed
+
+    private void botaoBarraFerramentasMovimentoEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBarraFerramentasMovimentoEstoqueActionPerformed
+		tools.criarJanelaDialogo("Estoque Opções", janelaMovimentoOpcoesEstoque, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_botaoBarraFerramentasMovimentoEstoqueActionPerformed
+
+    private void botaoBarraFerramentasRelatorioEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBarraFerramentasRelatorioEstoqueActionPerformed
+		tools.criarJanelaDialogo("Relatório de Estque", janelaRelatorioEstoque, this.getSize(), this.getLocation());
+    }//GEN-LAST:event_botaoBarraFerramentasRelatorioEstoqueActionPerformed
+
+    private void botaoBarraFerramentasSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBarraFerramentasSairActionPerformed
+		System.exit(0);
+    }//GEN-LAST:event_botaoBarraFerramentasSairActionPerformed
+
+    private void rotuloJanelaPrincipalLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rotuloJanelaPrincipalLogoMouseClicked
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+            tools.criarJanelaDialogo("Sobre", janelaSobre, this.getSize(), this.getLocation());
+        }
+    }//GEN-LAST:event_rotuloJanelaPrincipalLogoMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;
@@ -1605,13 +1803,15 @@ public class Estoque extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
+    private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
     private javax.swing.JDialog janelaBackup;
     private javax.swing.JDialog janelaCadastroProdutos;
     private javax.swing.JDialog janelaCadastroUsuarios;
     private javax.swing.JDialog janelaEstilo;
     private javax.swing.JDialog janelaLogin;
     private javax.swing.JDialog janelaMovimentoEstoque;
-    private javax.swing.JDialog janelaMovimentoEstoqueSelecionaTabela;
+    private javax.swing.JDialog janelaMovimentoEstoqueSelecionaProdutoTabela;
     private javax.swing.JDialog janelaMovimentoOpcoesEstoque;
     private javax.swing.JFileChooser janelaProcurarArquivoBackup;
     private javax.swing.JDialog janelaRelatorioEstoque;
@@ -1636,7 +1836,7 @@ public class Estoque extends javax.swing.JFrame {
     private javax.swing.JPopupMenu popupMenuJanelaPrincipal;
     private javax.swing.JMenuItem popupMenuMovimentoEstoque;
     private javax.swing.JMenuItem popupMenuProdutos;
-    private javax.swing.JMenuItem popupMenuRelatorio;
+    private javax.swing.JMenuItem popupMenuRelatorios;
     private javax.swing.JMenuItem popupMenuSair;
     private javax.swing.JMenuItem popupMenuUsuarios;
     private javax.swing.JLabel rotuloBackupDestino;
