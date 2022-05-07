@@ -5,6 +5,8 @@ import br.com.estoque.util.Ferramentas;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -77,6 +79,20 @@ public class Estoque extends javax.swing.JFrame {
 		this.botaoMovimentaEstoqueOk.setText(botaoConfirma);
 		tools.criarJanelaDialogo(titulo, this.janelaMovimentoEstoque, this.getSize(), this.getLocation());
 		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
+	}
+
+	private void confereNovaSenha() {
+		String texto = "Não são aceitos campos vazios\n ou com valores diferentes!";
+		String mensagem = "SENHAS NÂO CONFEREM!";
+		if (this.campoSenhaCadastroUsuariosNovaSenha.getPassword().length != 0
+				&& this.campoSenhaCadastroUsuariosNovaSenha.getPassword() != null) {
+			if (!Arrays.equals(this.campoSenhaCadastroUsuariosNovaSenha.getPassword(),
+					this.campoSenhaCadastroUsuariosRepetirSenha.getPassword())) {
+				JOptionPane.showMessageDialog(null, texto, mensagem, JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, texto, mensagem, JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**
@@ -330,6 +346,14 @@ public class Estoque extends javax.swing.JFrame {
                 .addContainerGap(71, Short.MAX_VALUE))
         );
 
+        janelaCadastroProdutos.addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                janelaCadastroProdutosWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+
         rotuloCadastroProdutosCodigo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         rotuloCadastroProdutosCodigo.setText("Código:");
         rotuloCadastroProdutosCodigo.setToolTipText("Código do produto");
@@ -344,6 +368,14 @@ public class Estoque extends javax.swing.JFrame {
 
         campoTextoCadastroProdutosDescricao.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         campoTextoCadastroProdutosDescricao.setToolTipText("Descrição do produto");
+        campoTextoCadastroProdutosDescricao.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroProdutosDescricaoFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroProdutosDescricaoFocusLost(evt);
+            }
+        });
 
         rotuloCadastroProdutosUnidade.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         rotuloCadastroProdutosUnidade.setText("Unidade:");
@@ -351,6 +383,14 @@ public class Estoque extends javax.swing.JFrame {
 
         campoTextoCadastroProdutosUnidade.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         campoTextoCadastroProdutosUnidade.setToolTipText("Tipo de unidade do produto");
+        campoTextoCadastroProdutosUnidade.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroProdutosUnidadeFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroProdutosUnidadeFocusLost(evt);
+            }
+        });
 
         rotuloCadastroProdutosValorUnitario.setText("Valor Unitário: R$");
         rotuloCadastroProdutosValorUnitario.setToolTipText("Valor da unidade");
@@ -358,13 +398,34 @@ public class Estoque extends javax.swing.JFrame {
         campoTextoFormatadoCadastroProdutosValorUnitario.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         campoTextoFormatadoCadastroProdutosValorUnitario.setText("0,00");
         campoTextoFormatadoCadastroProdutosValorUnitario.setToolTipText("Valor da unidade");
+        campoTextoFormatadoCadastroProdutosValorUnitario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoTextoFormatadoCadastroProdutosValorUnitarioFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost(evt);
+            }
+        });
 
         rotuloCadastroProdutosObs.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         rotuloCadastroProdutosObs.setText("Obs.:");
         rotuloCadastroProdutosObs.setToolTipText("Informações adicionais do produto");
+        rotuloCadastroProdutosObs.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroProdutosDescricaoFocusLost(evt);
+            }
+        });
 
         campoTextoCadastroProdutosObs.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         campoTextoCadastroProdutosObs.setToolTipText("Informações adicionais do produto");
+        campoTextoCadastroProdutosObs.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroProdutosObsFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroProdutosObsFocusLost(evt);
+            }
+        });
 
         botaoCadastroProdutosNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroNovo.png"))); // NOI18N
         botaoCadastroProdutosNovo.setToolTipText("Novo produto");
@@ -462,6 +523,14 @@ public class Estoque extends javax.swing.JFrame {
                 .addGap(7, 7, 7))
         );
 
+        janelaCadastroUsuarios.addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                janelaCadastroUsuariosWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+
         painelCadastroUsuariosUsuario.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuário"));
         painelCadastroUsuariosUsuario.setToolTipText("Informações básicas");
 
@@ -477,6 +546,14 @@ public class Estoque extends javax.swing.JFrame {
         rotuloCadastroUsuariosLogin.setToolTipText("Login de acesso");
 
         campoTextoCadastroUsuariosLogin.setToolTipText("Login de acesso");
+        campoTextoCadastroUsuariosLogin.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroUsuariosLoginFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoTextoCadastroUsuariosLoginFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelCadastroUsuariosUsuarioLayout = new javax.swing.GroupLayout(painelCadastroUsuariosUsuario);
         painelCadastroUsuariosUsuario.setLayout(painelCadastroUsuariosUsuarioLayout);
@@ -547,6 +624,14 @@ public class Estoque extends javax.swing.JFrame {
 
         campoSenhaCadastroUsuariosNovaSenha.setText("123456");
         campoSenhaCadastroUsuariosNovaSenha.setToolTipText("Nova senha de acesso");
+        campoSenhaCadastroUsuariosNovaSenha.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoSenhaCadastroUsuariosNovaSenhaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoSenhaCadastroUsuariosNovaSenhaFocusLost(evt);
+            }
+        });
 
         rotuloSenhaCadastroUsuariosRepetirSenha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         rotuloSenhaCadastroUsuariosRepetirSenha.setText("Repetir Senha:");
@@ -554,6 +639,14 @@ public class Estoque extends javax.swing.JFrame {
 
         campoSenhaCadastroUsuariosRepetirSenha.setText("123456");
         campoSenhaCadastroUsuariosRepetirSenha.setToolTipText("Repita a senha digitada");
+        campoSenhaCadastroUsuariosRepetirSenha.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                campoSenhaCadastroUsuariosRepetirSenhaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                campoSenhaCadastroUsuariosRepetirSenhaFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelCadastroUsuariosChavesLayout = new javax.swing.GroupLayout(painelCadastroUsuariosChaves);
         painelCadastroUsuariosChaves.setLayout(painelCadastroUsuariosChavesLayout);
@@ -825,7 +918,6 @@ public class Estoque extends javax.swing.JFrame {
 
         botaoMovimentaEstoqueOk.setText("Confirmar Entrada/Retirada");
         botaoMovimentaEstoqueOk.setToolTipText("Confirmar movimentação de produto");
-        botaoMovimentaEstoqueOk.setActionCommand("Confirmar Entrada/Retirada");
 
         javax.swing.GroupLayout janelaMovimentoEstoqueLayout = new javax.swing.GroupLayout(janelaMovimentoEstoque.getContentPane());
         janelaMovimentoEstoque.getContentPane().setLayout(janelaMovimentoEstoqueLayout);
@@ -1714,10 +1806,85 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoBarraFerramentasSairActionPerformed
 
     private void rotuloJanelaPrincipalLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rotuloJanelaPrincipalLogoMouseClicked
-        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
-            tools.criarJanelaDialogo("Sobre", janelaSobre, this.getSize(), this.getLocation());
-        }
+		if (evt.getButton() == java.awt.event.MouseEvent.BUTTON1) {
+			tools.criarJanelaDialogo("Sobre", janelaSobre, this.getSize(), this.getLocation());
+		}
     }//GEN-LAST:event_rotuloJanelaPrincipalLogoMouseClicked
+
+    private void janelaCadastroProdutosWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaCadastroProdutosWindowGainedFocus
+		this.rotuloBarraStatusNomeAtividade.setText("Cadastro de Produto");
+		this.setVisible(true);
+		this.campoTextoCadastroProdutosDescricao.grabFocus();
+    }//GEN-LAST:event_janelaCadastroProdutosWindowGainedFocus
+
+    private void campoTextoCadastroProdutosDescricaoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosDescricaoFocusGained
+		this.campoTextoCadastroProdutosDescricao.selectAll();
+    }//GEN-LAST:event_campoTextoCadastroProdutosDescricaoFocusGained
+
+    private void campoTextoCadastroProdutosUnidadeFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosUnidadeFocusGained
+		this.campoTextoCadastroProdutosUnidade.selectAll();
+    }//GEN-LAST:event_campoTextoCadastroProdutosUnidadeFocusGained
+
+    private void campoTextoFormatadoCadastroProdutosValorUnitarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusGained
+		this.campoTextoFormatadoCadastroProdutosValorUnitario.selectAll();
+    }//GEN-LAST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusGained
+
+    private void campoTextoCadastroProdutosObsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosObsFocusGained
+		this.campoTextoCadastroProdutosObs.selectAll();
+    }//GEN-LAST:event_campoTextoCadastroProdutosObsFocusGained
+
+    private void campoTextoCadastroProdutosDescricaoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosDescricaoFocusLost
+		this.campoTextoCadastroProdutosDescricao
+				= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosDescricao, 30, "Descrição");
+    }//GEN-LAST:event_campoTextoCadastroProdutosDescricaoFocusLost
+
+    private void campoTextoCadastroProdutosUnidadeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosUnidadeFocusLost
+		this.campoTextoCadastroProdutosUnidade
+				= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosUnidade, 10, "Unidade");
+    }//GEN-LAST:event_campoTextoCadastroProdutosUnidadeFocusLost
+
+    private void campoTextoCadastroProdutosObsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosObsFocusLost
+		this.campoTextoCadastroProdutosObs
+				= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosObs, 50, "Obs");
+    }//GEN-LAST:event_campoTextoCadastroProdutosObsFocusLost
+
+    private void campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost
+		this.campoTextoFormatadoCadastroProdutosValorUnitario = tools.verificaValorMaximoNumerico(campoTextoFormatadoCadastroProdutosValorUnitario, 99999.99, "Valor Unitário");
+    }//GEN-LAST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost
+
+    private void janelaCadastroUsuariosWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaCadastroUsuariosWindowGainedFocus
+		this.rotuloBarraStatusNomeAtividade.setText("Cadastro de Usuário");
+		this.setVisible(true);
+		this.campoTextoCadastroUsuariosLogin.grabFocus();
+    }//GEN-LAST:event_janelaCadastroUsuariosWindowGainedFocus
+
+    private void campoTextoCadastroUsuariosLoginFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroUsuariosLoginFocusGained
+		this.campoTextoCadastroUsuariosLogin.selectAll();
+    }//GEN-LAST:event_campoTextoCadastroUsuariosLoginFocusGained
+
+    private void campoTextoCadastroUsuariosLoginFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroUsuariosLoginFocusLost
+		this.campoTextoCadastroUsuariosLogin
+				= tools.verificaQuantidadeCaracteres(campoTextoCadastroUsuariosLogin, 10, "Login");
+    }//GEN-LAST:event_campoTextoCadastroUsuariosLoginFocusLost
+
+    private void campoSenhaCadastroUsuariosNovaSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosNovaSenhaFocusGained
+		this.campoSenhaCadastroUsuariosNovaSenha.selectAll();
+    }//GEN-LAST:event_campoSenhaCadastroUsuariosNovaSenhaFocusGained
+
+    private void campoSenhaCadastroUsuariosNovaSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosNovaSenhaFocusLost
+		this.campoSenhaCadastroUsuariosNovaSenha
+				= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosNovaSenha, 10, "Nova Senha");
+    }//GEN-LAST:event_campoSenhaCadastroUsuariosNovaSenhaFocusLost
+
+    private void campoSenhaCadastroUsuariosRepetirSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusGained
+		this.campoSenhaCadastroUsuariosRepetirSenha.selectAll();
+    }//GEN-LAST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusGained
+
+    private void campoSenhaCadastroUsuariosRepetirSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusLost
+		this.campoSenhaCadastroUsuariosRepetirSenha
+				= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosRepetirSenha, 10, "Repitir Senha");
+		this.confereNovaSenha();
+    }//GEN-LAST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;

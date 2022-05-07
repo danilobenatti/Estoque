@@ -75,8 +75,8 @@ public class Ferramentas {
 	public JPasswordField verificaQuantidadeCaracteres(JPasswordField objeto,
 			int limiteCaracteres, String campo) {
 		if (objeto.getPassword().length > limiteCaracteres) {
-			JOptionPane.showMessageDialog(null, " Não é permitido mais que "
-					+ limiteCaracteres + " caracteres para " + campo + "!",
+			JOptionPane.showMessageDialog(null, "Não é permitido mais que "
+					+ limiteCaracteres + " caracteres para " + campo + "!", 
 					"EXCESSO DE CARACTERES", JOptionPane.ERROR_MESSAGE);
 			objeto.grabFocus();
 			objeto.selectAll();
@@ -91,9 +91,9 @@ public class Ferramentas {
 			if ((Double.parseDouble(valor.replace(",", ".")) < 0)
 					|| (Double.parseDouble(valor.replace(",", ".")) > valorMaximo)) {
 				JOptionPane.showMessageDialog(null,
-						"Não é permitido um valor menor que 0,00 \nou maior que "
+						"Não é permitido um valor menor que 0.00 \nou maior que "
 						+ valorMaximo + " para " + campo + "!",
-						"VALOR NUMÈRICO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+						"VALOR NUMÉRICO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
 				objeto.grabFocus();
 				objeto.selectAll();
 			}
@@ -115,7 +115,7 @@ public class Ferramentas {
 				JOptionPane.showMessageDialog(null,
 						"Não é permitido um valor menor que 0 \nou maior que "
 						+ valorMaximo + " para " + campo + "!",
-						"VALOR NUMÈRICO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+						"VALOR NUMÉRICO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
 				objeto.grabFocus();
 				objeto.selectAll();
 			}

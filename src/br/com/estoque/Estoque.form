@@ -153,6 +153,9 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="janelaCadastroProdutos">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaCadastroProdutosWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -272,6 +275,10 @@
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="toolTipText" type="java.lang.String" value="Descri&#xe7;&#xe3;o do produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroProdutosDescricaoFocusGained"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroProdutosDescricaoFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="rotuloCadastroProdutosUnidade">
           <Properties>
@@ -285,6 +292,10 @@
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="toolTipText" type="java.lang.String" value="Tipo de unidade do produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroProdutosUnidadeFocusGained"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroProdutosUnidadeFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="rotuloCadastroProdutosValorUnitario">
           <Properties>
@@ -298,6 +309,10 @@
             <Property name="text" type="java.lang.String" value="0,00"/>
             <Property name="toolTipText" type="java.lang.String" value="Valor da unidade"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoFormatadoCadastroProdutosValorUnitarioFocusGained"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="rotuloCadastroProdutosObs">
           <Properties>
@@ -305,12 +320,19 @@
             <Property name="text" type="java.lang.String" value="Obs.:"/>
             <Property name="toolTipText" type="java.lang.String" value="Informa&#xe7;&#xf5;es adicionais do produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroProdutosDescricaoFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="campoTextoCadastroProdutosObs">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="toolTipText" type="java.lang.String" value="Informa&#xe7;&#xf5;es adicionais do produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroProdutosObsFocusGained"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroProdutosObsFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroProdutosNovo">
           <Properties>
@@ -371,6 +393,9 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="janelaCadastroUsuarios">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaCadastroUsuariosWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -498,6 +523,10 @@
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="Login de acesso"/>
               </Properties>
+              <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroUsuariosLoginFocusGained"/>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoCadastroUsuariosLoginFocusLost"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -617,6 +646,10 @@
                 <Property name="text" type="java.lang.String" value="123456"/>
                 <Property name="toolTipText" type="java.lang.String" value="Nova senha de acesso"/>
               </Properties>
+              <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoSenhaCadastroUsuariosNovaSenhaFocusGained"/>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoSenhaCadastroUsuariosNovaSenhaFocusLost"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="rotuloSenhaCadastroUsuariosRepetirSenha">
               <Properties>
@@ -630,6 +663,10 @@
                 <Property name="text" type="java.lang.String" value="123456"/>
                 <Property name="toolTipText" type="java.lang.String" value="Repita a senha digitada"/>
               </Properties>
+              <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoSenhaCadastroUsuariosRepetirSenhaFocusGained"/>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoSenhaCadastroUsuariosRepetirSenhaFocusLost"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1063,7 +1100,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Confirmar Entrada/Retirada"/>
             <Property name="toolTipText" type="java.lang.String" value="Confirmar movimenta&#xe7;&#xe3;o de produto"/>
-            <Property name="actionCommand" type="java.lang.String" value="Confirmar Entrada/Retirada"/>
           </Properties>
         </Component>
       </SubComponents>
