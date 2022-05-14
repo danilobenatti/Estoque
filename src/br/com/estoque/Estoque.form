@@ -7,6 +7,9 @@
         <Property name="defaultCloseOperation" type="int" value="0"/>
         <Property name="undecorated" type="boolean" value="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaLoginWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -122,6 +125,9 @@
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="toolTipText" type="java.lang.String" value="Entre com o login do usu&#xe1;rio"/>
               </Properties>
+              <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoLoginLoginFocusGained"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="rotuloLoginSenha">
               <Properties>
@@ -136,6 +142,9 @@
                 <Property name="text" type="java.lang.String" value="123456"/>
                 <Property name="toolTipText" type="java.lang.String" value="Entre com a senha do usu&#xe1;rio"/>
               </Properties>
+              <Events>
+                <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoSenhaLoginSenhaFocusGained"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -143,12 +152,20 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Entrar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoLoginEntrarActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="botaoLoginEntrarKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoLoginSair">
           <Properties>
             <Property name="text" type="java.lang.String" value="Sair"/>
             <Property name="toolTipText" type="java.lang.String" value="Cancelar Login"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoLoginSairActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="botaoLoginSairKeyPressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -731,6 +748,9 @@
     <Component class="javax.swing.ButtonGroup" name="grupoBotaoCadastroUsuario">
     </Component>
     <Container class="javax.swing.JDialog" name="janelaMovimentoOpcoesEstoque">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaMovimentoOpcoesEstoqueWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -820,12 +840,18 @@
             <Property name="text" type="java.lang.String" value="Selecionar"/>
             <Property name="toolTipText" type="java.lang.String" value="Confirmar sele&#xe7;&#xe3;o"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMovimentoOpcoesEstoqueSelecionarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.ButtonGroup" name="grupoBotaoMovimentoOpcoesEstoque">
     </Component>
     <Container class="javax.swing.JDialog" name="janelaMovimentoEstoque">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaMovimentoEstoqueWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -1051,6 +1077,9 @@
             <Property name="toolTipText" type="java.lang.String" value="Listar todos os produtos cadastrados"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMovimentoEstoqueAbrirTabelaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="rotuloMovimentoEstoqueUnid">
           <Properties>
@@ -1095,6 +1124,10 @@
             <Property name="text" type="java.lang.String" value="0"/>
             <Property name="toolTipText" type="java.lang.String" value="Quantidade de produtos para movimento"/>
           </Properties>
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoMovimentoEstoqueQuantidadeFocusGained"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoMovimentoEstoqueQuantidadeFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoMovimentaEstoqueOk">
           <Properties>
@@ -1107,6 +1140,9 @@
     <Component class="javax.swing.ButtonGroup" name="grupoBotaoMovimentoEstoquePesquisarPor">
     </Component>
     <Container class="javax.swing.JDialog" name="janelaMovimentoEstoqueSelecionaProdutoTabela">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaMovimentoEstoqueSelecionaProdutoTabelaWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -1337,6 +1373,9 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="janelaSobre">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaSobreWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -1394,10 +1433,16 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Ok"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoSobreOkActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="janelaEstilo">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaEstiloWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -1406,7 +1451,7 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="painelEstiloOpcao" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="botaoEstiloAplicacaoEstilo" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="botaoEstiloAplicarEstilo" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -1418,7 +1463,7 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="painelEstiloOpcao" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="32767" attributes="0"/>
-                  <Component id="botaoEstiloAplicacaoEstilo" min="-2" max="-2" attributes="0"/>
+                  <Component id="botaoEstiloAplicarEstilo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -1518,17 +1563,23 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="botaoEstiloAplicacaoEstilo">
+        <Component class="javax.swing.JButton" name="botaoEstiloAplicarEstilo">
           <Properties>
             <Property name="text" type="java.lang.String" value="Aplicar Estilo"/>
             <Property name="toolTipText" type="java.lang.String" value="Confirmar sele&#xe7;&#xe3;o do estilo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoEstiloAplicarEstiloActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.ButtonGroup" name="grupoBotaoEstilo">
     </Component>
     <Container class="javax.swing.JDialog" name="janelaBackup">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaBackupWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -1624,6 +1675,9 @@
                 <Property name="text" type="java.lang.String" value="Arquivo"/>
                 <Property name="toolTipText" type="java.lang.String" value="Selecionar para restaura&#xe7;&#xe3;o ou backup"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoBackupArquivoActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="rotuloBackupDestino">
               <Properties>
@@ -1642,6 +1696,9 @@
             <Property name="text" type="java.lang.String" value="Confirmar"/>
             <Property name="toolTipText" type="java.lang.String" value="Confirmar restaura&#xe7;&#xe3;o/backup"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoBackupConfirmarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -1653,6 +1710,9 @@
           <SerializedValue value="-84,-19,0,5,115,114,0,12,106,97,118,97,46,105,111,46,70,105,108,101,4,45,-92,69,14,13,-28,-1,3,0,1,76,0,4,112,97,116,104,116,0,18,76,106,97,118,97,47,108,97,110,103,47,83,116,114,105,110,103,59,120,112,116,0,9,67,58,92,66,97,99,107,117,112,119,2,0,92,120"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="janelaProcurarArquivoBackupActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPopupMenu" name="popupMenuJanelaPrincipal">
 
