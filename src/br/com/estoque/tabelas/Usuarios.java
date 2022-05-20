@@ -6,7 +6,7 @@ package br.com.estoque.tabelas;
  */
 public final class Usuarios {
 
-	private Integer idUsuarios;
+	private Integer id;
 	private String login;
 	private Integer nivel;
 	private String senha;
@@ -14,8 +14,8 @@ public final class Usuarios {
 	public Usuarios() {
 	}
 
-	public Usuarios(Integer idUsuarios) {
-		setIdUsuarios(idUsuarios);
+	public Usuarios(Integer id) {
+		setId(id);
 	}
 
 	public Usuarios(String login) {
@@ -28,22 +28,22 @@ public final class Usuarios {
 		setSenha(senha);
 	}
 
-	public Usuarios(Integer idUsuarios, String login, Integer nivel, String senha) {
-		setIdUsuarios(idUsuarios);
+	public Usuarios(Integer id, String login, Integer nivel, String senha) {
+		setId(id);
 		setLogin(login);
 		setNivel(nivel);
 		setSenha(senha);
 	}
 
-	public Integer getIdUsuarios() {
-		if (this.idUsuarios == null) {
-			setIdUsuarios(0);
+	public Integer getId() {
+		if (this.id == null) {
+			setId(0);
 		}
-		return idUsuarios;
+		return id;
 	}
 
-	public void setIdUsuarios(Integer idUsuarios) {
-		this.idUsuarios = idUsuarios;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getLogin() {

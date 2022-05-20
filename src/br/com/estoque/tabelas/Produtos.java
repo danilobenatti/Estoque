@@ -6,7 +6,7 @@ package br.com.estoque.tabelas;
  */
 public final class Produtos {
 
-	private Integer idProdutos;
+	private Integer id;
 	private String descricao;
 	private String unidade;
 	private Double valorUnitario;
@@ -16,8 +16,8 @@ public final class Produtos {
 	public Produtos() {
 	}
 
-	public Produtos(Integer idProdutos) {
-		setIdProdutos(idProdutos);
+	public Produtos(Integer id) {
+		setId(id);
 	}
 
 	public Produtos(String descricao) {
@@ -31,15 +31,15 @@ public final class Produtos {
 		setObs(obs);
 	}
 
-	public Produtos(Integer idProdutos, String descricao, Double valorUnitario, Integer quantidade, String obs) {
-		setIdProdutos(idProdutos);
+	public Produtos(Integer id, String descricao, Double valorUnitario, Integer quantidade, String obs) {
+		setId(id);
 		setDescricao(descricao);
 		setValorUnitario(valorUnitario);
 		setObs(obs);
 	}
 
-	public Produtos(Integer idProdutos, String descricao, String unidade, Double valorUnitario, Integer quantidade, String obs) {
-		setIdProdutos(idProdutos);
+	public Produtos(Integer id, String descricao, String unidade, Double valorUnitario, Integer quantidade, String obs) {
+		setId(id);
 		setDescricao(descricao);
 		setUnidade(unidade);
 		setValorUnitario(valorUnitario);
@@ -47,18 +47,18 @@ public final class Produtos {
 		setObs(obs);
 	}
 
-	public Integer getIdProdutos() {
-		if (this.idProdutos == null) {
-			setIdProdutos(0);
+	public Integer getId() {
+		if (this.id == null) {
+			setId(0);
 		}
-		return this.idProdutos;
+		return this.id;
 	}
 
-	public void setIdProdutos(Integer idProdutos) {
-		if (this.idProdutos == null || this.idProdutos < 0) {
-			this.idProdutos = 0;
+	public void setId(Integer id) {
+		if (this.id == null || this.id < 0) {
+			this.id = 0;
 		}
-		this.idProdutos = idProdutos;
+		this.id = id;
 	}
 
 	public String getDescricao() {
