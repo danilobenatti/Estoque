@@ -1,5 +1,7 @@
 package br.com.estoque;
 
+import br.com.estoque.tabelas.Produtos;
+import br.com.estoque.util.Dados;
 import br.com.estoque.util.Data;
 import br.com.estoque.util.Ferramentas;
 import java.awt.EventQueue;
@@ -21,6 +23,8 @@ public class Estoque extends javax.swing.JFrame {
 
 	private Timer tempo;
 	private Ferramentas tools;
+	private String[][] listaProdutos;
+	private Integer registroAtual;
 
 	public Estoque() {
 		tools = new Ferramentas();
@@ -104,6 +108,22 @@ public class Estoque extends javax.swing.JFrame {
 		if (this.botaoRadioMovimentoOpcoesEstoqueRetirada.isSelected()) {
 			ajustarJanelaMovimentoEstoque("Confirmar Retirada", "Retirada de Produtos no Estoque");
 		}
+	}
+
+	private void zeraLista() {
+		this.listaProdutos = null;
+	}
+
+	private void registrosCadastroProdutos() {
+		this.campoTextoCadastroProdutosCodigo.setText(String.format("%04d",
+				Integer.parseInt(this.listaProdutos[this.registroAtual][0])));
+		this.campoTextoCadastroProdutosDescricao.setText(
+				this.listaProdutos[this.registroAtual][1]);
+		this.campoTextoCadastroProdutosUnidade.setText(
+				this.listaProdutos[this.registroAtual][2]);
+		this.campoTextoFormatadoCadastroProdutosValorUnitario.setText(
+				String.format("%,3.2f", Double.parseDouble(this.listaProdutos[this.registroAtual][3])));
+		this.campoTextoCadastroProdutosObs.setText(this.listaProdutos[this.registroAtual][5]);
 	}
 
 	/**
@@ -293,6 +313,11 @@ public class Estoque extends javax.swing.JFrame {
                 campoTextoLoginLoginFocusGained(evt);
             }
         });
+        campoTextoLoginLogin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                campoTextoLoginLoginKeyPressed(evt);
+            }
+        });
 
         rotuloLoginSenha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         rotuloLoginSenha.setText("Senha:");
@@ -304,6 +329,11 @@ public class Estoque extends javax.swing.JFrame {
         campoSenhaLoginSenha.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 campoSenhaLoginSenhaFocusGained(evt);
+            }
+        });
+        campoSenhaLoginSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                campoSenhaLoginSenhaKeyPressed(evt);
             }
         });
 
@@ -344,22 +374,12 @@ public class Estoque extends javax.swing.JFrame {
                 botaoLoginEntrarActionPerformed(evt);
             }
         });
-        botaoLoginEntrar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                botaoLoginEntrarKeyPressed(evt);
-            }
-        });
 
         botaoLoginSair.setText("Sair");
         botaoLoginSair.setToolTipText("Cancelar Login");
         botaoLoginSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoLoginSairActionPerformed(evt);
-            }
-        });
-        botaoLoginSair.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                botaoLoginSairKeyPressed(evt);
             }
         });
 
@@ -486,6 +506,11 @@ public class Estoque extends javax.swing.JFrame {
 
         botaoCadastroProdutosPrimeiroRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroPrimeiro.png"))); // NOI18N
         botaoCadastroProdutosPrimeiroRegistro.setToolTipText("Primeiro registro");
+        botaoCadastroProdutosPrimeiroRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroProdutosPrimeiroRegistroActionPerformed(evt);
+            }
+        });
 
         botaoCadastroProdutosRegistroAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroAnterior.png"))); // NOI18N
         botaoCadastroProdutosRegistroAnterior.setToolTipText("Registro anterior");
@@ -495,6 +520,11 @@ public class Estoque extends javax.swing.JFrame {
 
         botaoCadastroProdutosUltimoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroUltimo.png"))); // NOI18N
         botaoCadastroProdutosUltimoRegistro.setToolTipText("Último registro");
+        botaoCadastroProdutosUltimoRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroProdutosUltimoRegistroActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout janelaCadastroProdutosLayout = new javax.swing.GroupLayout(janelaCadastroProdutos.getContentPane());
         janelaCadastroProdutos.getContentPane().setLayout(janelaCadastroProdutosLayout);
@@ -568,7 +598,7 @@ public class Estoque extends javax.swing.JFrame {
                     .addComponent(botaoCadastroProdutosRegistroAnterior, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(botaoCadastroProdutosProximoRegistro, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(botaoCadastroProdutosUltimoRegistro, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(7, 7, 7))
+                .addContainerGap())
         );
 
         janelaCadastroUsuarios.addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -1860,6 +1890,7 @@ public class Estoque extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
 		this.rotuloBarraStatusNomeAtividade.setText("Janela Principal");
 		this.reorganizarComponentes();
+		zeraLista();
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void itemMenuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuCadastroProdutosActionPerformed
@@ -1951,6 +1982,12 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_rotuloJanelaPrincipalLogoMouseClicked
 
     private void janelaCadastroProdutosWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaCadastroProdutosWindowGainedFocus
+		Dados produtos = new Dados(new Produtos());
+		this.listaProdutos = produtos.listAllProducts(false);
+
+		this.registroAtual = 0;
+		registrosCadastroProdutos();
+
 		this.rotuloBarraStatusNomeAtividade.setText("Cadastro de Produto");
 		this.setVisible(true);
 		this.campoTextoCadastroProdutosDescricao.grabFocus();
@@ -2150,19 +2187,29 @@ public class Estoque extends javax.swing.JFrame {
 		System.exit(0);
     }//GEN-LAST:event_botaoLoginSairActionPerformed
 
-    private void botaoLoginEntrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botaoLoginEntrarKeyPressed
+    private void campoTextoLoginLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoTextoLoginLoginKeyPressed
 		if (evt.getExtendedKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		}
-    }//GEN-LAST:event_botaoLoginEntrarKeyPressed
+    }//GEN-LAST:event_campoTextoLoginLoginKeyPressed
 
-    private void botaoLoginSairKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botaoLoginSairKeyPressed
+    private void campoSenhaLoginSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoSenhaLoginSenhaKeyPressed
 		if (evt.getExtendedKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
 			janelaLogin.dispose();
 		} else if (evt.getExtendedKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		}
-    }//GEN-LAST:event_botaoLoginSairKeyPressed
+    }//GEN-LAST:event_campoSenhaLoginSenhaKeyPressed
+
+    private void botaoCadastroProdutosPrimeiroRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosPrimeiroRegistroActionPerformed
+		this.registroAtual = 0;
+		registrosCadastroProdutos();
+    }//GEN-LAST:event_botaoCadastroProdutosPrimeiroRegistroActionPerformed
+
+    private void botaoCadastroProdutosUltimoRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosUltimoRegistroActionPerformed
+        this.registroAtual = this.listaProdutos.length -1;
+		registrosCadastroProdutos();
+    }//GEN-LAST:event_botaoCadastroProdutosUltimoRegistroActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;

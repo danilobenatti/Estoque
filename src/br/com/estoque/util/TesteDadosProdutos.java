@@ -1,6 +1,7 @@
 package br.com.estoque.util;
 
 import br.com.estoque.tabelas.Produtos;
+import java.util.ArrayList;
 
 /**
  *
@@ -10,11 +11,11 @@ public class TesteDadosProdutos {
 
 	public static void main(String[] args) {
 
-		Produtos p1 = new Produtos("Leite Integral 1L", "cx", 4.80, "Leite Mumu");
-		Dados dados = new Dados(p1);
-		dados.create();
+		ArrayList<Produtos> produtos = new ArrayList<>();
+		produtos.add(new Produtos("Leite Integral 1L", "cx", 4.80, "Leite Mumu"));
+		produtos.add(new Produtos("Macarrão Espaguete", "pct", 1.95, "Massas Mamamia"));
+		Dados dados = new Dados();
+		dados.insertAllProducts(produtos);
 
-		dados = new Dados(new Produtos("Macarrão Espaguete", "pct", 1.95, "Massas Mamamia"));
-		dados.create();
 	}
 }

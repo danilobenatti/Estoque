@@ -127,6 +127,7 @@
               </Properties>
               <Events>
                 <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoLoginLoginFocusGained"/>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoTextoLoginLoginKeyPressed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="rotuloLoginSenha">
@@ -144,6 +145,7 @@
               </Properties>
               <Events>
                 <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoSenhaLoginSenhaFocusGained"/>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoSenhaLoginSenhaKeyPressed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -154,7 +156,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoLoginEntrarActionPerformed"/>
-            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="botaoLoginEntrarKeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoLoginSair">
@@ -164,7 +165,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoLoginSairActionPerformed"/>
-            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="botaoLoginSairKeyPressed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -260,7 +260,7 @@
                       <Component id="botaoCadastroProdutosProximoRegistro" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Component id="botaoCadastroProdutosUltimoRegistro" alignment="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -382,6 +382,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Primeiro registro"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroProdutosPrimeiroRegistroActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroProdutosRegistroAnterior">
           <Properties>
@@ -406,6 +409,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="&#xda;ltimo registro"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroProdutosUltimoRegistroActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

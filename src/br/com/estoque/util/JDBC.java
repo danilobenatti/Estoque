@@ -2,6 +2,7 @@ package br.com.estoque.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,12 +51,36 @@ public class JDBC {
 		}
 	}
 
+	private static void fechar(Connection conn, PreparedStatement preparedStatement, ResultSet resultSet) {
+		try {
+			if (resultSet != null) {
+				resultSet.close();
+			}
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			Logger.getLogger(JDBC.class.getName()).log(Level.SEVERE, null, e);
+		}
+	}
+
 	public static void fecharConexao(Connection conn, Statement statement, ResultSet resultSet) {
 		fechar(conn, statement, resultSet);
 	}
 
+	public static void fecharConexao(Connection conn, PreparedStatement preparedStatement, ResultSet resultSet) {
+		fechar(conn, preparedStatement, resultSet);
+	}
+
 	public static void fecharConexao(Connection conn, Statement statement) {
 		fechar(conn, statement, null);
+	}
+
+	public static void fecharConexao(Connection conn, PreparedStatement preparedStatement) {
+		fechar(conn, preparedStatement, null);
 	}
 
 	public static void fecharConexao(Connection conn) {
