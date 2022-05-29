@@ -358,6 +358,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Novo produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroProdutosNovoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroProdutosSalvar">
           <Properties>
@@ -366,6 +369,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Salvar produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroProdutosSalvarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroProdutosExcluir">
           <Properties>
@@ -393,6 +399,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Registro anterior"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroProdutosRegistroAnteriorActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroProdutosProximoRegistro">
           <Properties>
@@ -401,6 +410,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Pr&#xf3;ximo registro"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroProdutosProximoRegistroActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroProdutosUltimoRegistro">
           <Properties>

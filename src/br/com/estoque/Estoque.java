@@ -25,6 +25,7 @@ public class Estoque extends javax.swing.JFrame {
 	private Ferramentas tools;
 	private String[][] listaProdutos;
 	private Integer registroAtual;
+	private boolean novoRegistroCadastro;
 
 	public Estoque() {
 		tools = new Ferramentas();
@@ -115,14 +116,17 @@ public class Estoque extends javax.swing.JFrame {
 	}
 
 	private void registrosCadastroProdutos() {
+
+		this.novoRegistroCadastro = false;
+
 		this.campoTextoCadastroProdutosCodigo.setText(String.format("%04d",
 				Integer.parseInt(this.listaProdutos[this.registroAtual][0])));
 		this.campoTextoCadastroProdutosDescricao.setText(
 				this.listaProdutos[this.registroAtual][1]);
 		this.campoTextoCadastroProdutosUnidade.setText(
 				this.listaProdutos[this.registroAtual][2]);
-		this.campoTextoFormatadoCadastroProdutosValorUnitario.setText(
-				String.format("%,3.2f", Double.parseDouble(this.listaProdutos[this.registroAtual][3])));
+		this.campoTextoFormatadoCadastroProdutosValorUnitario.setText(String.format("%,3.2f",
+				Double.parseDouble(this.listaProdutos[this.registroAtual][3])));
 		this.campoTextoCadastroProdutosObs.setText(this.listaProdutos[this.registroAtual][5]);
 	}
 
@@ -497,9 +501,19 @@ public class Estoque extends javax.swing.JFrame {
 
         botaoCadastroProdutosNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroNovo.png"))); // NOI18N
         botaoCadastroProdutosNovo.setToolTipText("Novo produto");
+        botaoCadastroProdutosNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroProdutosNovoActionPerformed(evt);
+            }
+        });
 
         botaoCadastroProdutosSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroSalvar.png"))); // NOI18N
         botaoCadastroProdutosSalvar.setToolTipText("Salvar produto");
+        botaoCadastroProdutosSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroProdutosSalvarActionPerformed(evt);
+            }
+        });
 
         botaoCadastroProdutosExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroExcluir.png"))); // NOI18N
         botaoCadastroProdutosExcluir.setToolTipText("Excluir produto");
@@ -514,9 +528,19 @@ public class Estoque extends javax.swing.JFrame {
 
         botaoCadastroProdutosRegistroAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroAnterior.png"))); // NOI18N
         botaoCadastroProdutosRegistroAnterior.setToolTipText("Registro anterior");
+        botaoCadastroProdutosRegistroAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroProdutosRegistroAnteriorActionPerformed(evt);
+            }
+        });
 
         botaoCadastroProdutosProximoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroProximo.png"))); // NOI18N
         botaoCadastroProdutosProximoRegistro.setToolTipText("Próximo registro");
+        botaoCadastroProdutosProximoRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroProdutosProximoRegistroActionPerformed(evt);
+            }
+        });
 
         botaoCadastroProdutosUltimoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroUltimo.png"))); // NOI18N
         botaoCadastroProdutosUltimoRegistro.setToolTipText("Último registro");
@@ -2207,9 +2231,59 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCadastroProdutosPrimeiroRegistroActionPerformed
 
     private void botaoCadastroProdutosUltimoRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosUltimoRegistroActionPerformed
-        this.registroAtual = this.listaProdutos.length -1;
+		this.registroAtual = this.listaProdutos.length - 1;
 		registrosCadastroProdutos();
     }//GEN-LAST:event_botaoCadastroProdutosUltimoRegistroActionPerformed
+
+    private void botaoCadastroProdutosRegistroAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosRegistroAnteriorActionPerformed
+		this.registroAtual--;
+		if (this.registroAtual < 0) {
+			this.registroAtual = 0;
+		}
+		registrosCadastroProdutos();
+    }//GEN-LAST:event_botaoCadastroProdutosRegistroAnteriorActionPerformed
+
+    private void botaoCadastroProdutosProximoRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosProximoRegistroActionPerformed
+		this.registroAtual++;
+		int ultimo = this.listaProdutos.length - 1;
+		if (this.registroAtual > ultimo) {
+			this.registroAtual = ultimo;
+		}
+		registrosCadastroProdutos();
+    }//GEN-LAST:event_botaoCadastroProdutosProximoRegistroActionPerformed
+
+    private void botaoCadastroProdutosNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosNovoActionPerformed
+		reorganizarComponentes();
+		this.novoRegistroCadastro = true;
+		Dados produtos = new Dados(new Produtos());
+		this.campoTextoCadastroProdutosCodigo.setText(produtos.novoCodigo());
+		this.campoTextoCadastroProdutosDescricao.grabFocus();
+    }//GEN-LAST:event_botaoCadastroProdutosNovoActionPerformed
+
+    private void botaoCadastroProdutosSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosSalvarActionPerformed
+		if (this.campoTextoCadastroProdutosDescricao.getText().equals("")
+				|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "Não é permitido campos em branco, nulos ou vazio.",
+					"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
+		} else {
+			//Integer id, String descricao, String unidade, Double valorUnitario, String obs
+			Dados dados = new Dados();
+			Produtos produtos = new Produtos(
+					//Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText()),
+					this.campoTextoCadastroProdutosDescricao.getText(),
+					this.campoTextoCadastroProdutosUnidade.getText(),
+					Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText()),
+					this.campoTextoCadastroProdutosObs.getText());
+			if (this.novoRegistroCadastro == true) {
+				dados.insertProduct(produtos);
+			}
+			if (this.novoRegistroCadastro == false) {
+				dados.update();
+			}
+			JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!",
+					"REGISTRO GRAVADO", JOptionPane.INFORMATION_MESSAGE);
+		}
+    }//GEN-LAST:event_botaoCadastroProdutosSalvarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;

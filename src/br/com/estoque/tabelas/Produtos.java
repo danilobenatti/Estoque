@@ -31,6 +31,14 @@ public final class Produtos {
 		setObs(obs);
 	}
 
+	public Produtos(Integer id, String descricao, String unidade, Double valorUnitario, String obs) {
+		setId(id);
+		setDescricao(descricao);
+		setUnidade(unidade);
+		setValorUnitario(valorUnitario);
+		setObs(obs);
+	}
+
 	public Produtos(Integer id, String descricao, Double valorUnitario, Integer quantidade, String obs) {
 		setId(id);
 		setDescricao(descricao);
