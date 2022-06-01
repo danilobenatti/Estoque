@@ -27,6 +27,20 @@ public class TesteDadosProdutos {
 		p1.setDescricao("Leite Semidesnatado 1L");
 		p1.setValorUnitario(2.95);
 		new Dados().updateProduct(p1);
+		
+		List<String> data = Arrays.asList(new Dados().findProductById(1));
+		if (!data.isEmpty()) {
+			int size = data.size();
+			int field = 1;
+			for (String value : data) {
+				System.out.print(value);
+				if (field < size) {
+					System.out.print(", ");
+				}
+				field++;
+			}
+			System.out.println(" <- Dados do produto " + data.get(0));
+		}
 
 		String[][] listOfProducts = new Dados().listAllProducts(true);
 		List<String[]> products = Arrays.asList(listOfProducts);

@@ -36,6 +36,20 @@ public class TesteDadosUsuarios {
 		u3.setSenha("999999");
 		new Dados().updateUser(u3);
 
+		List<String> data = Arrays.asList(new Dados().findUserById(5));
+		if (!data.isEmpty()) {
+			int size = data.size();
+			int field = 1;
+			for (String value : data) {
+				System.out.print(value);
+				if (field < size) {
+					System.out.print(", ");
+				}
+				field++;
+			}
+			System.out.println(" <- Dados do usuário " + data.get(0));
+		}
+
 		String[][] listOfUsers = new Dados().listAllUsers(true);
 		List<String[]> users = Arrays.asList(listOfUsers);
 		for (String[] user : users) {

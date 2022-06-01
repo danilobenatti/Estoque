@@ -72,4 +72,9 @@ public final class Usuarios {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 }

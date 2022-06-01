@@ -2268,17 +2268,17 @@ public class Estoque extends javax.swing.JFrame {
 		} else {
 			//Integer id, String descricao, String unidade, Double valorUnitario, String obs
 			Dados dados = new Dados();
-			Produtos produtos = new Produtos(
+			Produtos produto = new Produtos(
 					//Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText()),
 					this.campoTextoCadastroProdutosDescricao.getText(),
 					this.campoTextoCadastroProdutosUnidade.getText(),
 					Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText()),
 					this.campoTextoCadastroProdutosObs.getText());
 			if (this.novoRegistroCadastro == true) {
-				dados.insertProduct(produtos);
+				dados.insertProduct(produto);
 			}
 			if (this.novoRegistroCadastro == false) {
-				dados.update();
+				dados.updateProduct(produto);
 			}
 			JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!",
 					"REGISTRO GRAVADO", JOptionPane.INFORMATION_MESSAGE);

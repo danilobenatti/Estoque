@@ -15,7 +15,7 @@ import java.util.List;
  * @author Romuel Dias de Oliveira - Java Full Teoria e Prática - pg.277
  */
 public class Dados {
-	
+
 	private final Connection connection;
 	private Statement statement;
 	private PreparedStatement preparedStatement;
@@ -23,11 +23,11 @@ public class Dados {
 	private ResultSetMetaData resultSetMetaData;
 	private String SQL_INSERT, SQL_UPDATE, SQL_DELETE, SQL_SELECT,
 			SQL_SELECT_ONE, SQL_SELECT_TEXT_FULL, SQL_SELECT_TEXT_LIKE, ORDER;
-	
+
 	public Dados() {
 		this.connection = JDBC.receberConexao();
 	}
-	
+
 	public Dados(Produtos object) {
 		this.connection = JDBC.receberConexao();
 		SQL_INSERT = "INSERT INTO produtos ("
@@ -52,7 +52,7 @@ public class Dados {
 				+ " WHERE lower(descricao) LIKE lower('%" + object.getDescricao().trim() + "%') ";
 		ORDER = " ORDER BY descricao ";
 	}
-	
+
 	public Dados(Usuarios object) {
 		this.connection = JDBC.receberConexao();
 		SQL_INSERT = "INSERT INTO usuarios ("
@@ -74,14 +74,14 @@ public class Dados {
 				+ " WHERE lower(login) LIKE lower('%" + object.getLogin().trim() + "%') ";
 		ORDER = " ORDER BY login ";
 	}
-	
+
 	public static void setValues(PreparedStatement ps, Object... values)
 			throws SQLException {
 		for (int i = 0; i < values.length; i++) {
 			ps.setObject(i + 1, values[i]);
 		}
 	}
-	
+
 	public static void printSQLException(SQLException ex) {
 		for (Throwable e : ex) {
 			if (e instanceof SQLException) {
@@ -97,7 +97,7 @@ public class Dados {
 			}
 		}
 	}
-	
+
 	public void insertUser(Usuarios usuario) {
 		String insert = "INSERT INTO usuarios(login, nivel, senha) VALUES (?, ?, ?)";
 		try {
@@ -120,7 +120,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement, resultSet);
 		}
 	}
-	
+
 	public void insertAllUsers(List<Usuarios> usuarios) {
 		String insert = "INSERT INTO usuarios(login, nivel, senha) VALUES (?, ?, ?)";
 		try {
@@ -145,7 +145,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement, resultSet);
 		}
 	}
-	
+
 	public void insertProduct(Produtos produto) {
 		String insert = "INSERT INTO produtos "
 				+ "(descricao, unidade, valorUnitario, obs) VALUES (?, ?, ?, ?)";
@@ -173,7 +173,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement, resultSet);
 		}
 	}
-	
+
 	public void insertAllProducts(List<Produtos> produtos) {
 		String insert = "INSERT INTO produtos "
 				+ "(descricao, unidade, valorUnitario, obs) VALUES (?, ?, ?, ?)";
@@ -204,7 +204,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement, resultSet);
 		}
 	}
-	
+
 	public void updateUser(Usuarios usuario) {
 		String update = "UPDATE usuarios SET "
 				+ "login = ?, nivel = ?, senha = ? WHERE id = ?";
@@ -221,7 +221,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement);
 		}
 	}
-	
+
 	public void updateProduct(Produtos produto) {
 		String update = "UPDATE produtos SET "
 				+ "descricao = ?, unidade = ?, valorUnitario = ?, "
@@ -240,7 +240,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement);
 		}
 	}
-	
+
 	public String[][] listAllUsers(boolean ordemAlfabetica) {
 		String select = "SELECT * FROM usuarios ", order = "ORDER BY login";
 		if (ordemAlfabetica) {
@@ -275,7 +275,7 @@ public class Dados {
 		}
 		return dadosRetorno;
 	}
-	
+
 	public String[][] listAllProducts(boolean ordemAlfabetica) {
 		String select = "SELECT * FROM produtos ", order = "ORDER BY descricao";
 		if (ordemAlfabetica) {
@@ -310,13 +310,15 @@ public class Dados {
 		}
 		return dadosRetorno;
 	}
-	
+
 	public String[] findUserById(int id) {
 		String select = "SELECT * FROM usuarios WHERE id = ?";
 		String[] dadosRetorno = null;
 		try {
-			preparedStatement = connection.prepareStatement(select);
-			setValues(preparedStatement, id);
+			preparedStatement = connection.prepareStatement(select,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
 			resultSetMetaData = resultSet.getMetaData();
 			final int columns = resultSetMetaData.getColumnCount();
@@ -335,13 +337,15 @@ public class Dados {
 		}
 		return dadosRetorno;
 	}
-	
+
 	public String[] findProductById(int id) {
 		String select = "SELECT * FROM produtos WHERE id = ?";
 		String[] dadosRetorno = null;
 		try {
-			preparedStatement = connection.prepareStatement(select);
-			setValues(preparedStatement, id);
+			preparedStatement = connection.prepareStatement(select,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
 			resultSetMetaData = resultSet.getMetaData();
 			final int columns = resultSetMetaData.getColumnCount();
@@ -360,7 +364,7 @@ public class Dados {
 		}
 		return dadosRetorno;
 	}
-	
+
 	public void create() {
 		try {
 			statement = connection.createStatement();
@@ -371,7 +375,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, statement);
 		}
 	}
-	
+
 	public void update() {
 		try {
 			statement = connection.createStatement();
@@ -382,7 +386,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, statement);
 		}
 	}
-	
+
 	public void delete() {
 		try {
 			statement = connection.createStatement();
@@ -393,7 +397,7 @@ public class Dados {
 			JDBC.fecharConexao(connection, statement);
 		}
 	}
-	
+
 	public String[][] listAll(boolean ordemAlfabetica) {
 		if (ordemAlfabetica) {
 			SQL_SELECT = SQL_SELECT + ORDER;
@@ -423,7 +427,7 @@ public class Dados {
 		}
 		return dadosRetorno;
 	}
-	
+
 	public String[] findOne() {
 		String[] dadosRetorno = null;
 		try {
@@ -444,7 +448,7 @@ public class Dados {
 		}
 		return dadosRetorno;
 	}
-	
+
 	public String[] findByTextFull() {
 		String[] dadosRetorno = null;
 		try {
@@ -465,7 +469,7 @@ public class Dados {
 		}
 		return dadosRetorno;
 	}
-	
+
 	public String[][] findByTextLike(boolean ordemAlfabetica) {
 		if (ordemAlfabetica) {
 			SQL_SELECT_TEXT_LIKE = SQL_SELECT_TEXT_LIKE + ORDER;
@@ -495,7 +499,7 @@ public class Dados {
 		}
 		return dadosRetorno;
 	}
-	
+
 	public String novoCodigo() {
 		String novoCodigo = null;
 		try {

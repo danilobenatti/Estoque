@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,15 +17,21 @@ import java.util.logging.Logger;
 public class JDBC {
 
 	public static Connection receberConexao() {
-		final String DRIVER = "com.mysql.cj.jdbc.Driver";
-		final String USER = "root";
+//		final String DRIVER = "com.mysql.cj.jdbc.Driver";
+//		final String URL = "jdbc:mysql://localhost:3306/estoque?useTimezone=true&serverTimezone=UTC";
+//		final String USER = "root";
+//		final String PASSWORD = "123456";
+		final String DRIVER = "org.firebirdsql.jdbc.FBDriver";
+		final String URL = "jdbc:firebirdsql://localhost:3050/D:/DATA/TESTDB2.FDB";
+		final String USER = "SYSDBA";
 		final String PASSWORD = "123456";
-		final String URL = "jdbc:mysql://localhost/estoque?"
-				+ "useTimezone=true&serverTimezone=UTC"
-				+ "&user=" + USER + "&password=" + PASSWORD;
+		Properties properties = new Properties();
+		properties.setProperty("user", USER);
+		properties.setProperty("password", PASSWORD);
+		properties.setProperty("encoding", "UTF8");
 		try {
 			Class.forName(DRIVER);
-			return DriverManager.getConnection(URL);
+			return DriverManager.getConnection(URL, properties);
 		} catch (SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
