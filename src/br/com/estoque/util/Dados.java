@@ -127,7 +127,8 @@ public class Dados {
 			preparedStatement = connection.prepareStatement(insert,
 					Statement.RETURN_GENERATED_KEYS);
 			for (Usuarios usuario : usuarios) {
-				setValues(preparedStatement, usuario.getLogin(), usuario.getNivel(), usuario.getSenha());
+				setValues(preparedStatement, usuario.getLogin(), usuario.getNivel(),
+						usuario.getSenha());
 				preparedStatement.addBatch();
 			}
 			preparedStatement.executeBatch();
@@ -189,7 +190,8 @@ public class Dados {
 			resultSet = preparedStatement.getGeneratedKeys();
 			resultSetMetaData = resultSet.getMetaData();
 			while (resultSet.next()) {
-				System.out.printf("%s: %s\n", resultSetMetaData.getColumnName(1), resultSet.getInt(1)
+				System.out.printf("%s: %s\n",
+						resultSetMetaData.getColumnName(1), resultSet.getInt(1)
 						//+ ", Descrição: %s: %s\n", resultSetMetaData.getColumnName(2), resultSet.getInt(2)
 						//+ ", Unidade: " + resultSet.getString(3)
 						//+ ", Valor Unitário: " + resultSet.getDouble(4)
@@ -338,6 +340,70 @@ public class Dados {
 		return dadosRetorno;
 	}
 
+	public String[] findUserByLogin(String login) {
+		String select = "SELECT * FROM usuarios WHERE lower(login) = lower(?)";
+		String[] dadosRetorno = null;
+		try {
+			preparedStatement = connection.prepareStatement(select,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setString(1, login);
+			resultSet = preparedStatement.executeQuery();
+			resultSetMetaData = resultSet.getMetaData();
+			final int columns = resultSetMetaData.getColumnCount();
+			dadosRetorno = new String[columns];
+			if (resultSet.first()) {
+				for (int i = 0; i < columns; i++) {
+					dadosRetorno[i] = resultSet.getString(i + 1);
+				}
+			}
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement, resultSet);
+		}
+		return dadosRetorno;
+	}
+
+	public String[][] findUserByLoginLike(boolean ordemAlfabetica, String login) {
+		String select = "SELECT * FROM usuarios WHERE lower(login) LIKE lower(?)",
+				order = "ORDER BY login";
+		if (ordemAlfabetica) {
+			select = select + order;
+		}
+		String[][] dadosRetorno = null;
+		try {
+			preparedStatement = connection.prepareStatement(select,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setString(1, "%" + login + "%");
+			resultSet = preparedStatement.executeQuery();
+			resultSet.last();
+			resultSetMetaData = resultSet.getMetaData();
+			final int rows = resultSet.getRow();
+			final int columns = resultSetMetaData.getColumnCount();
+			dadosRetorno = new String[rows][columns];
+			if (resultSet.first()) {
+				int i = 0;
+				do {
+					for (int j = 0; j < columns; j++) {
+						dadosRetorno[i][j] = resultSet.getString(j + 1);
+					}
+					i++;
+				} while (resultSet.next());
+			}
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement, resultSet);
+		}
+		return dadosRetorno;
+	}
+
 	public String[] findProductById(int id) {
 		String select = "SELECT * FROM produtos WHERE id = ?";
 		String[] dadosRetorno = null;
@@ -354,6 +420,70 @@ public class Dados {
 				for (int i = 0; i < columns; i++) {
 					dadosRetorno[i] = resultSet.getString(i + 1);
 				}
+			}
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement, resultSet);
+		}
+		return dadosRetorno;
+	}
+
+	public String[] findProductByDescription(String description) {
+		String select = "SELECT * FROM produtos WHERE lower(descricao) = lower(?)";
+		String[] dadosRetorno = null;
+		try {
+			preparedStatement = connection.prepareStatement(select,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setString(1, description);
+			resultSet = preparedStatement.executeQuery();
+			resultSetMetaData = resultSet.getMetaData();
+			final int columns = resultSetMetaData.getColumnCount();
+			dadosRetorno = new String[columns];
+			if (resultSet.first()) {
+				for (int i = 0; i < columns; i++) {
+					dadosRetorno[i] = resultSet.getString(i + 1);
+				}
+			}
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement, resultSet);
+		}
+		return dadosRetorno;
+	}
+
+	public String[][] findProductByDecriptionLike(boolean ordemAlfabetica, String description) {
+		String select = "SELECT * FROM produtos WHERE lower(descricao) LIKE lower(?) ",
+				order = "ORDER BY descricao";
+		if (ordemAlfabetica) {
+			select = select + order;
+		}
+		String[][] dadosRetorno = null;
+		try {
+			preparedStatement = connection.prepareStatement(select,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setString(1, "%" + description + "%");
+			resultSet = preparedStatement.executeQuery();
+			resultSet.last();
+			resultSetMetaData = resultSet.getMetaData();
+			final int rows = resultSet.getRow();
+			final int columns = resultSetMetaData.getColumnCount();
+			dadosRetorno = new String[rows][columns];
+			if (resultSet.first()) {
+				int i = 0;
+				do {
+					for (int j = 0; j < columns; j++) {
+						dadosRetorno[i][j] = resultSet.getString(j + 1);
+					}
+					i++;
+				} while (resultSet.next());
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);

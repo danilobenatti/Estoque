@@ -16,22 +16,49 @@ import java.util.logging.Logger;
  */
 public class JDBC {
 
+	private static String driver;
+	private static String url;
+	private static String user;
+	private static String password;
+	private static String encoding;
+
 	public static Connection receberConexao() {
-//		final String DRIVER = "com.mysql.cj.jdbc.Driver";
-//		final String URL = "jdbc:mysql://localhost:3306/estoque?useTimezone=true&serverTimezone=UTC";
-//		final String USER = "root";
-//		final String PASSWORD = "123456";
-		final String DRIVER = "org.firebirdsql.jdbc.FBDriver";
-		final String URL = "jdbc:firebirdsql://localhost:3050/D:/DATA/TESTDB2.FDB";
-		final String USER = "SYSDBA";
-		final String PASSWORD = "123456";
-		Properties properties = new Properties();
-		properties.setProperty("user", USER);
-		properties.setProperty("password", PASSWORD);
-		properties.setProperty("encoding", "UTF8");
+
+		int connProp = 1;
+		switch (connProp) {
+			case 1:
+				user = "root";
+				password = "123456";
+				encoding = "UTF8";
+				driver = "com.mysql.cj.jdbc.Driver";
+				url = "jdbc:mysql://localhost:3306/estoque?useTimezone=true&serverTimezone=UTC";
+				break;
+			case 2:
+				user = "postgres";
+				password = "123456";
+				encoding = "UTF8";
+				driver = "org.postgresql.Driver";
+				url = "jdbc:postgresql://localhost:5432/estoque";
+				break;
+			case 3:
+				user = "SYSDBA";
+				password = "123456";
+				encoding = "UTF8";
+				driver = "org.firebirdsql.jdbc.FBDriver";
+				url = "jdbc:firebirdsql://localhost:3050/D:/DATA/TESTDB2.FDB";
+				break;
+			default:
+				break;
+		}
+
+		Properties props = new Properties();
+		props.setProperty("user", user);
+		props.setProperty("password", password);
+		props.setProperty("encoding", encoding);
+
 		try {
-			Class.forName(DRIVER);
-			return DriverManager.getConnection(URL, properties);
+			Class.forName(driver);
+			return DriverManager.getConnection(url, props);
 		} catch (SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
