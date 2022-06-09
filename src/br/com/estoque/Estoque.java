@@ -63,8 +63,9 @@ public class Estoque extends javax.swing.JFrame {
 		Data data = new Data();
 		JTextField[] jtfNew, jtfOld = {
 			campoTextoCadastroProdutosDescricao, campoTextoCadastroProdutosUnidade,
-			campoTextoCadastroProdutosObs, campoTextoCadastroUsuariosLogin,
-			campoTextoMovimentoEstoquePesquisa, campoTextoMovimentoEstoqueUnid
+			campoTextoFormatadoCadastroProdutosValorUnitario, campoTextoCadastroProdutosObs,
+			campoTextoCadastroUsuariosLogin, campoTextoMovimentoEstoquePesquisa,
+			campoTextoMovimentoEstoqueUnid
 		};
 
 		jtfOld = tools.limparComponentes(jtfOld);
@@ -2049,7 +2050,10 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoTextoCadastroProdutosObsFocusLost
 
     private void campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost
-		this.campoTextoFormatadoCadastroProdutosValorUnitario = tools.verificaValorMaximoNumerico(campoTextoFormatadoCadastroProdutosValorUnitario, 99999.99, "Valor Unitário");
+		if (this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().isEmpty()) {
+			this.campoTextoFormatadoCadastroProdutosValorUnitario = tools.verificaValorMaximoNumerico(
+					campoTextoFormatadoCadastroProdutosValorUnitario, 99999.99, "Valor Unitário");
+		}
     }//GEN-LAST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost
 
     private void janelaCadastroUsuariosWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaCadastroUsuariosWindowGainedFocus
@@ -2255,8 +2259,9 @@ public class Estoque extends javax.swing.JFrame {
     private void botaoCadastroProdutosNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosNovoActionPerformed
 		reorganizarComponentes();
 		this.novoRegistroCadastro = true;
-		Dados produtos = new Dados(new Produtos());
-		this.campoTextoCadastroProdutosCodigo.setText(produtos.novoCodigo());
+		Dados produtos = new Dados();
+		this.campoTextoCadastroProdutosCodigo.setText(String.format("%04d", produtos.nextIdProduct()));
+		this.campoTextoFormatadoCadastroProdutosValorUnitario.setText("0,00");
 		this.campoTextoCadastroProdutosDescricao.grabFocus();
     }//GEN-LAST:event_botaoCadastroProdutosNovoActionPerformed
 
@@ -2269,15 +2274,14 @@ public class Estoque extends javax.swing.JFrame {
 			//Integer id, String descricao, String unidade, Double valorUnitario, String obs
 			Dados dados = new Dados();
 			Produtos produto = new Produtos(
-					//Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText()),
+					Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText()),
 					this.campoTextoCadastroProdutosDescricao.getText(),
 					this.campoTextoCadastroProdutosUnidade.getText(),
-					Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText()),
+					Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().replace(",", ".")),
 					this.campoTextoCadastroProdutosObs.getText());
-			if (this.novoRegistroCadastro == true) {
+			if (this.novoRegistroCadastro) {
 				dados.insertProduct(produto);
-			}
-			if (this.novoRegistroCadastro == false) {
+			} else {
 				dados.updateProduct(produto);
 			}
 			JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!",

@@ -23,7 +23,7 @@ public class TesteDadosUsuarios {
 		new Dados().insertAllUsers(usuarios);
 
 		Usuarios u3 = new Usuarios("João", 1, "123abc");
-		new Dados().insertUser(u2);
+		new Dados().insertUser(u3);
 
 		u3.setId(5);
 		u3.setNivel(0);

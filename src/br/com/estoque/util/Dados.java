@@ -159,12 +159,8 @@ public class Dados {
 			resultSet = preparedStatement.getGeneratedKeys();
 			resultSetMetaData = resultSet.getMetaData();
 			while (resultSet.next()) {
-				System.out.printf("%s: %s\n", resultSetMetaData.getColumnName(1), resultSet.getInt(1));
-//				System.out.printf("Descrição: %s: %s\n", resultSetMetaData.getColumnName(2), resultSet.getInt(2));
-				//+ ", Unidade: " + resultSet.getString(3)
-				//+ ", Valor Unitário: " + resultSet.getDouble(4)
-				//+ ", Obs: " + resultSet.getString(5)
-				//+ " ");
+				System.out.printf("%s: %s\n",
+						resultSetMetaData.getColumnName(1), resultSet.getInt(1));
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -191,12 +187,7 @@ public class Dados {
 			resultSetMetaData = resultSet.getMetaData();
 			while (resultSet.next()) {
 				System.out.printf("%s: %s\n",
-						resultSetMetaData.getColumnName(1), resultSet.getInt(1)
-						//+ ", Descrição: %s: %s\n", resultSetMetaData.getColumnName(2), resultSet.getInt(2)
-						//+ ", Unidade: " + resultSet.getString(3)
-						//+ ", Valor Unitário: " + resultSet.getDouble(4)
-						//+ ", Obs: " + resultSet.getString(5)
-						+ " ");
+						resultSetMetaData.getColumnName(1), resultSet.getInt(1));
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -493,6 +484,44 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement, resultSet);
 		}
 		return dadosRetorno;
+	}
+
+	public Integer nextIdUser() {
+		String select = "SELECT MAX(id) AS id FROM usuarios";
+		int newCode = 0;
+		try {
+			preparedStatement = connection.prepareStatement(select);
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next() && resultSet != null) {
+				newCode = resultSet.getInt("id") + 1;
+			}
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement, resultSet);
+		}
+		return newCode;
+	}
+
+	public Integer nextIdProduct() {
+		String select = "SELECT MAX(id) AS id FROM produtos";
+		int newCode = 0;
+		try {
+			preparedStatement = connection.prepareStatement(select);
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next() && resultSet != null) {
+				newCode = resultSet.getInt("id") + 1;
+			}
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement, resultSet);
+		}
+		return newCode;
 	}
 
 	public void create() {

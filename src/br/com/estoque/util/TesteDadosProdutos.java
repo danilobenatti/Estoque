@@ -23,5 +23,12 @@ public class TesteDadosProdutos {
 		p1.setValorUnitario(2.95);
 		new Dados().updateProduct(p1);
 
+		Produtos p3 = new Produtos();
+		p3.setDescricao("Sabão em pó");
+		p3.setUnidade("800g");
+		p3.setValorUnitario(5.80);
+		p3.setObs("AMA Sabões");
+		new Dados().insertProduct(p3);
+
 	}
 }

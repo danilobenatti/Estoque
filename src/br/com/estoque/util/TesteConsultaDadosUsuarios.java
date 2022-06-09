@@ -41,10 +41,6 @@ public class TesteConsultaDadosUsuarios {
 			System.out.println("===== Exemplo 4 =====");
 			searchUserLike.forEach(value -> System.out.println(Arrays.toString(value)));
 		}
-//		foundUser.setId();
-//		foundUser.setLogin();
-//		foundUser.setNivel();
-//		foundUser.setSenha();
 
 		System.out.println("===== Exemplo 5 Exigir todos =====");
 		String[][] listOfUsers = new Dados().listAllUsers(true);
@@ -53,6 +49,6 @@ public class TesteConsultaDadosUsuarios {
 			System.out.println(Arrays.toString(user));
 		}
 		System.out.printf("Total de %d usuários%n", users.size());
-
+		System.out.println("Próximo id " + new Dados().nextIdUser());
 	}
 }

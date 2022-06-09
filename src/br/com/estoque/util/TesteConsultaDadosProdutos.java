@@ -23,9 +23,9 @@ public class TesteConsultaDadosProdutos {
 		}
 
 		Produtos foundProduct = new Produtos();
-		var searchProduct = Arrays.asList(
+		List<String> searchProduct = Arrays.asList(
 				new Dados().findProductByDescription("Leite Semidesnatado 1L"));
-		var searchProductLike = Arrays.asList(
+		List<String[]> searchProductLike = Arrays.asList(
 				new Dados().findProductByDecriptionLike(true, "desnatado"));
 		if (!searchProduct.isEmpty() || !searchProduct.isEmpty()) {
 			System.out.println("===== Exemplo 1 =====");
@@ -41,10 +41,6 @@ public class TesteConsultaDadosProdutos {
 			System.out.println("===== Exemplo 4 =====");
 			searchProductLike.forEach(value -> System.out.println(Arrays.toString(value)));
 		}
-//		foundProduct.setId();
-//		foundProduct.setDescricao();
-//		foundProduct.setUnidade();
-//		foundProduct.setUnidade();
 
 		System.out.println("===== Exemplo 5 Exigir todos =====");
 		String[][] listOfProducts = new Dados().listAllProducts(true);
@@ -53,6 +49,6 @@ public class TesteConsultaDadosProdutos {
 			System.out.println(Arrays.toString(product));
 		}
 		System.out.printf("Total de %d produtos%n", products.size());
-
+		System.out.println("Próximo id " + new Dados().nextIdProduct());
 	}
 }
