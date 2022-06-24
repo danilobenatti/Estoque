@@ -486,6 +486,36 @@ public class Dados {
 		return dadosRetorno;
 	}
 
+	public void deleteOneProductById(int id) {
+		String delete = "DELETE FROM produtos WHERE id = ?";
+		try {
+			preparedStatement = connection.prepareStatement(delete);
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement);
+		}
+	}
+
+	public void deleteOneUserById(int id) {
+		String delete = "DELETE FROM usuarios WHERE id = ?";
+		try {
+			preparedStatement = connection.prepareStatement(delete);
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement);
+		}
+	}
+
 	public Integer nextIdUser() {
 		String select = "SELECT MAX(id) AS id FROM usuarios";
 		int newCode = 0;

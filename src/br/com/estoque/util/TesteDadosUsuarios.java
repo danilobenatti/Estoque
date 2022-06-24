@@ -2,6 +2,8 @@ package br.com.estoque.util;
 
 import br.com.estoque.tabelas.Usuarios;
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
 public class TesteDadosUsuarios {
 
@@ -30,5 +32,19 @@ public class TesteDadosUsuarios {
 		u3.setSenha("999999");
 		new Dados().updateUser(u3);
 
+		String id = JOptionPane.showInputDialog(
+				"Informe um id de usuário para ser excluído.",
+				JOptionPane.INFORMATION_MESSAGE);
+		if (id != null) {
+			String[] options = {"sim", "não"}; //{0,1}
+			Icon icon = null;
+			int opcao = JOptionPane.showOptionDialog(null,
+					"Deseja mesmo excluir o usuário de ID=" + id + "?",
+					"Excluir um usuário", JOptionPane.DEFAULT_OPTION,
+					JOptionPane.WARNING_MESSAGE, icon, options, options[0]);
+			if (opcao == 0) {
+				new Dados().deleteOneUserById(Integer.parseInt(id));
+			}
+		}
 	}
 }

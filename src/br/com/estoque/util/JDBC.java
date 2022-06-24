@@ -24,28 +24,28 @@ public class JDBC {
 
 	public static Connection receberConexao() {
 
-		int connProp = 1;
+		String connProp = "mysql";
 		switch (connProp) {
-			case 1:
+			case "mysql":
 				user = "root";
 				password = "123456";
 				encoding = "UTF8";
 				driver = "com.mysql.cj.jdbc.Driver";
 				url = "jdbc:mysql://localhost:3306/estoque?useTimezone=true&serverTimezone=UTC";
 				break;
-			case 2:
+			case "postgresql":
 				user = "postgres";
 				password = "123456";
 				encoding = "UTF8";
 				driver = "org.postgresql.Driver";
 				url = "jdbc:postgresql://localhost:5432/estoque";
 				break;
-			case 3:
+			case "firebird":
 				user = "SYSDBA";
 				password = "123456";
 				encoding = "UTF8";
 				driver = "org.firebirdsql.jdbc.FBDriver";
-				url = "jdbc:firebirdsql://localhost:3050/D:/DATA/TESTDB2.FDB";
+				url = "jdbc:firebirdsql://localhost:3050/d:/data/testdb2.fdb";
 				break;
 			default:
 				break;

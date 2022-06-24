@@ -380,6 +380,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Excluir produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroProdutosExcluirActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroProdutosPrimeiroRegistro">
           <Properties>
@@ -2060,7 +2063,6 @@
   <SubComponents>
     <Container class="javax.swing.JToolBar" name="barraFerramentasJanelaPrincipal">
       <Properties>
-        <Property name="floatable" type="boolean" value="false"/>
         <Property name="rollover" type="boolean" value="true"/>
         <Property name="toolTipText" type="java.lang.String" value="Barra de ferramentas do sistema"/>
       </Properties>

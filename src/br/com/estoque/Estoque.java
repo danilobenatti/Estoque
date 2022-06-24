@@ -518,6 +518,11 @@ public class Estoque extends javax.swing.JFrame {
 
         botaoCadastroProdutosExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroExcluir.png"))); // NOI18N
         botaoCadastroProdutosExcluir.setToolTipText("Excluir produto");
+        botaoCadastroProdutosExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroProdutosExcluirActionPerformed(evt);
+            }
+        });
 
         botaoCadastroProdutosPrimeiroRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroPrimeiro.png"))); // NOI18N
         botaoCadastroProdutosPrimeiroRegistro.setToolTipText("Primeiro registro");
@@ -2288,6 +2293,34 @@ public class Estoque extends javax.swing.JFrame {
 					"REGISTRO GRAVADO", JOptionPane.INFORMATION_MESSAGE);
 		}
     }//GEN-LAST:event_botaoCadastroProdutosSalvarActionPerformed
+
+    private void botaoCadastroProdutosExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosExcluirActionPerformed
+		if (this.campoTextoCadastroProdutosDescricao.getText().equals("")
+				|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
+			JOptionPane.showMessageDialog(null,
+					"Não é permitido campos em branco, nulos ou vazio.",
+					"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
+		} else {
+			int idProduct = Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText());
+			String descProduct = this.campoTextoCadastroProdutosDescricao.getText();
+			Dados produtos = new Dados(new Produtos(idProduct));
+			int opcao = JOptionPane.showConfirmDialog(null,
+					"Ao confirmar a operação, não será possível recuperar os dados\n"
+					+ "Deseja excluir o produto id: " + idProduct + ", " + descProduct,
+					"EXCLUIR REGISTRO DE PRODUTO?", JOptionPane.YES_NO_OPTION);
+			if (opcao == JOptionPane.YES_OPTION) {
+				produtos.deleteOneProductById(idProduct);
+				JOptionPane.showMessageDialog(null,
+						"O produto foi excluído",
+						"REGISTRO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
+			}
+			if (opcao == JOptionPane.NO_OPTION) {
+				JOptionPane.showMessageDialog(null,
+						"O produto não foi excluído",
+						"REGISTRO MANTIDO!", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+    }//GEN-LAST:event_botaoCadastroProdutosExcluirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;

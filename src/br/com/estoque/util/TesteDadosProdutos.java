@@ -2,6 +2,8 @@ package br.com.estoque.util;
 
 import br.com.estoque.tabelas.Produtos;
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
 public class TesteDadosProdutos {
 
@@ -30,5 +32,19 @@ public class TesteDadosProdutos {
 		p3.setObs("AMA Sabões");
 		new Dados().insertProduct(p3);
 
+		String id = JOptionPane.showInputDialog(
+				"Informe um id de produto para ser excluído.",
+				JOptionPane.INFORMATION_MESSAGE);
+		if (id != null) {
+			String[] options = {"sim", "não"}; //{0,1}
+			Icon icon = null;
+			int opcao = JOptionPane.showOptionDialog(null,
+					"Deseja mesmo excluir o produto de ID=" + id + "?",
+					"Excluir um produto", JOptionPane.DEFAULT_OPTION,
+					JOptionPane.WARNING_MESSAGE, icon, options, options[0]);
+			if (opcao == 0) {
+				new Dados().deleteOneProductById(Integer.parseInt(id));
+			}
+		}
 	}
 }
