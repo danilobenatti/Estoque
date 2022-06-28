@@ -715,6 +715,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Novo usu&#xe1;rio"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroUsuariosNovoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroUsuariosSalvar">
           <Properties>
@@ -723,6 +726,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Salvar usu&#xe1;rio"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroUsuariosSalvarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroUsuariosExcluir">
           <Properties>
@@ -731,6 +737,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Excluir usu&#xe1;rio"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroUsuariosExcluirActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroUsuariosPrimeiroRegistro">
           <Properties>
@@ -739,6 +748,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Primeiro registro"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroUsuariosPrimeiroRegistroActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroUsuariosRegistroAnterior">
           <Properties>
@@ -747,6 +759,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Registro anterior"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroUsuariosRegistroAnteriorActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroUsuariosProximoRegistro">
           <Properties>
@@ -755,6 +770,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Pr&#xf3;ximo registro"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroUsuariosProximoRegistroActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoCadastroUsuariosUltimoRegistro">
           <Properties>
@@ -763,6 +781,9 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="&#xda;ltimo registro"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoCadastroUsuariosUltimoRegistroActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -22,7 +22,7 @@ public class Dados {
 	private ResultSet resultSet;
 	private ResultSetMetaData resultSetMetaData;
 	private String SQL_INSERT, SQL_UPDATE, SQL_DELETE, SQL_SELECT,
-			SQL_SELECT_ONE, SQL_SELECT_TEXT_FULL, SQL_SELECT_TEXT_LIKE, ORDER;
+		SQL_SELECT_ONE, SQL_SELECT_TEXT_FULL, SQL_SELECT_TEXT_LIKE, ORDER;
 
 	public Dados() {
 		this.connection = JDBC.receberConexao();
@@ -31,52 +31,52 @@ public class Dados {
 	public Dados(Produtos object) {
 		this.connection = JDBC.receberConexao();
 		SQL_INSERT = "INSERT INTO produtos ("
-				+ "descricao, unidade, valorUnitario, obs) VALUES ('"
-				+ object.getDescricao() + "', '"
-				+ object.getUnidade() + "', "
-				+ object.getValorUnitario() + ", '"
-				+ object.getObs() + "') ";
+			+ "descricao, unidade, valorUnitario, obs) VALUES ('"
+			+ object.getDescricao() + "', '"
+			+ object.getUnidade() + "', "
+			+ object.getValorUnitario() + ", '"
+			+ object.getObs() + "') ";
 		SQL_UPDATE = "UPDATE produtos SET "
-				+ "descricao ='" + object.getDescricao() + "', "
-				+ "unidade ='" + object.getUnidade() + "', "
-				+ "valorUnitario =" + object.getValorUnitario() + ", "
-				+ "quantidade =" + object.getQuantidade() + ", "
-				+ "obs ='" + object.getObs() + "' "
-				+ "WHERE id =" + object.getId();
+			+ "descricao ='" + object.getDescricao() + "', "
+			+ "unidade ='" + object.getUnidade() + "', "
+			+ "valorUnitario =" + object.getValorUnitario() + ", "
+			+ "quantidade =" + object.getQuantidade() + ", "
+			+ "obs ='" + object.getObs() + "' "
+			+ "WHERE id =" + object.getId();
 		SQL_DELETE = "DELETE FROM produtos WHERE id = " + object.getId();
 		SQL_SELECT = "SELECT * FROM produtos";
 		SQL_SELECT_ONE = "SELECT * FROM produtos WHERE id = " + object.getId();
 		SQL_SELECT_TEXT_FULL = "SELECT * FROM produtos"
-				+ " WHERE lower(descricao) = lower('" + object.getDescricao().trim() + "') ";
+			+ " WHERE lower(descricao) = lower('" + object.getDescricao().trim() + "') ";
 		SQL_SELECT_TEXT_LIKE = "SELECT * FROM produtos"
-				+ " WHERE lower(descricao) LIKE lower('%" + object.getDescricao().trim() + "%') ";
+			+ " WHERE lower(descricao) LIKE lower('%" + object.getDescricao().trim() + "%') ";
 		ORDER = " ORDER BY descricao ";
 	}
 
 	public Dados(Usuarios object) {
 		this.connection = JDBC.receberConexao();
 		SQL_INSERT = "INSERT INTO usuarios ("
-				+ "login, nivel, senha) VALUES ('"
-				+ object.getLogin() + "', '"
-				+ object.getNivel() + "', '"
-				+ object.getSenha() + "') ";
+			+ "login, nivel, senha) VALUES ('"
+			+ object.getLogin() + "', '"
+			+ object.getNivel() + "', '"
+			+ object.getSenha() + "') ";
 		SQL_UPDATE = "UPDATE usuarios SET "
-				+ "login ='" + object.getLogin() + "', "
-				+ "nivel =" + object.getNivel() + ", "
-				+ "senha ='" + object.getSenha() + "' "
-				+ "WHERE id =" + object.getId();
+			+ "login ='" + object.getLogin() + "', "
+			+ "nivel =" + object.getNivel() + ", "
+			+ "senha ='" + object.getSenha() + "' "
+			+ "WHERE id =" + object.getId();
 		SQL_DELETE = "DELETE FROM usuarios WHERE id = " + object.getId();
 		SQL_SELECT = "SELECT * FROM usuarios";
 		SQL_SELECT_ONE = "SELECT * FROM usuarios WHERE id = " + object.getId();
 		SQL_SELECT_TEXT_FULL = "SELECT * FROM usuarios"
-				+ " WHERE lower(login) = lower('" + object.getLogin().trim() + "') ";
+			+ " WHERE lower(login) = lower('" + object.getLogin().trim() + "') ";
 		SQL_SELECT_TEXT_LIKE = "SELECT * FROM usuarios"
-				+ " WHERE lower(login) LIKE lower('%" + object.getLogin().trim() + "%') ";
+			+ " WHERE lower(login) LIKE lower('%" + object.getLogin().trim() + "%') ";
 		ORDER = " ORDER BY login ";
 	}
 
 	public static void setValues(PreparedStatement ps, Object... values)
-			throws SQLException {
+		throws SQLException {
 		for (int i = 0; i < values.length; i++) {
 			ps.setObject(i + 1, values[i]);
 		}
@@ -102,15 +102,15 @@ public class Dados {
 		String insert = "INSERT INTO usuarios(login, nivel, senha) VALUES (?, ?, ?)";
 		try {
 			preparedStatement = connection.prepareStatement(insert,
-					Statement.RETURN_GENERATED_KEYS);
+				Statement.RETURN_GENERATED_KEYS);
 			setValues(preparedStatement, usuario.getLogin(), usuario.getNivel(),
-					usuario.getSenha());
+				usuario.getSenha());
 			preparedStatement.execute();
 			resultSet = preparedStatement.getGeneratedKeys();
 			resultSetMetaData = resultSet.getMetaData();
 			while (resultSet.next()) {
 				System.out.printf("%s: %s\n",
-						resultSetMetaData.getColumnName(1), resultSet.getInt(1));
+					resultSetMetaData.getColumnName(1), resultSet.getInt(1));
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -125,10 +125,10 @@ public class Dados {
 		String insert = "INSERT INTO usuarios(login, nivel, senha) VALUES (?, ?, ?)";
 		try {
 			preparedStatement = connection.prepareStatement(insert,
-					Statement.RETURN_GENERATED_KEYS);
+				Statement.RETURN_GENERATED_KEYS);
 			for (Usuarios usuario : usuarios) {
 				setValues(preparedStatement, usuario.getLogin(), usuario.getNivel(),
-						usuario.getSenha());
+					usuario.getSenha());
 				preparedStatement.addBatch();
 			}
 			preparedStatement.executeBatch();
@@ -136,7 +136,7 @@ public class Dados {
 			resultSetMetaData = resultSet.getMetaData();
 			while (resultSet.next()) {
 				System.out.printf("%s: %s\n",
-						resultSetMetaData.getColumnName(1), resultSet.getInt(1));
+					resultSetMetaData.getColumnName(1), resultSet.getInt(1));
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -149,18 +149,18 @@ public class Dados {
 
 	public void insertProduct(Produtos produto) {
 		String insert = "INSERT INTO produtos "
-				+ "(descricao, unidade, valorUnitario, obs) VALUES (?, ?, ?, ?)";
+			+ "(descricao, unidade, valorUnitario, obs) VALUES (?, ?, ?, ?)";
 		try {
 			preparedStatement = connection.prepareStatement(insert,
-					Statement.RETURN_GENERATED_KEYS);
+				Statement.RETURN_GENERATED_KEYS);
 			setValues(preparedStatement, produto.getDescricao(), produto.getUnidade(),
-					produto.getValorUnitario(), produto.getObs());
+				produto.getValorUnitario(), produto.getObs());
 			preparedStatement.execute();
 			resultSet = preparedStatement.getGeneratedKeys();
 			resultSetMetaData = resultSet.getMetaData();
 			while (resultSet.next()) {
 				System.out.printf("%s: %s\n",
-						resultSetMetaData.getColumnName(1), resultSet.getInt(1));
+					resultSetMetaData.getColumnName(1), resultSet.getInt(1));
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -173,13 +173,13 @@ public class Dados {
 
 	public void insertAllProducts(List<Produtos> produtos) {
 		String insert = "INSERT INTO produtos "
-				+ "(descricao, unidade, valorUnitario, obs) VALUES (?, ?, ?, ?)";
+			+ "(descricao, unidade, valorUnitario, obs) VALUES (?, ?, ?, ?)";
 		try {
 			preparedStatement = connection.prepareStatement(insert,
-					Statement.RETURN_GENERATED_KEYS);
+				Statement.RETURN_GENERATED_KEYS);
 			for (Produtos produto : produtos) {
 				setValues(preparedStatement, produto.getDescricao(), produto.getUnidade(),
-						produto.getValorUnitario(), produto.getObs());
+					produto.getValorUnitario(), produto.getObs());
 				preparedStatement.addBatch();
 			}
 			preparedStatement.executeBatch();
@@ -187,7 +187,7 @@ public class Dados {
 			resultSetMetaData = resultSet.getMetaData();
 			while (resultSet.next()) {
 				System.out.printf("%s: %s\n",
-						resultSetMetaData.getColumnName(1), resultSet.getInt(1));
+					resultSetMetaData.getColumnName(1), resultSet.getInt(1));
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -200,11 +200,11 @@ public class Dados {
 
 	public void updateUser(Usuarios usuario) {
 		String update = "UPDATE usuarios SET "
-				+ "login = ?, nivel = ?, senha = ? WHERE id = ?";
+			+ "login = ?, nivel = ?, senha = ? WHERE id = ?";
 		try {
 			preparedStatement = connection.prepareStatement(update);
 			setValues(preparedStatement, usuario.getLogin(), usuario.getNivel(),
-					usuario.getSenha(), usuario.getId());
+				usuario.getSenha(), usuario.getId());
 			preparedStatement.executeUpdate();
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -217,13 +217,13 @@ public class Dados {
 
 	public void updateProduct(Produtos produto) {
 		String update = "UPDATE produtos SET "
-				+ "descricao = ?, unidade = ?, valorUnitario = ?, "
-				+ "quantidade = ?, obs = ? WHERE id = ?";
+			+ "descricao = ?, unidade = ?, valorUnitario = ?, "
+			+ "quantidade = ?, obs = ? WHERE id = ?";
 		try {
 			preparedStatement = connection.prepareStatement(update);
 			setValues(preparedStatement, produto.getDescricao(), produto.getUnidade(),
-					produto.getValorUnitario(), produto.getQuantidade(),
-					produto.getObs(), produto.getId());
+				produto.getValorUnitario(), produto.getQuantidade(),
+				produto.getObs(), produto.getId());
 			preparedStatement.executeUpdate();
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -242,8 +242,8 @@ public class Dados {
 		String[][] dadosRetorno = null;
 		try {
 			preparedStatement = connection.prepareStatement(select,
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
 			resultSet = preparedStatement.executeQuery();
 			resultSet.last();
 			resultSetMetaData = resultSet.getMetaData();
@@ -277,8 +277,8 @@ public class Dados {
 		String[][] dadosRetorno = null;
 		try {
 			preparedStatement = connection.prepareStatement(select,
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
 			resultSet = preparedStatement.executeQuery();
 			resultSet.last();
 			resultSetMetaData = resultSet.getMetaData();
@@ -309,8 +309,8 @@ public class Dados {
 		String[] dadosRetorno = null;
 		try {
 			preparedStatement = connection.prepareStatement(select,
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
 			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
 			resultSetMetaData = resultSet.getMetaData();
@@ -336,8 +336,8 @@ public class Dados {
 		String[] dadosRetorno = null;
 		try {
 			preparedStatement = connection.prepareStatement(select,
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
 			preparedStatement.setString(1, login);
 			resultSet = preparedStatement.executeQuery();
 			resultSetMetaData = resultSet.getMetaData();
@@ -360,15 +360,15 @@ public class Dados {
 
 	public String[][] findUserByLoginLike(boolean ordemAlfabetica, String login) {
 		String select = "SELECT * FROM usuarios WHERE lower(login) LIKE lower(?)",
-				order = "ORDER BY login";
+			order = "ORDER BY login";
 		if (ordemAlfabetica) {
 			select = select + order;
 		}
 		String[][] dadosRetorno = null;
 		try {
 			preparedStatement = connection.prepareStatement(select,
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
 			preparedStatement.setString(1, "%" + login + "%");
 			resultSet = preparedStatement.executeQuery();
 			resultSet.last();
@@ -400,8 +400,8 @@ public class Dados {
 		String[] dadosRetorno = null;
 		try {
 			preparedStatement = connection.prepareStatement(select,
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
 			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
 			resultSetMetaData = resultSet.getMetaData();
@@ -427,8 +427,8 @@ public class Dados {
 		String[] dadosRetorno = null;
 		try {
 			preparedStatement = connection.prepareStatement(select,
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
 			preparedStatement.setString(1, description);
 			resultSet = preparedStatement.executeQuery();
 			resultSetMetaData = resultSet.getMetaData();
@@ -451,15 +451,15 @@ public class Dados {
 
 	public String[][] findProductByDecriptionLike(boolean ordemAlfabetica, String description) {
 		String select = "SELECT * FROM produtos WHERE lower(descricao) LIKE lower(?) ",
-				order = "ORDER BY descricao";
+			order = "ORDER BY descricao";
 		if (ordemAlfabetica) {
 			select = select + order;
 		}
 		String[][] dadosRetorno = null;
 		try {
 			preparedStatement = connection.prepareStatement(select,
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
 			preparedStatement.setString(1, "%" + description + "%");
 			resultSet = preparedStatement.executeQuery();
 			resultSet.last();
@@ -517,6 +517,11 @@ public class Dados {
 	}
 
 	public Integer nextIdUser() {
+		// for MySQL
+		String lastIdMySQL = "SELECT AUTO_INCREMENT AS id FROM information_schema.TABLES\n"
+			+ " WHERE TABLE_SCHEMA = 'estoque' AND TABLE_NAME = 'usuarios'";
+		// for PostgreSQL
+		String lastIdPostgreSQL = "SELECT currval(pg_get_serial_sequence('usuarios','id')) AS id";
 		String select = "SELECT MAX(id) AS id FROM usuarios";
 		int newCode = 0;
 		try {
@@ -524,6 +529,7 @@ public class Dados {
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next() && resultSet != null) {
 				newCode = resultSet.getInt("id") + 1;
+//				newCode = resultSet.getInt("id"); // for lastIdUser
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -536,6 +542,11 @@ public class Dados {
 	}
 
 	public Integer nextIdProduct() {
+		// for MySQL
+		String lastIdtMySQL = "SELECT AUTO_INCREMENT AS id FROM information_schema.TABLES\n"
+			+ " WHERE TABLE_SCHEMA = 'estoque' AND TABLE_NAME = 'produtos'";
+		// for PostgreSQL
+		String lastIdPostgreSQL = "SELECT currval(pg_get_serial_sequence('produtos','id')) AS id";
 		String select = "SELECT MAX(id) AS id FROM produtos";
 		int newCode = 0;
 		try {
@@ -543,6 +554,7 @@ public class Dados {
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next() && resultSet != null) {
 				newCode = resultSet.getInt("id") + 1;
+//				newCode = resultSet.getInt("id"); // for lastIdProduct
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);

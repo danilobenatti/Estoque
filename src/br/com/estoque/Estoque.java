@@ -1,6 +1,7 @@
 package br.com.estoque;
 
 import br.com.estoque.tabelas.Produtos;
+import br.com.estoque.tabelas.Usuarios;
 import br.com.estoque.util.Dados;
 import br.com.estoque.util.Data;
 import br.com.estoque.util.Ferramentas;
@@ -24,6 +25,7 @@ public class Estoque extends javax.swing.JFrame {
 	private Timer tempo;
 	private Ferramentas tools;
 	private String[][] listaProdutos;
+	private String[][] listaUsuarios;
 	private Integer registroAtual;
 	private boolean novoRegistroCadastro;
 
@@ -93,9 +95,9 @@ public class Estoque extends javax.swing.JFrame {
 		String texto = "Não são aceitos campos vazios\n ou com valores diferentes!";
 		String mensagem = "SENHAS NÂO CONFEREM!";
 		if (this.campoSenhaCadastroUsuariosNovaSenha.getPassword().length != 0
-				&& this.campoSenhaCadastroUsuariosNovaSenha.getPassword() != null) {
+			&& this.campoSenhaCadastroUsuariosNovaSenha.getPassword() != null) {
 			if (!Arrays.equals(this.campoSenhaCadastroUsuariosNovaSenha.getPassword(),
-					this.campoSenhaCadastroUsuariosRepetirSenha.getPassword())) {
+				this.campoSenhaCadastroUsuariosRepetirSenha.getPassword())) {
 				JOptionPane.showMessageDialog(null, texto, mensagem, JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
@@ -112,8 +114,12 @@ public class Estoque extends javax.swing.JFrame {
 		}
 	}
 
-	private void zeraLista() {
+	private void zeraListaProdutos() {
 		this.listaProdutos = null;
+	}
+
+	private void zeraListaUsuarios() {
+		this.listaUsuarios = null;
 	}
 
 	private void registrosCadastroProdutos() {
@@ -121,14 +127,35 @@ public class Estoque extends javax.swing.JFrame {
 		this.novoRegistroCadastro = false;
 
 		this.campoTextoCadastroProdutosCodigo.setText(String.format("%04d",
-				Integer.parseInt(this.listaProdutos[this.registroAtual][0])));
+			Integer.parseInt(this.listaProdutos[this.registroAtual][0])));
 		this.campoTextoCadastroProdutosDescricao.setText(
-				this.listaProdutos[this.registroAtual][1]);
+			this.listaProdutos[this.registroAtual][1]);
 		this.campoTextoCadastroProdutosUnidade.setText(
-				this.listaProdutos[this.registroAtual][2]);
-		this.campoTextoFormatadoCadastroProdutosValorUnitario.setText(String.format("%,3.2f",
-				Double.parseDouble(this.listaProdutos[this.registroAtual][3])));
-		this.campoTextoCadastroProdutosObs.setText(this.listaProdutos[this.registroAtual][5]);
+			this.listaProdutos[this.registroAtual][2]);
+		this.campoTextoFormatadoCadastroProdutosValorUnitario.setText(
+			String.format("%,3.2f", Double.parseDouble(
+				this.listaProdutos[this.registroAtual][3])));
+		this.campoTextoCadastroProdutosObs.setText(
+			this.listaProdutos[this.registroAtual][5]);
+	}
+
+	private void registrosCadastroUsuarios() {
+
+		this.novoRegistroCadastro = false;
+
+		this.campoTextoCadastroUsuariosCodigo.setText(String.format("%04d",
+			Integer.parseInt(this.listaUsuarios[this.registroAtual][0])));
+		this.campoTextoCadastroUsuariosLogin.setText(
+			this.listaUsuarios[this.registroAtual][1]);
+		if (this.listaUsuarios[this.registroAtual][2].equals("0")) {
+			this.botaoRadioCadastroUsuariosAdministrador.setSelected(true);
+		} else {
+			this.botaoRadioCadastroUsuariosComum.setSelected(true);
+		}
+		this.campoSenhaCadastroUsuariosNovaSenha.setText(
+			this.listaUsuarios[this.registroAtual][3]);
+		this.campoSenhaCadastroUsuariosRepetirSenha.setText(
+			this.listaUsuarios[this.registroAtual][3]);
 	}
 
 	/**
@@ -787,24 +814,59 @@ public class Estoque extends javax.swing.JFrame {
 
         botaoCadastroUsuariosNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroNovo.png"))); // NOI18N
         botaoCadastroUsuariosNovo.setToolTipText("Novo usuário");
+        botaoCadastroUsuariosNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroUsuariosNovoActionPerformed(evt);
+            }
+        });
 
         botaoCadastroUsuariosSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroSalvar.png"))); // NOI18N
         botaoCadastroUsuariosSalvar.setToolTipText("Salvar usuário");
+        botaoCadastroUsuariosSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroUsuariosSalvarActionPerformed(evt);
+            }
+        });
 
         botaoCadastroUsuariosExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroExcluir.png"))); // NOI18N
         botaoCadastroUsuariosExcluir.setToolTipText("Excluir usuário");
+        botaoCadastroUsuariosExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroUsuariosExcluirActionPerformed(evt);
+            }
+        });
 
         botaoCadastroUsuariosPrimeiroRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroPrimeiro.png"))); // NOI18N
         botaoCadastroUsuariosPrimeiroRegistro.setToolTipText("Primeiro registro");
+        botaoCadastroUsuariosPrimeiroRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroUsuariosPrimeiroRegistroActionPerformed(evt);
+            }
+        });
 
         botaoCadastroUsuariosRegistroAnterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroAnterior.png"))); // NOI18N
         botaoCadastroUsuariosRegistroAnterior.setToolTipText("Registro anterior");
+        botaoCadastroUsuariosRegistroAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroUsuariosRegistroAnteriorActionPerformed(evt);
+            }
+        });
 
         botaoCadastroUsuariosProximoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroProximo.png"))); // NOI18N
         botaoCadastroUsuariosProximoRegistro.setToolTipText("Próximo registro");
+        botaoCadastroUsuariosProximoRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroUsuariosProximoRegistroActionPerformed(evt);
+            }
+        });
 
         botaoCadastroUsuariosUltimoRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/cadastroRegistroUltimo.png"))); // NOI18N
         botaoCadastroUsuariosUltimoRegistro.setToolTipText("Último registro");
+        botaoCadastroUsuariosUltimoRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCadastroUsuariosUltimoRegistroActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout janelaCadastroUsuariosLayout = new javax.swing.GroupLayout(janelaCadastroUsuarios.getContentPane());
         janelaCadastroUsuarios.getContentPane().setLayout(janelaCadastroUsuariosLayout);
@@ -1583,7 +1645,6 @@ public class Estoque extends javax.swing.JFrame {
             }
         });
 
-        barraFerramentasJanelaPrincipal.setFloatable(false);
         barraFerramentasJanelaPrincipal.setRollover(true);
         barraFerramentasJanelaPrincipal.setToolTipText("Barra de ferramentas do sistema");
 
@@ -1920,7 +1981,7 @@ public class Estoque extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
 		this.rotuloBarraStatusNomeAtividade.setText("Janela Principal");
 		this.reorganizarComponentes();
-		zeraLista();
+		zeraListaProdutos();
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void itemMenuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuCadastroProdutosActionPerformed
@@ -2012,7 +2073,7 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_rotuloJanelaPrincipalLogoMouseClicked
 
     private void janelaCadastroProdutosWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaCadastroProdutosWindowGainedFocus
-		Dados produtos = new Dados(new Produtos());
+		Dados produtos = new Dados();
 		this.listaProdutos = produtos.listAllProducts(false);
 
 		this.registroAtual = 0;
@@ -2041,27 +2102,34 @@ public class Estoque extends javax.swing.JFrame {
 
     private void campoTextoCadastroProdutosDescricaoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosDescricaoFocusLost
 		this.campoTextoCadastroProdutosDescricao
-				= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosDescricao, 30, "Descrição");
+			= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosDescricao, 30, "Descrição");
     }//GEN-LAST:event_campoTextoCadastroProdutosDescricaoFocusLost
 
     private void campoTextoCadastroProdutosUnidadeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosUnidadeFocusLost
 		this.campoTextoCadastroProdutosUnidade
-				= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosUnidade, 10, "Unidade");
+			= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosUnidade, 10, "Unidade");
     }//GEN-LAST:event_campoTextoCadastroProdutosUnidadeFocusLost
 
     private void campoTextoCadastroProdutosObsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroProdutosObsFocusLost
 		this.campoTextoCadastroProdutosObs
-				= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosObs, 50, "Obs");
+			= tools.verificaQuantidadeCaracteres(campoTextoCadastroProdutosObs, 50, "Obs");
     }//GEN-LAST:event_campoTextoCadastroProdutosObsFocusLost
 
     private void campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost
 		if (this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().isEmpty()) {
 			this.campoTextoFormatadoCadastroProdutosValorUnitario = tools.verificaValorMaximoNumerico(
-					campoTextoFormatadoCadastroProdutosValorUnitario, 99999.99, "Valor Unitário");
+				campoTextoFormatadoCadastroProdutosValorUnitario, 99999.99, "Valor Unitário");
 		}
     }//GEN-LAST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost
 
     private void janelaCadastroUsuariosWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaCadastroUsuariosWindowGainedFocus
+		Dados usuarios = new Dados();
+		this.listaUsuarios = usuarios.listAllUsers(false);
+		this.registroAtual = 0;
+
+		this.registroAtual = 0;
+		registrosCadastroUsuarios();
+
 		this.rotuloBarraStatusNomeAtividade.setText("Cadastro de Usuário");
 		this.setVisible(true);
 		this.campoTextoCadastroUsuariosLogin.grabFocus();
@@ -2073,7 +2141,7 @@ public class Estoque extends javax.swing.JFrame {
 
     private void campoTextoCadastroUsuariosLoginFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroUsuariosLoginFocusLost
 		this.campoTextoCadastroUsuariosLogin
-				= tools.verificaQuantidadeCaracteres(campoTextoCadastroUsuariosLogin, 10, "Login");
+			= tools.verificaQuantidadeCaracteres(campoTextoCadastroUsuariosLogin, 10, "Login");
     }//GEN-LAST:event_campoTextoCadastroUsuariosLoginFocusLost
 
     private void campoSenhaCadastroUsuariosNovaSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosNovaSenhaFocusGained
@@ -2082,7 +2150,7 @@ public class Estoque extends javax.swing.JFrame {
 
     private void campoSenhaCadastroUsuariosNovaSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosNovaSenhaFocusLost
 		this.campoSenhaCadastroUsuariosNovaSenha
-				= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosNovaSenha, 10, "Nova Senha");
+			= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosNovaSenha, 10, "Nova Senha");
     }//GEN-LAST:event_campoSenhaCadastroUsuariosNovaSenhaFocusLost
 
     private void campoSenhaCadastroUsuariosRepetirSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusGained
@@ -2091,7 +2159,7 @@ public class Estoque extends javax.swing.JFrame {
 
     private void campoSenhaCadastroUsuariosRepetirSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusLost
 		this.campoSenhaCadastroUsuariosRepetirSenha
-				= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosRepetirSenha, 10, "Repitir Senha");
+			= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosRepetirSenha, 10, "Repitir Senha");
 		this.confereNovaSenha();
     }//GEN-LAST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusLost
 
@@ -2180,20 +2248,20 @@ public class Estoque extends javax.swing.JFrame {
 		if (botaoRadioBackupRestaurar.isSelected()) {
 			if (tools.BackupRestaurar(rotuloBackupDestino.getText().trim()) == 0) {
 				JOptionPane.showMessageDialog(null, "Restauração realizada com sucesso!",
-						"RESTAURAÇÂO CONCLUÍDA", JOptionPane.INFORMATION_MESSAGE);
+					"RESTAURAÇÂO CONCLUÍDA", JOptionPane.INFORMATION_MESSAGE);
 				this.janelaBackup.dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Erro ao restaurar os dados",
-						"ERRO AO RESTAURAR", JOptionPane.ERROR_MESSAGE);
+					"ERRO AO RESTAURAR", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (botaoRadioBackupBackup.isSelected()) {
 			if (tools.BackupEfetuar(rotuloBackupDestino.getText().trim()) == 0) {
 				JOptionPane.showMessageDialog(null, "Backup realizado com sucesso!",
-						"BACKUP CONCLUÍDO", JOptionPane.INFORMATION_MESSAGE);
+					"BACKUP CONCLUÍDO", JOptionPane.INFORMATION_MESSAGE);
 				this.janelaBackup.dispose();
 			} else {
 				JOptionPane.showMessageDialog(null, "Erro no backup dos dados",
-						"ERRO NO BACKUP", JOptionPane.ERROR_MESSAGE);
+					"ERRO NO BACKUP", JOptionPane.ERROR_MESSAGE);
 			}
 		}
     }//GEN-LAST:event_botaoBackupConfirmarActionPerformed
@@ -2272,55 +2340,142 @@ public class Estoque extends javax.swing.JFrame {
 
     private void botaoCadastroProdutosSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosSalvarActionPerformed
 		if (this.campoTextoCadastroProdutosDescricao.getText().equals("")
-				|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
+			|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Não é permitido campos em branco, nulos ou vazio.",
-					"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
+				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
 		} else {
-			//Integer id, String descricao, String unidade, Double valorUnitario, String obs
 			Dados dados = new Dados();
 			Produtos produto = new Produtos(
-					Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText()),
-					this.campoTextoCadastroProdutosDescricao.getText(),
-					this.campoTextoCadastroProdutosUnidade.getText(),
-					Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().replace(",", ".")),
-					this.campoTextoCadastroProdutosObs.getText());
+				Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText()),
+				this.campoTextoCadastroProdutosDescricao.getText(),
+				this.campoTextoCadastroProdutosUnidade.getText(),
+				Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().replace(",", ".")),
+				this.campoTextoCadastroProdutosObs.getText());
 			if (this.novoRegistroCadastro) {
 				dados.insertProduct(produto);
 			} else {
 				dados.updateProduct(produto);
 			}
 			JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!",
-					"REGISTRO GRAVADO", JOptionPane.INFORMATION_MESSAGE);
+				"REGISTRO GRAVADO", JOptionPane.INFORMATION_MESSAGE);
 		}
     }//GEN-LAST:event_botaoCadastroProdutosSalvarActionPerformed
 
     private void botaoCadastroProdutosExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosExcluirActionPerformed
 		if (this.campoTextoCadastroProdutosDescricao.getText().equals("")
-				|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
+			|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
 			JOptionPane.showMessageDialog(null,
-					"Não é permitido campos em branco, nulos ou vazio.",
-					"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
+				"Não é permitido campos em branco, nulos ou vazio.",
+				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
 		} else {
 			int idProduct = Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText());
 			String descProduct = this.campoTextoCadastroProdutosDescricao.getText();
-			Dados produtos = new Dados(new Produtos(idProduct));
+			Dados produto = new Dados(new Produtos(idProduct));
 			int opcao = JOptionPane.showConfirmDialog(null,
-					"Ao confirmar a operação, não será possível recuperar os dados\n"
-					+ "Deseja excluir o produto id: " + idProduct + ", " + descProduct,
-					"EXCLUIR REGISTRO DE PRODUTO?", JOptionPane.YES_NO_OPTION);
+				"Ao confirmar a operação, não será possível recuperar os dados\n"
+				+ "Deseja excluir o produto id: " + idProduct + ", " + descProduct,
+				"EXCLUIR REGISTRO DE PRODUTO?", JOptionPane.YES_NO_OPTION);
 			if (opcao == JOptionPane.YES_OPTION) {
-				produtos.deleteOneProductById(idProduct);
+				produto.deleteOneProductById(idProduct);
 				JOptionPane.showMessageDialog(null,
-						"O produto foi excluído",
-						"REGISTRO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
+					"O produto foi excluído",
+					"REGISTRO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
 			}
 			if (opcao == JOptionPane.NO_OPTION) {
 				JOptionPane.showMessageDialog(null,
-						"O produto não foi excluído",
-						"REGISTRO MANTIDO!", JOptionPane.INFORMATION_MESSAGE);
+					"O produto não foi excluído",
+					"REGISTRO MANTIDO!", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
     }//GEN-LAST:event_botaoCadastroProdutosExcluirActionPerformed
+
+    private void botaoCadastroUsuariosPrimeiroRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosPrimeiroRegistroActionPerformed
+		this.registroAtual = 0;
+		registrosCadastroUsuarios();
+    }//GEN-LAST:event_botaoCadastroUsuariosPrimeiroRegistroActionPerformed
+
+    private void botaoCadastroUsuariosUltimoRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosUltimoRegistroActionPerformed
+		this.registroAtual = this.listaUsuarios.length - 1;
+		registrosCadastroUsuarios();
+    }//GEN-LAST:event_botaoCadastroUsuariosUltimoRegistroActionPerformed
+
+    private void botaoCadastroUsuariosRegistroAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosRegistroAnteriorActionPerformed
+		this.registroAtual--;
+		if (this.registroAtual < 0) {
+			this.registroAtual = 0;
+		}
+		registrosCadastroUsuarios();
+    }//GEN-LAST:event_botaoCadastroUsuariosRegistroAnteriorActionPerformed
+
+    private void botaoCadastroUsuariosProximoRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosProximoRegistroActionPerformed
+		this.registroAtual++;
+		int ultimo = this.listaUsuarios.length - 1;
+		if (this.registroAtual > ultimo) {
+			this.registroAtual = ultimo;
+		}
+		registrosCadastroUsuarios();
+    }//GEN-LAST:event_botaoCadastroUsuariosProximoRegistroActionPerformed
+
+    private void botaoCadastroUsuariosNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosNovoActionPerformed
+		reorganizarComponentes();
+		this.novoRegistroCadastro = true;
+		Dados usuarios = new Dados();
+		this.campoTextoCadastroUsuariosCodigo.setText(String.format("%04d", usuarios.nextIdUser()));
+		this.campoTextoCadastroUsuariosLogin.grabFocus();
+    }//GEN-LAST:event_botaoCadastroUsuariosNovoActionPerformed
+
+    private void botaoCadastroUsuariosSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosSalvarActionPerformed
+		if (this.campoTextoCadastroUsuariosLogin.getText().equals("")
+			|| this.campoSenhaCadastroUsuariosNovaSenha.getPassword().equals("")
+			|| this.campoSenhaCadastroUsuariosRepetirSenha.getPassword().equals("")) {
+			JOptionPane.showMessageDialog(null, "Não é permitido campos em branco, nulos ou vazio.",
+				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
+		} else {
+			Dados dados = new Dados();
+			/**
+			 * (Integer id, String login, Integer nivel, String senha)
+			 */
+			Usuarios usuario = new Usuarios(
+				Integer.parseInt(this.campoTextoCadastroUsuariosCodigo.getText()), 
+				this.campoTextoCadastroUsuariosLogin.getText(), 
+				this.botaoRadioCadastroUsuariosAdministrador.isSelected() ? 0 : 1, 
+				new String(this.campoSenhaCadastroUsuariosNovaSenha.getPassword()));
+			if (this.novoRegistroCadastro) {
+				dados.insertUser(usuario);
+			} else {
+				dados.updateUser(usuario);
+			}
+			JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!",
+				"REGISTRO GRAVADO", JOptionPane.INFORMATION_MESSAGE);
+		}
+    }//GEN-LAST:event_botaoCadastroUsuariosSalvarActionPerformed
+
+    private void botaoCadastroUsuariosExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosExcluirActionPerformed
+        if (this.campoTextoCadastroUsuariosLogin.getText().equals("")) {
+			JOptionPane.showMessageDialog(null,
+				"Não é permitido campos em branco, nulos ou vazio.",
+				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
+		} else {
+			int idUser = Integer.parseInt(this.campoTextoCadastroUsuariosCodigo.getText());
+			String loginUser = this.campoTextoCadastroUsuariosLogin.getText();
+			Dados usuario = new Dados(new Produtos(idUser));
+			int opcao = JOptionPane.showConfirmDialog(null,
+				"Ao confirmar a operação, não será possível recuperar os dados\n"
+				+ "Deseja excluir o usuário id: " + idUser + ", " + loginUser,
+				"EXCLUIR REGISTRO DE USUÁRIO?", JOptionPane.YES_NO_OPTION);
+			if (opcao == JOptionPane.YES_OPTION) {
+				usuario.deleteOneUserById(idUser);
+				JOptionPane.showMessageDialog(null,
+					"O usuário foi excluído",
+					"REGISTRO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
+			}
+			if (opcao == JOptionPane.NO_OPTION) {
+				JOptionPane.showMessageDialog(null,
+					"O produto não foi excluído",
+					"REGISTRO MANTIDO!", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+    }//GEN-LAST:event_botaoCadastroUsuariosExcluirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;
