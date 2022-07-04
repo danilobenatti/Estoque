@@ -86,22 +86,24 @@ public class Ferramentas {
 
 	public JFormattedTextField verificaValorMaximoNumerico(JFormattedTextField objeto,
 			double valorMaximo, String campo) {
-		String valor = objeto.getText().replace(".", "");
-		if (isNumero(valor)) {
-			if ((Double.parseDouble(valor.replace(",", ".")) < 0)
+		if (objeto.getValue() != null) {
+			String valor = objeto.getText().replace(".", "");
+			if (isNumero(valor)) {
+				if ((Double.parseDouble(valor.replace(",", ".")) < 0)
 					|| (Double.parseDouble(valor.replace(",", ".")) > valorMaximo)) {
-				JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog(null,
 						"Não é permitido um valor menor que 0.00 \nou maior que "
 						+ valorMaximo + " para " + campo + "!",
 						"VALOR NUMÉRICO INVÁLIDO", JOptionPane.ERROR_MESSAGE);
+					objeto.grabFocus();
+					objeto.selectAll();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Valor inválido para " + campo + "!");
+				objeto.setText("0,00");
 				objeto.grabFocus();
 				objeto.selectAll();
 			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Valor inválido para " + campo + "!");
-			objeto.setText("0,00");
-			objeto.grabFocus();
-			objeto.selectAll();
 		}
 		return objeto;
 	}

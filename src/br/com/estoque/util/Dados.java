@@ -9,6 +9,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -98,7 +100,7 @@ public class Dados {
 		}
 	}
 
-	public void insertUser(Usuarios usuario) {
+	public void insertOneUser(Usuarios usuario) {
 		String insert = "INSERT INTO usuarios(login, nivel, senha) VALUES (?, ?, ?)";
 		try {
 			preparedStatement = connection.prepareStatement(insert,
@@ -147,7 +149,7 @@ public class Dados {
 		}
 	}
 
-	public void insertProduct(Produtos produto) {
+	public void insertOneProduct(Produtos produto) {
 		String insert = "INSERT INTO produtos "
 			+ "(descricao, unidade, valorUnitario, obs) VALUES (?, ?, ?, ?)";
 		try {
@@ -198,7 +200,7 @@ public class Dados {
 		}
 	}
 
-	public void updateUser(Usuarios usuario) {
+	public void updateOneUser(Usuarios usuario) {
 		String update = "UPDATE usuarios SET "
 			+ "login = ?, nivel = ?, senha = ? WHERE id = ?";
 		try {
@@ -215,7 +217,7 @@ public class Dados {
 		}
 	}
 
-	public void updateProduct(Produtos produto) {
+	public void updateOneProduct(Produtos produto) {
 		String update = "UPDATE produtos SET "
 			+ "descricao = ?, unidade = ?, valorUnitario = ?, "
 			+ "quantidade = ?, obs = ? WHERE id = ?";
@@ -522,14 +524,28 @@ public class Dados {
 			+ " WHERE TABLE_SCHEMA = 'estoque' AND TABLE_NAME = 'usuarios'";
 		// for PostgreSQL
 		String lastIdPostgreSQL = "SELECT currval(pg_get_serial_sequence('usuarios','id')) AS id";
-		String select = "SELECT MAX(id) AS id FROM usuarios";
+		// for Firebird 4.0
+		String lastId = "SELECT MAX(id) AS id FROM usuarios";
 		int newCode = 0;
 		try {
-			preparedStatement = connection.prepareStatement(select);
+			String databaseProductName = connection.getMetaData().getDatabaseProductName();
+			switch (databaseProductName) {
+				case "MySQL":
+					preparedStatement = connection.prepareStatement(lastIdMySQL);
+					break;
+				case "PostgreSQL":
+					preparedStatement = connection.prepareStatement(lastIdPostgreSQL);
+					break;
+				case "Firebird 4.0":
+					preparedStatement = connection.prepareStatement(lastId);
+					break;
+				default:
+					throw new AssertionError();
+			}
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next() && resultSet != null) {
-				newCode = resultSet.getInt("id") + 1;
-//				newCode = resultSet.getInt("id"); // for lastIdUser
+//				newCode = resultSet.getInt("id") + 1;
+				newCode = resultSet.getInt("id"); // for lastIdUser
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -543,18 +559,32 @@ public class Dados {
 
 	public Integer nextIdProduct() {
 		// for MySQL
-		String lastIdtMySQL = "SELECT AUTO_INCREMENT AS id FROM information_schema.TABLES\n"
+		String lastIdMySQL = "SELECT AUTO_INCREMENT AS id FROM information_schema.TABLES\n"
 			+ " WHERE TABLE_SCHEMA = 'estoque' AND TABLE_NAME = 'produtos'";
 		// for PostgreSQL
 		String lastIdPostgreSQL = "SELECT currval(pg_get_serial_sequence('produtos','id')) AS id";
-		String select = "SELECT MAX(id) AS id FROM produtos";
+		// for Firebird 4.0
+		String lastId = "SELECT MAX(id) AS id FROM produtos";
 		int newCode = 0;
 		try {
-			preparedStatement = connection.prepareStatement(select);
+			String databaseProductName = connection.getMetaData().getDatabaseProductName();
+			switch (databaseProductName) {
+				case "MySQL":
+					preparedStatement = connection.prepareStatement(lastIdMySQL);
+					break;
+				case "PostgreSQL":
+					preparedStatement = connection.prepareStatement(lastIdPostgreSQL);
+					break;
+				case "Firebird 4.0":
+					preparedStatement = connection.prepareStatement(lastId);
+					break;
+				default:
+					throw new AssertionError();
+			}
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next() && resultSet != null) {
-				newCode = resultSet.getInt("id") + 1;
-//				newCode = resultSet.getInt("id"); // for lastIdProduct
+//				newCode = resultSet.getInt("id") + 1;
+				newCode = resultSet.getInt("id"); // for lastIdProduct
 			}
 		} catch (SQLException ex) {
 			printSQLException(ex);
@@ -564,6 +594,26 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement, resultSet);
 		}
 		return newCode;
+	}
+
+	public void refreshTableProducts() {
+		try {
+			String sql = "ANALYZE TABLE produtos;";
+			preparedStatement = connection.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+		} catch (SQLException ex) {
+			Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
+
+	public void refreshTableUsers() {
+		try {
+			String sql = "ANALYZE TABLE usuarios;";
+			preparedStatement = connection.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+		} catch (SQLException ex) {
+			Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	public void create() {

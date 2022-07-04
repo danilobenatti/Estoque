@@ -22,7 +22,6 @@ public class TesteConsultaDadosProdutos {
 			System.out.println(" <- Dados do produto " + data.get(0));
 		}
 
-		Produtos foundProduct = new Produtos();
 		List<String> searchProduct = Arrays.asList(
 				new Dados().findProductByDescription("Leite Semidesnatado 1L"));
 		List<String[]> searchProductLike = Arrays.asList(

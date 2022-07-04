@@ -22,7 +22,6 @@ public class TesteConsultaDadosUsuarios {
 			System.out.println(" <- Dados do usuário " + data.get(0));
 		}
 
-		Usuarios foundUser = new Usuarios();
 		List<String> searchUser = Arrays.asList(
 				new Dados().findUserByLogin("João"));
 		List<String[]> searchUserLike = Arrays.asList(
@@ -36,9 +35,9 @@ public class TesteConsultaDadosUsuarios {
 			for (String value : searchUser) {
 				System.out.println(value);
 			}
-			System.out.println("===== Exemplo 3 =====");
+			System.out.println("===== Exemplo 3 Search User =====");
 			searchUser.forEach(value -> System.out.println(value));
-			System.out.println("===== Exemplo 4 =====");
+			System.out.println("===== Exemplo 4 Search User Like =====");
 			searchUserLike.forEach(value -> System.out.println(Arrays.toString(value)));
 		}
 

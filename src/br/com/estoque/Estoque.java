@@ -91,18 +91,23 @@ public class Estoque extends javax.swing.JFrame {
 		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
 	}
 
-	private void confereNovaSenha() {
-		String texto = "Não são aceitos campos vazios\n ou com valores diferentes!";
-		String mensagem = "SENHAS NÂO CONFEREM!";
+	private boolean confereNovaSenha() {
+		String texto = "Senha com valores incorretos!";
+		String mensagem = "SENHA NÂO VÁLIDA!";
+		boolean check = false;
 		if (this.campoSenhaCadastroUsuariosNovaSenha.getPassword().length != 0
 			&& this.campoSenhaCadastroUsuariosNovaSenha.getPassword() != null) {
 			if (!Arrays.equals(this.campoSenhaCadastroUsuariosNovaSenha.getPassword(),
 				this.campoSenhaCadastroUsuariosRepetirSenha.getPassword())) {
 				JOptionPane.showMessageDialog(null, texto, mensagem, JOptionPane.ERROR_MESSAGE);
+				return check;
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, texto, mensagem, JOptionPane.ERROR_MESSAGE);
+			return check;
 		}
+		check = true;
+		return check;
 	}
 
 	private void movimentoOpcoesEstoque() {
@@ -156,6 +161,64 @@ public class Estoque extends javax.swing.JFrame {
 			this.listaUsuarios[this.registroAtual][3]);
 		this.campoSenhaCadastroUsuariosRepetirSenha.setText(
 			this.listaUsuarios[this.registroAtual][3]);
+	}
+
+	private boolean verificaCadastroUsuario() {
+		boolean check = false;
+		if (this.campoTextoCadastroUsuariosLogin.getText().equals("")
+			|| this.campoSenhaCadastroUsuariosNovaSenha.getPassword().equals("")
+			|| this.campoSenhaCadastroUsuariosRepetirSenha.getPassword().equals("")) {
+			JOptionPane.showMessageDialog(null,
+				"Campos: Login, Nova Senha e Repetir Senha; são obrigatórios.",
+				"DADOS OBRIGATÓRIOS!", JOptionPane.WARNING_MESSAGE);
+			return check;
+		}
+		if (this.campoTextoCadastroUsuariosLogin.getText().length() > 10) {
+			JOptionPane.showMessageDialog(null,
+				"Campos de login excedem máximo de 10 caractes.",
+				"LOGIN INCORRETO!", JOptionPane.WARNING_MESSAGE);
+			return check;
+		}
+		if (this.campoSenhaCadastroUsuariosNovaSenha.getPassword().length > 10
+			|| this.campoSenhaCadastroUsuariosRepetirSenha.getPassword().length > 10) {
+			JOptionPane.showMessageDialog(null,
+				"Campos de senha excedem máximo de 10 caractes.",
+				"SENHA INCORRETA!", JOptionPane.WARNING_MESSAGE);
+			return check;
+		}
+		check = confereNovaSenha() && !check;
+		return check;
+	}
+
+	private boolean verificaCadastroProduto() {
+		boolean check = false;
+		if (this.campoTextoCadastroProdutosDescricao.getText().equals("")
+			|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
+			JOptionPane.showMessageDialog(null,
+				"Campos: Descrição e Unidade; são obrigatórios.",
+				"DADOS OBRIGATÓRIOS!", JOptionPane.WARNING_MESSAGE);
+			return check;
+		}
+		if (this.campoTextoCadastroProdutosDescricao.getText().length() > 30) {
+			JOptionPane.showMessageDialog(null,
+				"Campo de descrição excedem máximo de 30 caractes.",
+				"LIMITE DE CARACTERES!", JOptionPane.WARNING_MESSAGE);
+			return check;
+		}
+		if (this.campoTextoCadastroProdutosUnidade.getText().length() > 10) {
+			JOptionPane.showMessageDialog(null,
+				"Campo de unidade excedem máximo de 10 caractes.",
+				"LIMITE DE CARACTERES!", JOptionPane.WARNING_MESSAGE);
+			return check;
+		}
+		if (this.campoTextoCadastroProdutosObs.getText().length() > 50) {
+			JOptionPane.showMessageDialog(null,
+				"Campo de observações excedem máximo de 50 caractes.",
+				"LIMITE DE CARACTERES!", JOptionPane.WARNING_MESSAGE);
+			return check;
+		}
+		check = true;
+		return check;
 	}
 
 	/**
@@ -1982,6 +2045,7 @@ public class Estoque extends javax.swing.JFrame {
 		this.rotuloBarraStatusNomeAtividade.setText("Janela Principal");
 		this.reorganizarComponentes();
 		zeraListaProdutos();
+		zeraListaUsuarios();
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void itemMenuCadastroProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuCadastroProdutosActionPerformed
@@ -2073,8 +2137,7 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_rotuloJanelaPrincipalLogoMouseClicked
 
     private void janelaCadastroProdutosWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaCadastroProdutosWindowGainedFocus
-		Dados produtos = new Dados();
-		this.listaProdutos = produtos.listAllProducts(false);
+		this.listaProdutos = new Dados().listAllProducts(false);
 
 		this.registroAtual = 0;
 		registrosCadastroProdutos();
@@ -2123,9 +2186,7 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoTextoFormatadoCadastroProdutosValorUnitarioFocusLost
 
     private void janelaCadastroUsuariosWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaCadastroUsuariosWindowGainedFocus
-		Dados usuarios = new Dados();
-		this.listaUsuarios = usuarios.listAllUsers(false);
-		this.registroAtual = 0;
+		this.listaUsuarios = new Dados().listAllUsers(false);
 
 		this.registroAtual = 0;
 		registrosCadastroUsuarios();
@@ -2140,8 +2201,10 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoTextoCadastroUsuariosLoginFocusGained
 
     private void campoTextoCadastroUsuariosLoginFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoTextoCadastroUsuariosLoginFocusLost
-		this.campoTextoCadastroUsuariosLogin
-			= tools.verificaQuantidadeCaracteres(campoTextoCadastroUsuariosLogin, 10, "Login");
+		if (!this.campoTextoCadastroUsuariosLogin.getText().isBlank()) {
+			this.campoTextoCadastroUsuariosLogin
+				= tools.verificaQuantidadeCaracteres(campoTextoCadastroUsuariosLogin, 10, "Login");
+		}
     }//GEN-LAST:event_campoTextoCadastroUsuariosLoginFocusLost
 
     private void campoSenhaCadastroUsuariosNovaSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosNovaSenhaFocusGained
@@ -2149,8 +2212,10 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoSenhaCadastroUsuariosNovaSenhaFocusGained
 
     private void campoSenhaCadastroUsuariosNovaSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosNovaSenhaFocusLost
-		this.campoSenhaCadastroUsuariosNovaSenha
-			= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosNovaSenha, 10, "Nova Senha");
+		if (this.campoSenhaCadastroUsuariosNovaSenha.getPassword().length > 0) {
+			this.campoSenhaCadastroUsuariosNovaSenha
+				= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosNovaSenha, 10, "Nova Senha");
+		}
     }//GEN-LAST:event_campoSenhaCadastroUsuariosNovaSenhaFocusLost
 
     private void campoSenhaCadastroUsuariosRepetirSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusGained
@@ -2158,9 +2223,11 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusGained
 
     private void campoSenhaCadastroUsuariosRepetirSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusLost
-		this.campoSenhaCadastroUsuariosRepetirSenha
-			= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosRepetirSenha, 10, "Repitir Senha");
-		this.confereNovaSenha();
+		if (this.campoSenhaCadastroUsuariosRepetirSenha.getPassword().length > 0) {
+			this.campoSenhaCadastroUsuariosRepetirSenha
+				= tools.verificaQuantidadeCaracteres(campoSenhaCadastroUsuariosRepetirSenha, 10, "Repitir Senha");
+			this.confereNovaSenha();
+		}
     }//GEN-LAST:event_campoSenhaCadastroUsuariosRepetirSenhaFocusLost
 
     private void janelaMovimentoOpcoesEstoqueWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaMovimentoOpcoesEstoqueWindowGainedFocus
@@ -2333,31 +2400,30 @@ public class Estoque extends javax.swing.JFrame {
 		reorganizarComponentes();
 		this.novoRegistroCadastro = true;
 		Dados produtos = new Dados();
+		produtos.refreshTableProducts();
 		this.campoTextoCadastroProdutosCodigo.setText(String.format("%04d", produtos.nextIdProduct()));
 		this.campoTextoFormatadoCadastroProdutosValorUnitario.setText("0,00");
 		this.campoTextoCadastroProdutosDescricao.grabFocus();
     }//GEN-LAST:event_botaoCadastroProdutosNovoActionPerformed
 
     private void botaoCadastroProdutosSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosSalvarActionPerformed
-		if (this.campoTextoCadastroProdutosDescricao.getText().equals("")
-			|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
-			JOptionPane.showMessageDialog(null, "Não é permitido campos em branco, nulos ou vazio.",
-				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
-		} else {
+		if (verificaCadastroProduto() != false) {
 			Dados dados = new Dados();
 			Produtos produto = new Produtos(
 				Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText()),
 				this.campoTextoCadastroProdutosDescricao.getText(),
 				this.campoTextoCadastroProdutosUnidade.getText(),
-				Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().replace(",", ".")),
+				(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().isBlank()) ? 0.0
+				: Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().replace(",", ".")),
 				this.campoTextoCadastroProdutosObs.getText());
 			if (this.novoRegistroCadastro) {
-				dados.insertProduct(produto);
+				dados.insertOneProduct(produto);
 			} else {
-				dados.updateProduct(produto);
+				dados.updateOneProduct(produto);
 			}
-			JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!",
-				"REGISTRO GRAVADO", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+				"Dados de produto gravados com sucesso!",
+				"REGISTRO DE PRODUTO", JOptionPane.INFORMATION_MESSAGE);
 		}
     }//GEN-LAST:event_botaoCadastroProdutosSalvarActionPerformed
 
@@ -2365,26 +2431,26 @@ public class Estoque extends javax.swing.JFrame {
 		if (this.campoTextoCadastroProdutosDescricao.getText().equals("")
 			|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
 			JOptionPane.showMessageDialog(null,
-				"Não é permitido campos em branco, nulos ou vazio.",
-				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
+				"Necessário informar descrição e unidade do produto.",
+				"INFORMAR DADOS!", JOptionPane.WARNING_MESSAGE);
 		} else {
 			int idProduct = Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText());
 			String descProduct = this.campoTextoCadastroProdutosDescricao.getText();
 			Dados produto = new Dados(new Produtos(idProduct));
 			int opcao = JOptionPane.showConfirmDialog(null,
-				"Ao confirmar a operação, não será possível recuperar os dados\n"
-				+ "Deseja excluir o produto id: " + idProduct + ", " + descProduct,
-				"EXCLUIR REGISTRO DE PRODUTO?", JOptionPane.YES_NO_OPTION);
+				"Ao confirmar, não será possível recuperar os dados do produto:\n"
+				+ "id: " + idProduct + ", descrição: " + descProduct + "?",
+				"DESEJA EXCLUIR O PRODUTO?", JOptionPane.YES_NO_OPTION);
 			if (opcao == JOptionPane.YES_OPTION) {
 				produto.deleteOneProductById(idProduct);
 				JOptionPane.showMessageDialog(null,
-					"O produto foi excluído",
-					"REGISTRO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
+					"O produto foi excluído.",
+					"PRODUTO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
 			}
 			if (opcao == JOptionPane.NO_OPTION) {
 				JOptionPane.showMessageDialog(null,
-					"O produto não foi excluído",
-					"REGISTRO MANTIDO!", JOptionPane.INFORMATION_MESSAGE);
+					"O produto não foi excluído.",
+					"PRODUTO MANTIDO!", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
     }//GEN-LAST:event_botaoCadastroProdutosExcluirActionPerformed
@@ -2420,59 +2486,53 @@ public class Estoque extends javax.swing.JFrame {
 		reorganizarComponentes();
 		this.novoRegistroCadastro = true;
 		Dados usuarios = new Dados();
+		usuarios.refreshTableUsers();
 		this.campoTextoCadastroUsuariosCodigo.setText(String.format("%04d", usuarios.nextIdUser()));
 		this.campoTextoCadastroUsuariosLogin.grabFocus();
     }//GEN-LAST:event_botaoCadastroUsuariosNovoActionPerformed
 
     private void botaoCadastroUsuariosSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosSalvarActionPerformed
-		if (this.campoTextoCadastroUsuariosLogin.getText().equals("")
-			|| this.campoSenhaCadastroUsuariosNovaSenha.getPassword().equals("")
-			|| this.campoSenhaCadastroUsuariosRepetirSenha.getPassword().equals("")) {
-			JOptionPane.showMessageDialog(null, "Não é permitido campos em branco, nulos ou vazio.",
-				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
-		} else {
+		if (verificaCadastroUsuario()) {
 			Dados dados = new Dados();
-			/**
-			 * (Integer id, String login, Integer nivel, String senha)
-			 */
 			Usuarios usuario = new Usuarios(
-				Integer.parseInt(this.campoTextoCadastroUsuariosCodigo.getText()), 
-				this.campoTextoCadastroUsuariosLogin.getText(), 
-				this.botaoRadioCadastroUsuariosAdministrador.isSelected() ? 0 : 1, 
+				Integer.parseInt(this.campoTextoCadastroUsuariosCodigo.getText()),
+				this.campoTextoCadastroUsuariosLogin.getText(),
+				this.botaoRadioCadastroUsuariosAdministrador.isSelected() ? 0 : 1,
 				new String(this.campoSenhaCadastroUsuariosNovaSenha.getPassword()));
 			if (this.novoRegistroCadastro) {
-				dados.insertUser(usuario);
+				dados.insertOneUser(usuario);
 			} else {
-				dados.updateUser(usuario);
+				dados.updateOneUser(usuario);
 			}
-			JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!",
-				"REGISTRO GRAVADO", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+				"Dados de usuário gravados com sucesso!",
+				"REGISTRO DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
 		}
     }//GEN-LAST:event_botaoCadastroUsuariosSalvarActionPerformed
 
     private void botaoCadastroUsuariosExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroUsuariosExcluirActionPerformed
-        if (this.campoTextoCadastroUsuariosLogin.getText().equals("")) {
+		if (this.campoTextoCadastroUsuariosLogin.getText().equals("")) {
 			JOptionPane.showMessageDialog(null,
-				"Não é permitido campos em branco, nulos ou vazio.",
+				"Necessário informar login de usuário.",
 				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
 		} else {
 			int idUser = Integer.parseInt(this.campoTextoCadastroUsuariosCodigo.getText());
 			String loginUser = this.campoTextoCadastroUsuariosLogin.getText();
 			Dados usuario = new Dados(new Produtos(idUser));
 			int opcao = JOptionPane.showConfirmDialog(null,
-				"Ao confirmar a operação, não será possível recuperar os dados\n"
-				+ "Deseja excluir o usuário id: " + idUser + ", " + loginUser,
-				"EXCLUIR REGISTRO DE USUÁRIO?", JOptionPane.YES_NO_OPTION);
+				"Ao confirmar, não será possível recuperar os dados do usuário:\n"
+				+ "id: " + idUser + ", nome: " + loginUser + "?",
+				"DESEJA EXCLUIR O USUÁRIO?", JOptionPane.YES_NO_OPTION);
 			if (opcao == JOptionPane.YES_OPTION) {
 				usuario.deleteOneUserById(idUser);
 				JOptionPane.showMessageDialog(null,
-					"O usuário foi excluído",
-					"REGISTRO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
+					"O usuário foi excluído.",
+					"USUÁRIO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
 			}
 			if (opcao == JOptionPane.NO_OPTION) {
 				JOptionPane.showMessageDialog(null,
-					"O produto não foi excluído",
-					"REGISTRO MANTIDO!", JOptionPane.INFORMATION_MESSAGE);
+					"O usuário não foi excluído.",
+					"USUÁRIO MANTIDO!", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
     }//GEN-LAST:event_botaoCadastroUsuariosExcluirActionPerformed
