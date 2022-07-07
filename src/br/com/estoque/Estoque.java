@@ -95,8 +95,7 @@ public class Estoque extends javax.swing.JFrame {
 		String texto = "Senha com valores incorretos!";
 		String mensagem = "SENHA NÂO VÁLIDA!";
 		boolean check = false;
-		if (this.campoSenhaCadastroUsuariosNovaSenha.getPassword().length != 0
-			&& this.campoSenhaCadastroUsuariosNovaSenha.getPassword() != null) {
+		if (this.campoSenhaCadastroUsuariosNovaSenha.getPassword().length > 0) {
 			if (!Arrays.equals(this.campoSenhaCadastroUsuariosNovaSenha.getPassword(),
 				this.campoSenhaCadastroUsuariosRepetirSenha.getPassword())) {
 				JOptionPane.showMessageDialog(null, texto, mensagem, JOptionPane.ERROR_MESSAGE);
@@ -166,8 +165,8 @@ public class Estoque extends javax.swing.JFrame {
 	private boolean verificaCadastroUsuario() {
 		boolean check = false;
 		if (this.campoTextoCadastroUsuariosLogin.getText().equals("")
-			|| this.campoSenhaCadastroUsuariosNovaSenha.getPassword().equals("")
-			|| this.campoSenhaCadastroUsuariosRepetirSenha.getPassword().equals("")) {
+			|| this.campoSenhaCadastroUsuariosNovaSenha.getPassword().length <= 0
+			|| this.campoSenhaCadastroUsuariosRepetirSenha.getPassword().length <= 0) {
 			JOptionPane.showMessageDialog(null,
 				"Campos: Login, Nova Senha e Repetir Senha; são obrigatórios.",
 				"DADOS OBRIGATÓRIOS!", JOptionPane.WARNING_MESSAGE);
