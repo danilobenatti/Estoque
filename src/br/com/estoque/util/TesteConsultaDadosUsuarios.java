@@ -8,7 +8,7 @@ public class TesteConsultaDadosUsuarios {
 
 	public static void main(String[] args) {
 
-		List<String> data = Arrays.asList(new Dados().findUserById(5));
+		List<String> data = Arrays.asList(new Dados().findUserArrayById(5));
 		if (!data.isEmpty()) {
 			int size = data.size();
 			int field = 1;
@@ -21,6 +21,9 @@ public class TesteConsultaDadosUsuarios {
 			}
 			System.out.println(" <- Dados do usuário " + data.get(0));
 		}
+		
+		Usuarios u1 = new Dados().findUserObjById(5);
+		System.out.println(u1.toString());
 
 		List<String> searchUser = Arrays.asList(
 				new Dados().findUserByLogin("João"));

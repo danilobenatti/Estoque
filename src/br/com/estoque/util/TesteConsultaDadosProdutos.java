@@ -8,7 +8,7 @@ public class TesteConsultaDadosProdutos {
 
 	public static void main(String[] args) {
 
-		List<String> data = Arrays.asList(new Dados().findProductById(1));
+		List<String> data = Arrays.asList(new Dados().findProductById(2));
 		if (!data.isEmpty()) {
 			int size = data.size();
 			int field = 1;
@@ -21,6 +21,9 @@ public class TesteConsultaDadosProdutos {
 			}
 			System.out.println(" <- Dados do produto " + data.get(0));
 		}
+
+		Produtos p1 = new Dados().findProductObjById(2);
+		System.out.println(p1.toString());
 
 		List<String> searchProduct = Arrays.asList(
 				new Dados().findProductByDescription("Leite Semidesnatado 1L"));

@@ -100,7 +100,7 @@ public class Dados {
 		}
 	}
 
-	public void insertOneUser(Usuarios usuario) {
+	public void insertUser(Usuarios usuario) {
 		String insert = "INSERT INTO usuarios(login, nivel, senha) VALUES (?, ?, ?)";
 		try {
 			preparedStatement = connection.prepareStatement(insert,
@@ -149,7 +149,7 @@ public class Dados {
 		}
 	}
 
-	public void insertOneProduct(Produtos produto) {
+	public void insertProduct(Produtos produto) {
 		String insert = "INSERT INTO produtos "
 			+ "(descricao, unidade, valorUnitario, obs) VALUES (?, ?, ?, ?)";
 		try {
@@ -200,7 +200,7 @@ public class Dados {
 		}
 	}
 
-	public void updateOneUser(Usuarios usuario) {
+	public void updateUser(Usuarios usuario) {
 		String update = "UPDATE usuarios SET "
 			+ "login = ?, nivel = ?, senha = ? WHERE id = ?";
 		try {
@@ -217,7 +217,7 @@ public class Dados {
 		}
 	}
 
-	public void updateOneProduct(Produtos produto) {
+	public void updateProduct(Produtos produto) {
 		String update = "UPDATE produtos SET "
 			+ "descricao = ?, unidade = ?, valorUnitario = ?, "
 			+ "quantidade = ?, obs = ? WHERE id = ?";
@@ -306,7 +306,7 @@ public class Dados {
 		return dadosRetorno;
 	}
 
-	public String[] findUserById(int id) {
+	public String[] findUserArrayById(int id) {
 		String select = "SELECT * FROM usuarios WHERE id = ?";
 		String[] dadosRetorno = null;
 		try {
@@ -331,6 +331,34 @@ public class Dados {
 			JDBC.fecharConexao(connection, preparedStatement, resultSet);
 		}
 		return dadosRetorno;
+	}
+
+	public Usuarios findUserObjById(int id) {
+		String select = "SELECT * FROM usuarios WHERE id = ?";
+		Usuarios usuario = null;
+		try {
+			preparedStatement = connection.prepareStatement(select,
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+			resultSetMetaData = resultSet.getMetaData();
+			if (resultSet.next() && resultSet != null) {
+				usuario = new Usuarios(
+					resultSet.getInt("id"),
+					resultSet.getString("login"),
+					resultSet.getInt("nivel"),
+					resultSet.getString("senha")
+				);
+			}
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement, resultSet);
+		}
+		return usuario;
 	}
 
 	public String[] findUserByLogin(String login) {
@@ -424,6 +452,36 @@ public class Dados {
 		return dadosRetorno;
 	}
 
+	public Produtos findProductObjById(int id) {
+		String select = "SELECT * FROM produtos WHERE id = ?";
+		Produtos produto = null;
+		try {
+			preparedStatement = connection.prepareStatement(select,
+				ResultSet.TYPE_SCROLL_INSENSITIVE,
+				ResultSet.CONCUR_UPDATABLE);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+			resultSetMetaData = resultSet.getMetaData();
+			if (resultSet.next() && resultSet != null) {
+				produto = new Produtos(
+					resultSet.getInt("id"), 
+					resultSet.getString("descricao"), 
+					resultSet.getString("unidade"), 
+					resultSet.getDouble("valorUnitario"),
+					resultSet.getInt("quantidade"), 
+					resultSet.getString("obs")
+				);
+			}
+		} catch (SQLException ex) {
+			printSQLException(ex);
+		} catch (Exception ex) {
+			System.err.println("Error: " + ex.getMessage());
+		} finally {
+			JDBC.fecharConexao(connection, preparedStatement, resultSet);
+		}
+		return produto;
+	}
+
 	public String[] findProductByDescription(String description) {
 		String select = "SELECT * FROM produtos WHERE lower(descricao) = lower(?)";
 		String[] dadosRetorno = null;
@@ -488,7 +546,7 @@ public class Dados {
 		return dadosRetorno;
 	}
 
-	public void deleteOneProductById(int id) {
+	public void deleteProductById(int id) {
 		String delete = "DELETE FROM produtos WHERE id = ?";
 		try {
 			preparedStatement = connection.prepareStatement(delete);
@@ -503,7 +561,7 @@ public class Dados {
 		}
 	}
 
-	public void deleteOneUserById(int id) {
+	public void deleteUserById(int id) {
 		String delete = "DELETE FROM usuarios WHERE id = ?";
 		try {
 			preparedStatement = connection.prepareStatement(delete);

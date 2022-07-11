@@ -893,6 +893,7 @@
     <Container class="javax.swing.JDialog" name="janelaMovimentoEstoque">
       <Events>
         <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaMovimentoEstoqueWindowGainedFocus"/>
+        <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="janelaMovimentoEstoqueWindowOpened"/>
       </Events>
 
       <Layout>
@@ -1062,6 +1063,9 @@
                     <Property name="text" type="java.lang.String" value="C&#xf3;digo"/>
                     <Property name="toolTipText" type="java.lang.String" value="Pesquisar por C&#xf3;digo"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botaoRadioMovimentoEstoqueCodigoMouseClicked"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="botaoRadioMovimentoEstoqueDescricao">
                   <Properties>
@@ -1071,6 +1075,9 @@
                     <Property name="text" type="java.lang.String" value="Descri&#xe7;&#xe3;o"/>
                     <Property name="toolTipText" type="java.lang.String" value="Pesquisar por Descri&#xe7;&#xe3;o"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botaoRadioMovimentoEstoqueDescricaoMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1085,6 +1092,10 @@
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="toolTipText" type="java.lang.String" value="Informe o item a pesquisar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="campoTextoMovimentoEstoquePesquisaActionPerformed"/>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoTextoMovimentoEstoquePesquisaKeyPressed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="botaoMovimentoEstoquePesquisaOk">
               <Properties>
@@ -1092,6 +1103,9 @@
                 <Property name="toolTipText" type="java.lang.String" value="Confirmar pesquisa por"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMovimentoEstoquePesquisaOkActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1109,6 +1123,12 @@
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Descri&#xe7;&#xe3;o do produtoo para movimento"/>
           </Properties>
+          <Events>
+            <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="caixaCombinacaoMovimentoEstoqueDescricaoPopupMenuWillBecomeVisible"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="caixaCombinacaoMovimentoEstoqueDescricaoMouseClicked"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="caixaCombinacaoMovimentoEstoqueDescricaoActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="caixaCombinacaoMovimentoEstoqueDescricaoKeyPressed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -1169,6 +1189,8 @@
           <Events>
             <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoMovimentoEstoqueQuantidadeFocusGained"/>
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="campoTextoMovimentoEstoqueQuantidadeFocusLost"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="campoTextoMovimentoEstoqueQuantidadeActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoTextoMovimentoEstoqueQuantidadeKeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botaoMovimentaEstoqueOk">
@@ -1176,6 +1198,9 @@
             <Property name="text" type="java.lang.String" value="Confirmar Entrada/Retirada"/>
             <Property name="toolTipText" type="java.lang.String" value="Confirmar movimenta&#xe7;&#xe3;o de produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMovimentaEstoqueOkActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -1184,6 +1209,7 @@
     <Container class="javax.swing.JDialog" name="janelaMovimentoEstoqueSelecionaProdutoTabela">
       <Events>
         <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaMovimentoEstoqueSelecionaProdutoTabelaWindowGainedFocus"/>
+        <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="janelaMovimentoEstoqueSelecionaProdutoTabelaWindowClosing"/>
       </Events>
 
       <Layout>
@@ -1286,6 +1312,9 @@
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabelaMovimentaEstoqueSelecionaProdutoMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1296,6 +1325,9 @@
             <Property name="text" type="java.lang.String" value="Confirmar Sele&#xe7;&#xe3;o"/>
             <Property name="toolTipText" type="java.lang.String" value="Confirmar sel&#xe7;&#xe3;o de produto"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoMovimentoEstoqueSelecionaProdutoConfirmarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

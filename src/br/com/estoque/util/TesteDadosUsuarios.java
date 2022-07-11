@@ -13,7 +13,7 @@ public class TesteDadosUsuarios {
 		usuario.setLogin("José");
 		usuario.setNivel(0);
 		usuario.setSenha("123456");
-		new Dados().insertOneUser(usuario);
+		new Dados().insertUser(usuario);
 
 		Usuarios u1 = new Usuarios("Carlos", 1, "987654");
 		Usuarios u2 = new Usuarios("Maria", 1, "654321");
@@ -25,12 +25,12 @@ public class TesteDadosUsuarios {
 		new Dados().insertAllUsers(usuarios);
 
 		Usuarios u3 = new Usuarios("João", 1, "123abc");
-		new Dados().insertOneUser(u3);
+		new Dados().insertUser(u3);
 
 		u3.setId(5);
 		u3.setNivel(0);
 		u3.setSenha("999999");
-		new Dados().updateOneUser(u3);
+		new Dados().updateUser(u3);
 
 		String id = JOptionPane.showInputDialog(
 				"Informe um id de usuário para ser excluído.",
@@ -43,7 +43,7 @@ public class TesteDadosUsuarios {
 					"Excluir um usuário", JOptionPane.DEFAULT_OPTION,
 					JOptionPane.WARNING_MESSAGE, icon, options, options[0]);
 			if (opcao == 0) {
-				new Dados().deleteOneUserById(Integer.parseInt(id));
+				new Dados().deleteUserById(Integer.parseInt(id));
 			}
 		}
 	}

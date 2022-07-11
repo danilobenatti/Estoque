@@ -75,6 +75,14 @@ public final class Usuarios {
 
 	@Override
 	public String toString() {
-		return super.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append("Usuarios{");
+		sb.append("id=").append(id);
+		sb.append(", login=").append(login);
+		sb.append(", nivel=").append(nivel);
+		sb.append(", senha=").append(senha);
+		sb.append('}');
+		return sb.toString();
 	}
+
 }

@@ -10,9 +10,9 @@ public class TesteDadosProdutos {
 	public static void main(String[] args) {
 
 		Produtos p1 = new Produtos("Leite Integral 1L", "cx", 4.80, "Leite Mumu");
-		new Dados().insertOneProduct(p1);
+		new Dados().insertProduct(p1);
 		Produtos p2 = new Produtos("Requeijão Desnatado 250ml", "un", 3.70, "Sabor da fazenda");
-		new Dados().insertOneProduct(p2);
+		new Dados().insertProduct(p2);
 
 		ArrayList<Produtos> produtos = new ArrayList<>();
 		produtos.add(new Produtos("Macarrão Espaguete 500g", "pct", 1.95, "Massas Mamamia"));
@@ -23,14 +23,14 @@ public class TesteDadosProdutos {
 		p1.setId(1);
 		p1.setDescricao("Leite Semidesnatado 1L");
 		p1.setValorUnitario(2.95);
-		new Dados().updateOneProduct(p1);
+		new Dados().updateProduct(p1);
 
 		Produtos p3 = new Produtos();
 		p3.setDescricao("Sabão em pó");
 		p3.setUnidade("800g");
 		p3.setValorUnitario(5.80);
 		p3.setObs("AMA Sabões");
-		new Dados().insertOneProduct(p3);
+		new Dados().insertProduct(p3);
 
 		String id = JOptionPane.showInputDialog(
 				"Informe um id de produto para ser excluído.",
@@ -43,7 +43,7 @@ public class TesteDadosProdutos {
 					"Excluir um produto", JOptionPane.DEFAULT_OPTION,
 					JOptionPane.WARNING_MESSAGE, icon, options, options[0]);
 			if (opcao == 0) {
-				new Dados().deleteOneProductById(Integer.parseInt(id));
+				new Dados().deleteProductById(Integer.parseInt(id));
 			}
 		}
 	}

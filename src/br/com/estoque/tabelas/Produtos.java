@@ -99,7 +99,7 @@ public final class Produtos {
 	}
 
 	public void setValorUnitario(Double valorUnitario) {
-		if (this.valorUnitario == null || this.valorUnitario < 0) {
+		if (valorUnitario == null || valorUnitario < 0) {
 			this.valorUnitario = 0.00;
 		}
 		this.valorUnitario = valorUnitario;
@@ -113,7 +113,7 @@ public final class Produtos {
 	}
 
 	public void setQuantidade(Integer quantidade) {
-		if (this.quantidade == null || this.quantidade < 0) {
+		if (quantidade == null || quantidade < 0) {
 			this.quantidade = 0;
 		} else {
 			this.quantidade = quantidade;
@@ -129,5 +129,19 @@ public final class Produtos {
 
 	public void setObs(String obs) {
 		this.obs = obs;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Produtos{");
+		sb.append("id=").append(id);
+		sb.append(", descricao=").append(descricao);
+		sb.append(", unidade=").append(unidade);
+		sb.append(", valorUnitario=").append(valorUnitario);
+		sb.append(", quantidade=").append(quantidade);
+		sb.append(", obs=").append(obs);
+		sb.append('}');
+		return sb.toString();
 	}
 }

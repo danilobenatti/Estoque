@@ -8,6 +8,7 @@ import br.com.estoque.util.Ferramentas;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -15,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,6 +30,8 @@ public class Estoque extends javax.swing.JFrame {
 	private String[][] listaUsuarios;
 	private Integer registroAtual;
 	private boolean novoRegistroCadastro;
+	private Integer codigoProdutoSelecionado;
+	private boolean clique;
 
 	public Estoque() {
 		tools = new Ferramentas();
@@ -91,6 +95,76 @@ public class Estoque extends javax.swing.JFrame {
 		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
 	}
 
+	private void campoTextoJanelaPesquisaProdutos(String textoPesquisa) {
+		Dados produto = null;
+		if (this.botaoRadioMovimentoEstoqueCodigo.isSelected()) {
+			if (tools.isNumero(textoPesquisa)) {
+				this.codigoProdutoSelecionado = Integer.parseInt(textoPesquisa);
+				produto = new Dados();
+				String[] encontrado = produto.findProductById(this.codigoProdutoSelecionado);
+				if (encontrado[0] == null) {
+					JOptionPane.showMessageDialog(null, "Nenhum produto encontrado!",
+						"PESQUISA PRODUTO", JOptionPane.ERROR_MESSAGE);
+				} else {
+					entregarResultadoPesquisa(encontrado);
+					this.campoTextoMovimentoEstoqueQuantidade.grabFocus();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Entre com um número "
+					+ "ao selecionar a opção código.", "VALOR INVÁLIDO!",
+					JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			produto = new Dados();
+			String[][] encontrados = produto.findProductByDecriptionLike(true, textoPesquisa);
+			if (encontrados.length == 0) {
+				JOptionPane.showMessageDialog(null, "Nenhum produto encontrado!",
+					"PESQUISA PRODUTO", JOptionPane.ERROR_MESSAGE);
+			} else {
+				atualizaTabelaJanelaPesquisaProdutos(encontrados);
+				tools.criarJanelaDialogo("Selecione um produto",
+					this.janelaMovimentoEstoqueSelecionaProdutoTabela,
+					this.getSize(), this.getLocation());
+			}
+		}
+	}
+
+	private void entregarResultadoPesquisa(String[] item) {
+		int ultimo = this.caixaCombinacaoMovimentoEstoqueDescricao.getItemCount();
+		for (int i = 0; i < ultimo; i++) {
+			if (this.caixaCombinacaoMovimentoEstoqueDescricao.getItemAt(i).equals(item[1])) {
+				this.caixaCombinacaoMovimentoEstoqueDescricao.setSelectedIndex(i);
+			}
+		}
+		this.campoTextoMovimentoEstoqueUnid.setText(item[2]);
+		this.campoTextoFormatadoMovimentoEstoqueValorUnitario.setText(
+			String.format("%,3.2f", Double.parseDouble(item[3])));
+	}
+
+	private void atualizaTabelaJanelaPesquisaProdutos(String[][] produtosEncontrados) {
+		DefaultTableModel conteudoTabelaCadastro
+			= (DefaultTableModel) this.tabelaMovimentaEstoqueSelecionaProduto.getModel();
+		conteudoTabelaCadastro.setNumRows(0);
+		for (int i = 0; i < produtosEncontrados.length; i++) {
+			conteudoTabelaCadastro.addRow(new Object[]{
+				String.format("%04d", Integer.parseInt(produtosEncontrados[i][0])),
+				produtosEncontrados[i][1]
+			});
+		}
+		this.tabelaMovimentaEstoqueSelecionaProduto.getColumnModel().getColumn(0)
+			.setPreferredWidth(produtosEncontrados[0][0].length());
+	}
+
+	private void respostaCaixaCombinacaoMovimentoEstoqueDescrição() {
+		String pesquisaLinha = this.caixaCombinacaoMovimentoEstoqueDescricao.
+			getSelectedItem().toString();
+		Dados produto = new Dados();
+		String[] encontrado = produto.findProductByDescription(pesquisaLinha);
+		this.codigoProdutoSelecionado = Integer.parseInt(encontrado[0]);
+		entregarResultadoPesquisa(encontrado);
+		this.campoTextoMovimentoEstoqueQuantidade.grabFocus();
+	}
+
 	private boolean confereNovaSenha() {
 		String texto = "Senha com valores incorretos!";
 		String mensagem = "SENHA NÂO VÁLIDA!";
@@ -116,6 +190,69 @@ public class Estoque extends javax.swing.JFrame {
 		if (this.botaoRadioMovimentoOpcoesEstoqueRetirada.isSelected()) {
 			ajustarJanelaMovimentoEstoque("Confirmar Retirada", "Retirada de Produtos no Estoque");
 		}
+	}
+
+	private void confirmaMovimentoEstoque() {
+		if (this.codigoProdutoSelecionado != null) {
+			Dados dados = new Dados();
+			Integer qtd = Integer.parseInt(
+				this.campoTextoMovimentoEstoqueQuantidade.getText().trim());
+			Produtos produto = dados.findProductObjById(this.codigoProdutoSelecionado);
+			Integer qtdAtual = produto.getQuantidade();
+			Integer qtdNova;
+			if (botaoMovimentaEstoqueOk.getText().equals("Confirmar Entrada")) {
+				qtdNova = qtdAtual + qtd;
+				if ((qtdAtual == 99998) || (qtdAtual > 99998) || (qtd <= 0)) {
+					JOptionPane.showMessageDialog(null,
+						"Quantidade de entradas é maior que o permitido,\n"
+						+ "ou valor informado é menor ou igual a zero.", 
+						"ERRO DE ENTRADA", JOptionPane.ERROR_MESSAGE);
+				} else {
+					int opcao
+						= JOptionPane.showConfirmDialog(null,
+							"Ao confirmar a operação, não será possível "
+							+ "recuperar valors anteriores.\n"
+							+ "Deseja confirmar a entrada de produto?",
+							"ENTRADA DE PRODUTOS", JOptionPane.YES_NO_OPTION);
+					if (opcao == JOptionPane.YES_OPTION) {
+						dados = new Dados();
+						produto = new Produtos(this.codigoProdutoSelecionado,
+							produto.getDescricao(), produto.getUnidade(), produto.getValorUnitario(),
+							qtdNova, produto.getObs());
+						dados.updateProduct(produto);
+					}
+				}
+			} else {
+				qtdNova = qtdAtual - qtd;
+				if ((qtdAtual == 0) || (qtdNova < 0) || (qtd <= 0)) {
+					JOptionPane.showMessageDialog(null,
+						"Quantidade da retirada maior que o permitido,\n"
+						+ " ou valor informado, é menor ou igual a zero.",
+						"ERRO DE RETIRADA", JOptionPane.ERROR_MESSAGE);
+				} else {
+					int opcao
+						= JOptionPane.showConfirmDialog(null,
+							"Ao confirmar a operação, não será possível "
+							+ "recuperar valors anteriores.\n"
+							+ "Deseja confirmar a saída de produto?",
+							"SAÍDA DE PRODUTOS", JOptionPane.YES_NO_OPTION);
+					if (opcao == JOptionPane.YES_OPTION) {
+						dados = new Dados();
+						produto = new Produtos(this.codigoProdutoSelecionado,
+							produto.getDescricao(), produto.getUnidade(), produto.getValorUnitario(),
+							qtdNova, produto.getObs());
+						dados.updateProduct(produto);
+					}
+				}
+			}
+		} else {
+			JOptionPane.showMessageDialog(null,
+				"É necessário informar um produto!",
+				"ERRO DE ENTRADA", JOptionPane.ERROR_MESSAGE);
+		}
+		reorganizarComponentes();
+		this.botaoRadioMovimentoEstoqueCodigo.setSelected(true);
+		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
 	}
 
 	private void zeraListaProdutos() {
@@ -1057,6 +1194,11 @@ public class Estoque extends javax.swing.JFrame {
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
             }
         });
+        janelaMovimentoEstoque.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                janelaMovimentoEstoqueWindowOpened(evt);
+            }
+        });
 
         painelMovimentoEstoqueProcurarProduto.setBorder(javax.swing.BorderFactory.createTitledBorder("Procurar Produto em Estoque"));
         painelMovimentoEstoqueProcurarProduto.setToolTipText("Opções para pesquisa de produtos");
@@ -1068,10 +1210,20 @@ public class Estoque extends javax.swing.JFrame {
         botaoRadioMovimentoEstoqueCodigo.setSelected(true);
         botaoRadioMovimentoEstoqueCodigo.setText("Código");
         botaoRadioMovimentoEstoqueCodigo.setToolTipText("Pesquisar por Código");
+        botaoRadioMovimentoEstoqueCodigo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoRadioMovimentoEstoqueCodigoMouseClicked(evt);
+            }
+        });
 
         grupoBotaoMovimentoEstoquePesquisarPor.add(botaoRadioMovimentoEstoqueDescricao);
         botaoRadioMovimentoEstoqueDescricao.setText("Descrição");
         botaoRadioMovimentoEstoqueDescricao.setToolTipText("Pesquisar por Descrição");
+        botaoRadioMovimentoEstoqueDescricao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                botaoRadioMovimentoEstoqueDescricaoMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelMovimentoEstoquePesquisarPorLayout = new javax.swing.GroupLayout(painelMovimentoEstoquePesquisarPor);
         painelMovimentoEstoquePesquisarPor.setLayout(painelMovimentoEstoquePesquisarPorLayout);
@@ -1099,10 +1251,25 @@ public class Estoque extends javax.swing.JFrame {
 
         campoTextoMovimentoEstoquePesquisa.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         campoTextoMovimentoEstoquePesquisa.setToolTipText("Informe o item a pesquisar");
+        campoTextoMovimentoEstoquePesquisa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoTextoMovimentoEstoquePesquisaActionPerformed(evt);
+            }
+        });
+        campoTextoMovimentoEstoquePesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                campoTextoMovimentoEstoquePesquisaKeyPressed(evt);
+            }
+        });
 
         botaoMovimentoEstoquePesquisaOk.setText("Ok");
         botaoMovimentoEstoquePesquisaOk.setToolTipText("Confirmar pesquisa por");
         botaoMovimentoEstoquePesquisaOk.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botaoMovimentoEstoquePesquisaOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMovimentoEstoquePesquisaOkActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelMovimentoEstoqueProcurarProdutoLayout = new javax.swing.GroupLayout(painelMovimentoEstoqueProcurarProduto);
         painelMovimentoEstoqueProcurarProduto.setLayout(painelMovimentoEstoqueProcurarProdutoLayout);
@@ -1138,6 +1305,30 @@ public class Estoque extends javax.swing.JFrame {
         rotuloMovimentoEstoqueDescricao.setToolTipText("Descrição do produto para movimento");
 
         caixaCombinacaoMovimentoEstoqueDescricao.setToolTipText("Descrição do produtoo para movimento");
+        caixaCombinacaoMovimentoEstoqueDescricao.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                caixaCombinacaoMovimentoEstoqueDescricaoPopupMenuWillBecomeVisible(evt);
+            }
+        });
+        caixaCombinacaoMovimentoEstoqueDescricao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                caixaCombinacaoMovimentoEstoqueDescricaoMouseClicked(evt);
+            }
+        });
+        caixaCombinacaoMovimentoEstoqueDescricao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                caixaCombinacaoMovimentoEstoqueDescricaoActionPerformed(evt);
+            }
+        });
+        caixaCombinacaoMovimentoEstoqueDescricao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                caixaCombinacaoMovimentoEstoqueDescricaoKeyPressed(evt);
+            }
+        });
 
         botaoMovimentoEstoqueAbrirTabela.setText("...");
         botaoMovimentoEstoqueAbrirTabela.setToolTipText("Listar todos os produtos cadastrados");
@@ -1181,9 +1372,24 @@ public class Estoque extends javax.swing.JFrame {
                 campoTextoMovimentoEstoqueQuantidadeFocusLost(evt);
             }
         });
+        campoTextoMovimentoEstoqueQuantidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoTextoMovimentoEstoqueQuantidadeActionPerformed(evt);
+            }
+        });
+        campoTextoMovimentoEstoqueQuantidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                campoTextoMovimentoEstoqueQuantidadeKeyPressed(evt);
+            }
+        });
 
         botaoMovimentaEstoqueOk.setText("Confirmar Entrada/Retirada");
         botaoMovimentaEstoqueOk.setToolTipText("Confirmar movimentação de produto");
+        botaoMovimentaEstoqueOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMovimentaEstoqueOkActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout janelaMovimentoEstoqueLayout = new javax.swing.GroupLayout(janelaMovimentoEstoque.getContentPane());
         janelaMovimentoEstoque.getContentPane().setLayout(janelaMovimentoEstoqueLayout);
@@ -1251,6 +1457,11 @@ public class Estoque extends javax.swing.JFrame {
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
             }
         });
+        janelaMovimentoEstoqueSelecionaProdutoTabela.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                janelaMovimentoEstoqueSelecionaProdutoTabelaWindowClosing(evt);
+            }
+        });
 
         painelMovimentoEstoqueSelecionaProdutoTabela.setBorder(javax.swing.BorderFactory.createTitledBorder("Selecione o produto"));
         painelMovimentoEstoqueSelecionaProdutoTabela.setToolTipText("Clique sobre o produto desejado");
@@ -1285,6 +1496,11 @@ public class Estoque extends javax.swing.JFrame {
         tabelaMovimentaEstoqueSelecionaProduto.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tabelaMovimentaEstoqueSelecionaProduto.setColumnSelectionAllowed(true);
         tabelaMovimentaEstoqueSelecionaProduto.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tabelaMovimentaEstoqueSelecionaProduto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMovimentaEstoqueSelecionaProdutoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaMovimentaEstoqueSelecionaProduto);
         tabelaMovimentaEstoqueSelecionaProduto.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tabelaMovimentaEstoqueSelecionaProduto.getColumnModel().getColumnCount() > 0) {
@@ -1305,6 +1521,11 @@ public class Estoque extends javax.swing.JFrame {
 
         botaoMovimentoEstoqueSelecionaProdutoConfirmar.setText("Confirmar Seleção");
         botaoMovimentoEstoqueSelecionaProdutoConfirmar.setToolTipText("Confirmar selção de produto");
+        botaoMovimentoEstoqueSelecionaProdutoConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMovimentoEstoqueSelecionaProdutoConfirmarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout janelaMovimentoEstoqueSelecionaProdutoTabelaLayout = new javax.swing.GroupLayout(janelaMovimentoEstoqueSelecionaProdutoTabela.getContentPane());
         janelaMovimentoEstoqueSelecionaProdutoTabela.getContentPane().setLayout(janelaMovimentoEstoqueSelecionaProdutoTabelaLayout);
@@ -2249,7 +2470,11 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoTextoMovimentoEstoqueQuantidadeFocusLost
 
     private void botaoMovimentoEstoqueAbrirTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMovimentoEstoqueAbrirTabelaActionPerformed
-		tools.criarJanelaDialogo("Selecione um Produto", janelaMovimentoEstoqueSelecionaProdutoTabela, this.getSize(), this.getLocation());
+		Dados produtos = new Dados();
+		String[][] encontrados = produtos.listAllProducts(true);
+		atualizaTabelaJanelaPesquisaProdutos(encontrados);
+		tools.criarJanelaDialogo("Selecione um Produto",
+			janelaMovimentoEstoqueSelecionaProdutoTabela, this.getSize(), this.getLocation());
     }//GEN-LAST:event_botaoMovimentoEstoqueAbrirTabelaActionPerformed
 
     private void janelaMovimentoEstoqueSelecionaProdutoTabelaWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaMovimentoEstoqueSelecionaProdutoTabelaWindowGainedFocus
@@ -2258,7 +2483,8 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_janelaMovimentoEstoqueSelecionaProdutoTabelaWindowGainedFocus
 
     private void janelaMovimentoEstoqueWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaMovimentoEstoqueWindowGainedFocus
-		this.movimentoOpcoesEstoque();
+//		this.movimentoOpcoesEstoque();
+		this.setVisible(true);
     }//GEN-LAST:event_janelaMovimentoEstoqueWindowGainedFocus
 
     private void botaoSobreOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSobreOkActionPerformed
@@ -2398,9 +2624,9 @@ public class Estoque extends javax.swing.JFrame {
     private void botaoCadastroProdutosNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastroProdutosNovoActionPerformed
 		reorganizarComponentes();
 		this.novoRegistroCadastro = true;
-		Dados produtos = new Dados();
-		produtos.refreshTableProducts();
-		this.campoTextoCadastroProdutosCodigo.setText(String.format("%04d", produtos.nextIdProduct()));
+		Dados dados = new Dados();
+		dados.refreshTableProducts();
+		this.campoTextoCadastroProdutosCodigo.setText(String.format("%04d", dados.nextIdProduct()));
 		this.campoTextoFormatadoCadastroProdutosValorUnitario.setText("0,00");
 		this.campoTextoCadastroProdutosDescricao.grabFocus();
     }//GEN-LAST:event_botaoCadastroProdutosNovoActionPerformed
@@ -2416,9 +2642,9 @@ public class Estoque extends javax.swing.JFrame {
 				: Double.parseDouble(this.campoTextoFormatadoCadastroProdutosValorUnitario.getText().replace(",", ".")),
 				this.campoTextoCadastroProdutosObs.getText());
 			if (this.novoRegistroCadastro) {
-				dados.insertOneProduct(produto);
+				dados.insertProduct(produto);
 			} else {
-				dados.updateOneProduct(produto);
+				dados.updateProduct(produto);
 			}
 			JOptionPane.showMessageDialog(null,
 				"Dados de produto gravados com sucesso!",
@@ -2431,17 +2657,17 @@ public class Estoque extends javax.swing.JFrame {
 			|| this.campoTextoCadastroProdutosUnidade.getText().equals("")) {
 			JOptionPane.showMessageDialog(null,
 				"Necessário informar descrição e unidade do produto.",
-				"INFORMAR DADOS!", JOptionPane.WARNING_MESSAGE);
+				"INFORMAR DADOS!", JOptionPane.ERROR_MESSAGE);
 		} else {
 			int idProduct = Integer.parseInt(this.campoTextoCadastroProdutosCodigo.getText());
 			String descProduct = this.campoTextoCadastroProdutosDescricao.getText();
-			Dados produto = new Dados(new Produtos(idProduct));
+			Dados dados = new Dados();
 			int opcao = JOptionPane.showConfirmDialog(null,
 				"Ao confirmar, não será possível recuperar os dados do produto:\n"
 				+ "id: " + idProduct + ", descrição: " + descProduct + "?",
 				"DESEJA EXCLUIR O PRODUTO?", JOptionPane.YES_NO_OPTION);
 			if (opcao == JOptionPane.YES_OPTION) {
-				produto.deleteOneProductById(idProduct);
+				dados.deleteProductById(idProduct);
 				JOptionPane.showMessageDialog(null,
 					"O produto foi excluído.",
 					"PRODUTO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
@@ -2499,9 +2725,9 @@ public class Estoque extends javax.swing.JFrame {
 				this.botaoRadioCadastroUsuariosAdministrador.isSelected() ? 0 : 1,
 				new String(this.campoSenhaCadastroUsuariosNovaSenha.getPassword()));
 			if (this.novoRegistroCadastro) {
-				dados.insertOneUser(usuario);
+				dados.insertUser(usuario);
 			} else {
-				dados.updateOneUser(usuario);
+				dados.updateUser(usuario);
 			}
 			JOptionPane.showMessageDialog(null,
 				"Dados de usuário gravados com sucesso!",
@@ -2517,13 +2743,13 @@ public class Estoque extends javax.swing.JFrame {
 		} else {
 			int idUser = Integer.parseInt(this.campoTextoCadastroUsuariosCodigo.getText());
 			String loginUser = this.campoTextoCadastroUsuariosLogin.getText();
-			Dados usuario = new Dados(new Produtos(idUser));
+			Dados usuario = new Dados();
 			int opcao = JOptionPane.showConfirmDialog(null,
 				"Ao confirmar, não será possível recuperar os dados do usuário:\n"
 				+ "id: " + idUser + ", nome: " + loginUser + "?",
 				"DESEJA EXCLUIR O USUÁRIO?", JOptionPane.YES_NO_OPTION);
 			if (opcao == JOptionPane.YES_OPTION) {
-				usuario.deleteOneUserById(idUser);
+				usuario.deleteUserById(idUser);
 				JOptionPane.showMessageDialog(null,
 					"O usuário foi excluído.",
 					"USUÁRIO EXCLUÌDO!", JOptionPane.INFORMATION_MESSAGE);
@@ -2535,6 +2761,129 @@ public class Estoque extends javax.swing.JFrame {
 			}
 		}
     }//GEN-LAST:event_botaoCadastroUsuariosExcluirActionPerformed
+
+    private void janelaMovimentoEstoqueWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaMovimentoEstoqueWindowOpened
+		Dados produtos = new Dados();
+		String[][] itens = produtos.listAllProducts(true);
+		this.caixaCombinacaoMovimentoEstoqueDescricao.removeAllItems();
+		for (int i = 0; i < itens.length; i++) {
+			this.caixaCombinacaoMovimentoEstoqueDescricao.addItem(itens[i][1]);
+		}
+		this.caixaCombinacaoMovimentoEstoqueDescricao.setSelectedIndex(0);
+		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
+    }//GEN-LAST:event_janelaMovimentoEstoqueWindowOpened
+
+    private void botaoRadioMovimentoEstoqueCodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoRadioMovimentoEstoqueCodigoMouseClicked
+		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
+    }//GEN-LAST:event_botaoRadioMovimentoEstoqueCodigoMouseClicked
+
+    private void botaoRadioMovimentoEstoqueDescricaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botaoRadioMovimentoEstoqueDescricaoMouseClicked
+		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
+    }//GEN-LAST:event_botaoRadioMovimentoEstoqueDescricaoMouseClicked
+
+    private void campoTextoMovimentoEstoquePesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoTextoMovimentoEstoquePesquisaActionPerformed
+		campoTextoJanelaPesquisaProdutos(this.campoTextoMovimentoEstoquePesquisa.getText().trim());
+    }//GEN-LAST:event_campoTextoMovimentoEstoquePesquisaActionPerformed
+
+    private void botaoMovimentoEstoquePesquisaOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMovimentoEstoquePesquisaOkActionPerformed
+		campoTextoJanelaPesquisaProdutos(this.campoTextoMovimentoEstoquePesquisa.getText().trim());
+    }//GEN-LAST:event_botaoMovimentoEstoquePesquisaOkActionPerformed
+
+    private void tabelaMovimentaEstoqueSelecionaProdutoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMovimentaEstoqueSelecionaProdutoMouseClicked
+		this.clique = true;
+		String pesquisaLinha = (String) String.valueOf(
+			this.tabelaMovimentaEstoqueSelecionaProduto.getValueAt(
+				this.tabelaMovimentaEstoqueSelecionaProduto.getSelectedRow(), 0));
+		this.codigoProdutoSelecionado = Integer.parseInt(pesquisaLinha);
+		if (evt.getClickCount() == 2) {
+			Dados produto = new Dados();
+			String[] encontrado = produto.findProductById(this.codigoProdutoSelecionado);
+			entregarResultadoPesquisa(encontrado);
+			this.clique = false;
+			this.janelaMovimentoEstoqueSelecionaProdutoTabela.dispose();
+			this.campoTextoMovimentoEstoqueQuantidade.grabFocus();
+		}
+    }//GEN-LAST:event_tabelaMovimentaEstoqueSelecionaProdutoMouseClicked
+
+    private void botaoMovimentoEstoqueSelecionaProdutoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMovimentoEstoqueSelecionaProdutoConfirmarActionPerformed
+		if (this.clique == true) {
+			this.campoTextoMovimentoEstoquePesquisa.setText("");
+			Dados produto = new Dados();
+			String[] encontrado = produto.findProductById(this.codigoProdutoSelecionado);
+			entregarResultadoPesquisa(encontrado);
+			this.clique = false;
+			this.janelaMovimentoEstoqueSelecionaProdutoTabela.dispose();
+			this.campoTextoMovimentoEstoqueQuantidade.grabFocus();
+		} else {
+			JOptionPane.showMessageDialog(null, "Nenhum item selecionado!",
+				"PESQUISA PRODUTO", JOptionPane.ERROR_MESSAGE);
+		}
+    }//GEN-LAST:event_botaoMovimentoEstoqueSelecionaProdutoConfirmarActionPerformed
+
+    private void janelaMovimentoEstoqueSelecionaProdutoTabelaWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaMovimentoEstoqueSelecionaProdutoTabelaWindowClosing
+		this.clique = false;
+    }//GEN-LAST:event_janelaMovimentoEstoqueSelecionaProdutoTabelaWindowClosing
+
+    private void caixaCombinacaoMovimentoEstoqueDescricaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_caixaCombinacaoMovimentoEstoqueDescricaoMouseClicked
+		this.clique = true;
+		if (this.registroAtual == null) {
+			this.registroAtual = 1;
+		}
+		this.registroAtual++;
+		if (this.registroAtual > 1) {
+			this.registroAtual = 1;
+		}
+    }//GEN-LAST:event_caixaCombinacaoMovimentoEstoqueDescricaoMouseClicked
+
+    private void caixaCombinacaoMovimentoEstoqueDescricaoPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_caixaCombinacaoMovimentoEstoqueDescricaoPopupMenuWillBecomeVisible
+		this.clique = true;
+		this.registroAtual = 1;
+    }//GEN-LAST:event_caixaCombinacaoMovimentoEstoqueDescricaoPopupMenuWillBecomeVisible
+
+    private void caixaCombinacaoMovimentoEstoqueDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaCombinacaoMovimentoEstoqueDescricaoActionPerformed
+		if (this.clique) {
+			this.registroAtual = 0;
+			this.clique = false;
+			respostaCaixaCombinacaoMovimentoEstoqueDescrição();
+		}
+    }//GEN-LAST:event_caixaCombinacaoMovimentoEstoqueDescricaoActionPerformed
+
+    private void caixaCombinacaoMovimentoEstoqueDescricaoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_caixaCombinacaoMovimentoEstoqueDescricaoKeyPressed
+		if (this.registroAtual == null || this.registroAtual > 1) {
+			this.registroAtual = 0;
+			if ((evt.getExtendedKeyCode() == KeyEvent.VK_SPACE)
+				|| (evt.getExtendedKeyCode() == KeyEvent.VK_ENTER)) {
+				this.registroAtual++;
+				if ((evt.getExtendedKeyCode() == KeyEvent.VK_SPACE) && this.registroAtual == 2) {
+					this.registroAtual = 0;
+					respostaCaixaCombinacaoMovimentoEstoqueDescrição();
+				}
+				this.clique = true;
+			} else {
+				this.clique = false;
+			}
+		}
+    }//GEN-LAST:event_caixaCombinacaoMovimentoEstoqueDescricaoKeyPressed
+
+    private void botaoMovimentaEstoqueOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMovimentaEstoqueOkActionPerformed
+		confirmaMovimentoEstoque();
+    }//GEN-LAST:event_botaoMovimentaEstoqueOkActionPerformed
+
+    private void campoTextoMovimentoEstoqueQuantidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoTextoMovimentoEstoqueQuantidadeActionPerformed
+		confirmaMovimentoEstoque();
+    }//GEN-LAST:event_campoTextoMovimentoEstoqueQuantidadeActionPerformed
+
+    private void campoTextoMovimentoEstoquePesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoTextoMovimentoEstoquePesquisaKeyPressed
+		if (evt.getExtendedKeyCode() == KeyEvent.VK_ESCAPE) {
+			this.janelaMovimentoEstoque.dispose();
+		}
+    }//GEN-LAST:event_campoTextoMovimentoEstoquePesquisaKeyPressed
+
+    private void campoTextoMovimentoEstoqueQuantidadeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoTextoMovimentoEstoqueQuantidadeKeyPressed
+		if (evt.getExtendedKeyCode() == KeyEvent.VK_ESCAPE) {
+			this.janelaMovimentoEstoque.dispose();
+		}
+    }//GEN-LAST:event_campoTextoMovimentoEstoqueQuantidadeKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;
