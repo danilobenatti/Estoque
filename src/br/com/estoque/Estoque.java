@@ -13,9 +13,11 @@ import java.io.File;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -205,7 +207,7 @@ public class Estoque extends javax.swing.JFrame {
 				if ((qtdAtual == 99998) || (qtdAtual > 99998) || (qtd <= 0)) {
 					JOptionPane.showMessageDialog(null,
 						"Quantidade de entradas é maior que o permitido,\n"
-						+ "ou valor informado é menor ou igual a zero.", 
+						+ "ou valor informado é menor ou igual a zero.",
 						"ERRO DE ENTRADA", JOptionPane.ERROR_MESSAGE);
 				} else {
 					int opcao
@@ -253,6 +255,47 @@ public class Estoque extends javax.swing.JFrame {
 		reorganizarComponentes();
 		this.botaoRadioMovimentoEstoqueCodigo.setSelected(true);
 		this.campoTextoMovimentoEstoquePesquisa.grabFocus();
+	}
+
+	private void ajustarTabelaJanelaRelatorioEstoque(String[][] produtos) {
+		DefaultTableModel conteudoTabelaRelatorio
+			= (DefaultTableModel) this.tabelaRelatorioEstoque.getModel();
+		conteudoTabelaRelatorio.setNumRows(0);
+		int tamanho = 0;
+		for (int i = 0; i < produtos.length; i++) {
+			conteudoTabelaRelatorio.addRow(new Object[]{
+				String.format("%04d", Integer.parseInt(produtos[i][0])),
+				produtos[i][1].trim(),
+				produtos[i][2].trim().toUpperCase(),
+				String.format("%,3.2f", Double.parseDouble(produtos[i][3])),
+				String.format("%4d", Integer.parseInt(produtos[i][4])),
+				String.format("%,3.2f",
+				(Double.parseDouble(produtos[i][3]))
+				* (Double.parseDouble(produtos[i][4])))
+			});
+			int x = produtos[i][1].length();
+			tamanho = (tamanho < x) ? x : tamanho;
+		}
+		DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centralizado = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer direita = new DefaultTableCellRenderer();
+
+		esquerda.setHorizontalAlignment(SwingConstants.LEFT);
+		centralizado.setHorizontalAlignment(SwingConstants.CENTER);
+		direita.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(0).setPreferredWidth(40);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(0).setCellRenderer(esquerda);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(1).setPreferredWidth(tamanho * 8);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(1).setCellRenderer(esquerda);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(2).setPreferredWidth(60);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(2).setCellRenderer(centralizado);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(3).setPreferredWidth(100);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(3).setCellRenderer(direita);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(4).setPreferredWidth(80);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(4).setCellRenderer(centralizado);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(5).setPreferredWidth(100);
+		this.tabelaRelatorioEstoque.getColumnModel().getColumn(5).setCellRenderer(direita);
 	}
 
 	private void zeraListaProdutos() {
@@ -1547,6 +1590,14 @@ public class Estoque extends javax.swing.JFrame {
                 .addComponent(botaoMovimentoEstoqueSelecionaProdutoConfirmar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        janelaRelatorioEstoque.addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                janelaRelatorioEstoqueWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         tabelaRelatorioEstoque.setBorder(new javax.swing.border.MatteBorder(null));
         tabelaRelatorioEstoque.setModel(new javax.swing.table.DefaultTableModel(
@@ -2884,6 +2935,13 @@ public class Estoque extends javax.swing.JFrame {
 			this.janelaMovimentoEstoque.dispose();
 		}
     }//GEN-LAST:event_campoTextoMovimentoEstoqueQuantidadeKeyPressed
+
+    private void janelaRelatorioEstoqueWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_janelaRelatorioEstoqueWindowGainedFocus
+		this.setVisible(true);
+		Dados dados = new Dados();
+		String[][] produtos = dados.listAllProducts(false);
+		ajustarTabelaJanelaRelatorioEstoque(produtos);
+    }//GEN-LAST:event_janelaRelatorioEstoqueWindowGainedFocus
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;

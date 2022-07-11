@@ -1332,6 +1332,9 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="janelaRelatorioEstoque">
+      <Events>
+        <EventHandler event="windowGainedFocus" listener="java.awt.event.WindowFocusListener" parameters="java.awt.event.WindowEvent" handler="janelaRelatorioEstoqueWindowGainedFocus"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
