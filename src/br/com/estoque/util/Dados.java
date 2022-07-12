@@ -105,8 +105,8 @@ public class Dados {
 		try {
 			preparedStatement = connection.prepareStatement(insert,
 				Statement.RETURN_GENERATED_KEYS);
-			setValues(preparedStatement, usuario.getLogin(), usuario.getNivel(),
-				usuario.getSenha());
+			setValues(preparedStatement, usuario.getLogin().toLowerCase(),
+				usuario.getNivel(), usuario.getSenha());
 			preparedStatement.execute();
 			resultSet = preparedStatement.getGeneratedKeys();
 			resultSetMetaData = resultSet.getMetaData();
@@ -129,8 +129,8 @@ public class Dados {
 			preparedStatement = connection.prepareStatement(insert,
 				Statement.RETURN_GENERATED_KEYS);
 			for (Usuarios usuario : usuarios) {
-				setValues(preparedStatement, usuario.getLogin(), usuario.getNivel(),
-					usuario.getSenha());
+				setValues(preparedStatement, usuario.getLogin().toLowerCase(),
+					usuario.getNivel(), usuario.getSenha());
 				preparedStatement.addBatch();
 			}
 			preparedStatement.executeBatch();

@@ -298,6 +298,25 @@ public class Estoque extends javax.swing.JFrame {
 		this.tabelaRelatorioEstoque.getColumnModel().getColumn(5).setCellRenderer(direita);
 	}
 
+	private void confirmaAcessoSistema(String login, String senha) {
+		System.out.println("Usuário: " + login + "\nSenha: " + senha);
+		Dados usuario = new Dados();
+		String[] autentica = usuario.findUserByLogin(login);
+		if (autentica[0] != null) {
+			if (login.equalsIgnoreCase(autentica[1]) && senha.equals(autentica[3])) {
+				this.rotuloBarraStatusNomeUsuario.setText(login.toLowerCase());
+				this.janelaLogin.dispose();
+			} else {
+				JOptionPane.showMessageDialog(null, "Senha não confere!",
+					"ERRO DE LOGIN", JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null,
+				"Usuário não existe no sistema",
+				"ERRO DE LOGIN", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	private void zeraListaProdutos() {
 		this.listaProdutos = null;
 	}
@@ -2624,6 +2643,8 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_campoSenhaLoginSenhaFocusGained
 
     private void botaoLoginEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoLoginEntrarActionPerformed
+		confirmaAcessoSistema(this.campoTextoLoginLogin.getText().trim(),
+			new String(this.campoSenhaLoginSenha.getPassword()));
 		this.janelaBackup.dispose();
     }//GEN-LAST:event_botaoLoginEntrarActionPerformed
 
@@ -2632,13 +2653,18 @@ public class Estoque extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoLoginSairActionPerformed
 
     private void campoTextoLoginLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoTextoLoginLoginKeyPressed
-		if (evt.getExtendedKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
+		if (evt.getExtendedKeyCode() == KeyEvent.VK_ENTER) {
+			confirmaAcessoSistema(this.campoTextoLoginLogin.getText().trim(),
+				new String(this.campoSenhaLoginSenha.getPassword()));
+		} else if (evt.getExtendedKeyCode() == KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		}
     }//GEN-LAST:event_campoTextoLoginLoginKeyPressed
 
     private void campoSenhaLoginSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoSenhaLoginSenhaKeyPressed
-		if (evt.getExtendedKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+		if (evt.getExtendedKeyCode() == KeyEvent.VK_ENTER) {
+			confirmaAcessoSistema(this.campoTextoLoginLogin.getText().trim(),
+				new String(this.campoSenhaLoginSenha.getPassword()));
 			janelaLogin.dispose();
 		} else if (evt.getExtendedKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
 			System.exit(0);
