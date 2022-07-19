@@ -82,7 +82,6 @@ public class Estoque extends javax.swing.JFrame {
 		this.campoSenhaCadastroUsuariosNovaSenha.setText("123456");
 		this.campoSenhaCadastroUsuariosRepetirSenha.setText("123456");
 		this.botaoRadioMovimentoOpcoesEstoqueEntrada.setSelected(true);
-		this.campoTextoFormatadoMovimentoEstoqueValorUnitario.setText("0,00");
 		this.campoTextoMovimentoEstoqueQuantidade.setText("0");
 		this.botaoRadioEstiloOpcaoMetal.setSelected(true);
 		this.botaoRadioBackupBackup.setSelected(true);
@@ -262,18 +261,16 @@ public class Estoque extends javax.swing.JFrame {
 			= (DefaultTableModel) this.tabelaRelatorioEstoque.getModel();
 		conteudoTabelaRelatorio.setNumRows(0);
 		int tamanho = 0;
-		for (int i = 0; i < produtos.length; i++) {
+		for (String[] produto : produtos) {
 			conteudoTabelaRelatorio.addRow(new Object[]{
-				String.format("%04d", Integer.parseInt(produtos[i][0])),
-				produtos[i][1].trim(),
-				produtos[i][2].trim().toUpperCase(),
-				String.format("%,3.2f", Double.parseDouble(produtos[i][3])),
-				String.format("%4d", Integer.parseInt(produtos[i][4])),
-				String.format("%,3.2f",
-				(Double.parseDouble(produtos[i][3]))
-				* (Double.parseDouble(produtos[i][4])))
+				String.format("%04d", Integer.parseInt(produto[0])),
+				produto[1].trim(),
+				produto[2].trim().toUpperCase(),
+				String.format("%,3.2f", Double.parseDouble(produto[3])),
+				String.format("%4d", Integer.parseInt(produto[4])),
+				String.format("%,3.2f", (Double.parseDouble(produto[3])) * (Double.parseDouble(produto[4])))
 			});
-			int x = produtos[i][1].length();
+			int x = produto[1].length();
 			tamanho = (tamanho < x) ? x : tamanho;
 		}
 		DefaultTableCellRenderer esquerda = new DefaultTableCellRenderer();
@@ -722,6 +719,7 @@ public class Estoque extends javax.swing.JFrame {
         campoTextoCadastroProdutosCodigo.setEditable(false);
         campoTextoCadastroProdutosCodigo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         campoTextoCadastroProdutosCodigo.setText("0001");
+        campoTextoCadastroProdutosCodigo.setToolTipText("Código do produto");
 
         rotuloCadastroProdutosDescricao.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         rotuloCadastroProdutosDescricao.setText("Descrição:");
@@ -2665,7 +2663,6 @@ public class Estoque extends javax.swing.JFrame {
 		if (evt.getExtendedKeyCode() == KeyEvent.VK_ENTER) {
 			confirmaAcessoSistema(this.campoTextoLoginLogin.getText().trim(),
 				new String(this.campoSenhaLoginSenha.getPassword()));
-			janelaLogin.dispose();
 		} else if (evt.getExtendedKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
 			System.exit(0);
 		}
