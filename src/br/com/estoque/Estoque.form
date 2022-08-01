@@ -1447,6 +1447,9 @@
             <Property name="text" type="java.lang.String" value="Imprimir Estoque"/>
             <Property name="toolTipText" type="java.lang.String" value="Imprime relat&#xf3;rio completo do estoque"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoRelatorioEstoqueImprimirActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

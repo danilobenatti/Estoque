@@ -1,5 +1,6 @@
 package br.com.estoque;
 
+import br.com.estoque.relatorios.Relatorios;
 import br.com.estoque.tabelas.Produtos;
 import br.com.estoque.tabelas.Usuarios;
 import br.com.estoque.util.Dados;
@@ -1659,6 +1660,11 @@ public class Estoque extends javax.swing.JFrame {
         botaoRelatorioEstoqueImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/estoque/images/movimentoImprimir.png"))); // NOI18N
         botaoRelatorioEstoqueImprimir.setText("Imprimir Estoque");
         botaoRelatorioEstoqueImprimir.setToolTipText("Imprime relatório completo do estoque");
+        botaoRelatorioEstoqueImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoRelatorioEstoqueImprimirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout janelaRelatorioEstoqueLayout = new javax.swing.GroupLayout(janelaRelatorioEstoque.getContentPane());
         janelaRelatorioEstoque.getContentPane().setLayout(janelaRelatorioEstoqueLayout);
@@ -2965,6 +2971,21 @@ public class Estoque extends javax.swing.JFrame {
 		String[][] produtos = dados.listAllProducts(false);
 		ajustarTabelaJanelaRelatorioEstoque(produtos);
     }//GEN-LAST:event_janelaRelatorioEstoqueWindowGainedFocus
+
+    private void botaoRelatorioEstoqueImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRelatorioEstoqueImprimirActionPerformed
+		String login = this.rotuloBarraStatusNomeUsuario.getText();
+		Dados dados = new Dados();
+		String[] dadosUsuario = dados.findUserByLogin(login);
+		int nivel = Integer.parseInt(dadosUsuario[2]);
+		if (nivel == 0) {
+			this.janelaRelatorioEstoque.dispose();
+			Relatorios relatorio = new Relatorios();
+			relatorio.imprimirRelatorioEstoque();
+		} else {
+			JOptionPane.showMessageDialog(null, "Você não tem permissão para isso!",
+				"Relatório", JOptionPane.ERROR_MESSAGE);
+		}
+    }//GEN-LAST:event_botaoRelatorioEstoqueImprimirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar barraFerramentasJanelaPrincipal;
