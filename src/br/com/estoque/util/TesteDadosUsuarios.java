@@ -27,6 +27,9 @@ public class TesteDadosUsuarios {
 		Usuarios u3 = new Usuarios("João", 1, "123abc");
 		new Dados().insertUser(u3);
 
+		Usuarios admin = new Usuarios("admin", 0, "123");
+		new Dados().insertUser(admin);
+
 		u3.setId(5);
 		u3.setNivel(0);
 		u3.setSenha("999999");

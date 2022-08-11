@@ -9,7 +9,7 @@ FORMAT(valorUnitario, 2, 'pt_BR') AS valorUnitario,
 FORMAT(valorUnitario * quantidade, 2, 'pt_BR') AS valorTotal
 FROM produtos]]>
 	</queryString>
-	<field name="id" class="java.lang.Long">
+	<field name="id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="descricao" class="java.lang.String">
@@ -30,7 +30,7 @@ FROM produtos]]>
 		<band height="79" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="79" height="79" uuid="15ec884b-08b7-46a6-a021-be78b9fde626"/>
-				<imageExpression><![CDATA["D:\\NetBeansProjects\\Estoque\\src\\br\\com\\estoque\\images\\logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["\\images\\logo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="79" y="0" width="723" height="79" uuid="087091c8-a29b-4fab-9f7e-e2571dc43e5c"/>
